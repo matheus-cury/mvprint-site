@@ -1,0 +1,11 @@
+# MV Print - Gráfica e Comunicação Visual em BH
+# https://mvprint.com.br
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://mvprint.com.br/sitemap.xml
+
+# Crawl-delay (opcional, para ser gentil com os bots)
+Crawl-delay: 1

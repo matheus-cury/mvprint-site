@@ -1,0 +1,192 @@
+---
+// Hero.astro - Versão Final
+import { getWhatsAppLink } from '../config/site';
+const whatsappLink = getWhatsAppLink('default');
+---
+
+<section class="relative min-h-screen flex items-center bg-[#1D3557] overflow-hidden">
+
+  <!-- BACKGROUND - Blobs abstratos -->
+  <div class="absolute inset-0 pointer-events-none">
+    <!-- Blob Magenta (superior esquerdo) -->
+    <div class="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-[#E91E8C] opacity-15 blur-[150px] rounded-full"></div>
+
+    <!-- Blob Ciano (direita, atrás da imagem) -->
+    <div class="absolute top-[10%] -right-[10%] w-[700px] h-[700px] bg-[#00B4D8] opacity-15 blur-[130px] rounded-full"></div>
+
+    <!-- Blob menor accent (inferior) -->
+    <div class="absolute -bottom-[20%] left-[30%] w-[400px] h-[400px] bg-[#F4A261] opacity-10 blur-[120px] rounded-full"></div>
+
+    <!-- Grid sutil -->
+    <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px); background-size: 60px 60px;"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+      <!-- COLUNA ESQUERDA - Texto (7 colunas) -->
+      <div class="lg:col-span-7 text-center lg:text-left order-2 lg:order-1">
+
+        <!-- Badge Adesivação -->
+        <div class="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#E91E8C] to-[#00B4D8] text-white px-5 py-2.5 rounded-full mb-8 font-semibold text-sm shadow-lg shadow-pink-500/20">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          Especialistas em Adesivação
+        </div>
+
+        <!-- Título Principal -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08] mb-6">
+          <span class="text-white">Você imagina.</span>
+          <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#E91E8C] via-[#f246a8] to-[#00B4D8]">
+            A gente imprime!
+          </span>
+        </h1>
+
+        <!-- Descrição -->
+        <p class="text-lg lg:text-xl text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+          Soluções completas em <span class="text-white font-medium">comunicação visual</span> e <span class="text-white font-medium">gráfica rápida</span> em Belo Horizonte. Do adesivo ao envelopamento completo.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-4 justify-center lg:justify-start">
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] text-white font-bold text-lg rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40 hover:bg-[#20bd5a]"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Solicitar Orçamento
+          </a>
+
+          <a
+            href="#portfolio"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold text-lg border border-white/20 rounded-full transition-all duration-300 hover:bg-white/10 hover:border-white/40"
+          >
+            Ver Portfolio
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Microcopy - reduz ansiedade -->
+        <p class="text-sm text-gray-400 mb-10 text-center lg:text-left">
+          Orçamento rápido <span class="mx-2 text-gray-600">•</span> Sem compromisso
+        </p>
+
+        <!-- Stats - Números grandes -->
+        <div class="flex flex-wrap gap-8 sm:gap-12 justify-center lg:justify-start mb-8">
+          <div class="text-center lg:text-left">
+            <div class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#E91E8C] to-[#00B4D8]">6+</div>
+            <div class="text-sm text-gray-400 mt-1 font-medium">Anos no mercado</div>
+          </div>
+          <div class="text-center lg:text-left">
+            <div class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#E91E8C] to-[#00B4D8]">1000+</div>
+            <div class="text-sm text-gray-400 mt-1 font-medium">Pedidos entregues</div>
+          </div>
+          <div class="text-center lg:text-left">
+            <div class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#E91E8C] to-[#00B4D8]">BH</div>
+            <div class="text-sm text-gray-400 mt-1 font-medium">e todo o Brasil</div>
+          </div>
+        </div>
+
+        <!-- Trust indicators -->
+        <div class="flex flex-wrap gap-x-6 gap-y-2 justify-center lg:justify-start text-sm text-gray-400 mb-10">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#25D366]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Orçamento em 24h</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#25D366]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Entrega para todo Brasil</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#25D366]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Instalação inclusa em BH</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLUNA DIREITA - Imagem (5 colunas) -->
+      <div class="lg:col-span-5 relative order-1 lg:order-2">
+        <div class="relative max-w-md mx-auto lg:max-w-none">
+
+          <!-- Glow atrás da imagem -->
+          <div class="absolute -inset-4 bg-gradient-to-tr from-[#E91E8C]/40 to-[#00B4D8]/40 rounded-3xl blur-2xl opacity-60 animate-pulse-slow"></div>
+
+          <!-- Container principal da imagem -->
+          <div class="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-2 sm:p-3 border border-white/10 shadow-2xl">
+            <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+              <picture>
+                <source srcset="/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.webp" type="image/webp" />
+                <img
+                  src="/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.jpg"
+                  alt="Adesivação de ambiente corporativo AeC pela MV Print"
+                  class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  loading="eager"
+                  width="600"
+                  height="450"
+                />
+              </picture>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce hidden lg:flex flex-col items-center gap-2 text-white/30">
+    <span class="text-xs uppercase tracking-widest">Scroll</span>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+    </svg>
+  </div>
+
+</section>
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+  }
+
+  @keyframes float-delayed {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(-1deg); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.4; }
+  }
+
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-delayed 5s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+</style>

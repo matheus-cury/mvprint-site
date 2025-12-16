@@ -1,0 +1,96 @@
+---
+// Seção de Portfolio
+const portfolioItems = [
+  {
+    image: "/images/portfolio/cbf-a12901df-096c-463a-a874-f648c684dd2a.jpg",
+    title: "CBF - Seleção Brasileira",
+    category: "Lona Gigante",
+    featured: true
+  },
+  {
+    image: "/images/portfolio/veiculos-8982d6d7-b525-4103-8dad-a33e1b6342d8.jpg",
+    title: "CSN Mineração",
+    category: "Plotagem Veicular"
+  },
+  {
+    image: "/images/portfolio/tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151.jpg",
+    title: "Restaurante Tokai",
+    category: "Tapume"
+  },
+  {
+    image: "/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.jpg",
+    title: "AeC Tecnologia",
+    category: "Adesivação de Ambiente"
+  },
+  {
+    image: "/images/portfolio/vitrines-29fa897e-40d2-4fed-bdb6-0b65dd97312b.jpg",
+    title: "Zak Outlet",
+    category: "Vitrine"
+  },
+  {
+    image: "/images/portfolio/carros-225cc5a4-81cd-472c-bd4a-4c146fa9d1c2.jpg",
+    title: "BH France Citroën",
+    category: "Plotagem Veicular"
+  },
+  {
+    image: "/images/portfolio/veiculos-08fb2026-b534-49f6-9ad6-00be78ba9381.jpg",
+    title: "CEMIG / Brasilencorp",
+    category: "Plotagem Veicular"
+  },
+  {
+    image: "/images/portfolio/ambientes-21f8527a-4975-4e21-9fad-983d515d6904.jpg",
+    title: "ECAD",
+    category: "Adesivação de Ambiente"
+  }
+];
+---
+
+<section id="portfolio" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <span class="text-[#E91E8C] font-semibold text-sm uppercase tracking-wider">
+        Portfólio
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1D3557] mt-2 mb-4">
+        Nossos trabalhos
+      </h2>
+      <p class="text-[#6C757D] text-lg max-w-2xl mx-auto">
+        Confira alguns dos projetos que realizamos para empresas de diversos segmentos.
+      </p>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {portfolioItems.map((item) => (
+        <div class="group relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer">
+          <img
+            src={item.image}
+            alt={item.title}
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span class="text-[#F4A261] text-sm font-medium">{item.category}</span>
+              <h3 class="text-white font-bold text-lg">{item.title}</h3>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-12">
+      <a
+        href="/portfolio"
+        class="inline-flex items-center gap-2 bg-[#1D3557] hover:bg-gray-800 text-white px-8 py-4 rounded-full font-semibold transition-smooth"
+      >
+        Ver Galeria Completa
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

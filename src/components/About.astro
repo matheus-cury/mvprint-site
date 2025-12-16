@@ -1,0 +1,150 @@
+---
+// Seção Sobre
+const clientLogos = [
+  { name: "CBF", logo: "/images/logos/cbf.svg" },
+  { name: "CEMIG", logo: "/images/logos/cemig.svg" },
+  { name: "CSN Mineração", logo: "/images/logos/csn.svg" },
+  { name: "Citroën", logo: "/images/logos/citroen.svg" },
+  { name: "Renault", logo: "/images/logos/renault.svg" },
+  { name: "Claro", logo: "/images/logos/claro.svg" },
+];
+---
+
+<section id="sobre" class="py-20 bg-[#F8F9FA]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Image Column -->
+      <div class="relative">
+        <div class="grid grid-cols-2 gap-4">
+          <picture>
+            <source srcset="/images/portfolio/veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c.webp" type="image/webp" />
+            <img
+              src="/images/portfolio/veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c.jpg"
+              alt="Plotagem veicular realizada pela MV Print em Belo Horizonte"
+              class="rounded-2xl shadow-lg w-full h-48 object-cover"
+              loading="lazy"
+              width="280"
+              height="192"
+            />
+          </picture>
+          <picture>
+            <source srcset="/images/portfolio/ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b.webp" type="image/webp" />
+            <img
+              src="/images/portfolio/ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b.jpg"
+              alt="Adesivação de ambiente corporativo pela MV Print"
+              class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8"
+              loading="lazy"
+              width="280"
+              height="192"
+            />
+          </picture>
+          <picture>
+            <source srcset="/images/portfolio/tapumes-036fd989-71f7-40de-9cb0-9a72467d561e.webp" type="image/webp" />
+            <img
+              src="/images/portfolio/tapumes-036fd989-71f7-40de-9cb0-9a72467d561e.jpg"
+              alt="Tapume promocional instalado pela MV Print"
+              class="rounded-2xl shadow-lg w-full h-48 object-cover"
+              loading="lazy"
+              width="280"
+              height="192"
+            />
+          </picture>
+          <picture>
+            <source srcset="/images/portfolio/carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e.webp" type="image/webp" />
+            <img
+              src="/images/portfolio/carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e.jpg"
+              alt="Envelopamento de veículo pela MV Print BH"
+              class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8"
+              loading="lazy"
+              width="280"
+              height="192"
+            />
+          </picture>
+        </div>
+      </div>
+
+      <!-- Content Column -->
+      <div>
+        <span class="text-[#E91E8C] font-semibold text-sm uppercase tracking-wider">
+          Sobre Nós
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#1D3557] mt-2 mb-6">
+          Transformando ideias em comunicação visual de qualidade
+        </h2>
+
+        <div class="space-y-4 text-[#6C757D] mb-8">
+          <p>
+            Há 6 anos, a <strong class="text-[#1D3557]">MV Print</strong> transforma ideias em comunicação visual de qualidade. Nascemos em Belo Horizonte com a missão de oferecer soluções completas em impressão gráfica e comunicação visual para empresas de todos os portes.
+          </p>
+          <p>
+            Do cartão de visita ao envelopamento completo de frotas, nossa equipe está pronta para dar vida ao seu projeto com <strong class="text-[#1D3557]">qualidade, agilidade e preço justo</strong>.
+          </p>
+        </div>
+
+        <!-- Features -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-[#1D3557]">Qualidade Garantida</h4>
+              <p class="text-sm text-[#6C757D]">Materiais de primeira linha</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-[#1D3557]">Entrega Rápida</h4>
+              <p class="text-sm text-[#6C757D]">Prazos que cabem no seu projeto</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-[#1D3557]">Atendimento Personalizado</h4>
+              <p class="text-sm text-[#6C757D]">Cada projeto é único</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-[#1D3557]">Todo o Brasil</h4>
+              <p class="text-sm text-[#6C757D]">Entregamos em todo território</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clients Logos -->
+        <div>
+          <h4 class="font-semibold text-[#1D3557] mb-4">Clientes que confiam em nós:</h4>
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-4 items-center">
+            {clientLogos.map((client) => (
+              <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex items-center justify-center h-16 grayscale hover:grayscale-0 transition-all duration-300">
+                <img
+                  src={client.logo}
+                  alt={`Logo ${client.name}`}
+                  class="max-h-10 max-w-full object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
