@@ -22,8 +22,9 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# URLs das logos (Brandfetch CDN)
+# URLs das logos
 LOGOS = {
+    # === LOGOS EXISTENTES ===
     "cbf": {
         "url": "https://cdn.brandfetch.io/idzQ0eT-WM/w/1823/h/2504/theme/light/logo.png",
         "filename": "cbf.png"
@@ -47,7 +48,73 @@ LOGOS = {
     "csn": {
         "url": "https://cdn.brandfetch.io/idf-2eye-D/w/820/h/376/theme/dark/logo.png",
         "filename": "csn.png"
-    }
+    },
+
+    # === NOVAS LOGOS (MV Print) ===
+
+    # 1. Zak
+    "zak": {
+        "url": "https://cdn.brandfetch.io/idfiovB7j9/w/512/h/512/theme/dark/logo.png",
+        "filename": "zak.png"
+    },
+
+    # 2. Windsor Hotéis
+    "windsor": {
+        "url": "https://cdn.brandfetch.io/idM8Oupycg/w/667/h/667/theme/dark/icon.jpeg",
+        "filename": "windsor.jpeg"
+    },
+
+    # 3. Grupo Roma Brasil
+    "grupo-roma": {
+        "url": "https://cdn.worldvectorlogo.com/logos/grupo-roma.svg",
+        "filename": "grupo-roma.svg"
+    },
+
+    # 4. AeC Contact Center
+    "aec": {
+        "url": "https://cdn.worldvectorlogo.com/logos/aec-1.svg",
+        "filename": "aec.svg"
+    },
+
+    # 5. Grupo Tecar
+    "grupo-tecar": {
+        "url": "https://cdn.dealerspace.ai/tecar/logo/GrupoTecar%20WHITE.png",
+        "filename": "grupo-tecar.png"
+    },
+
+    # 6. Mit Car Minas
+    "mit-car": {
+        "url": "https://cdn.dealerspace.ai/mit-car/logos/mit-car-minas.png",
+        "filename": "mit-car.png"
+    },
+
+    # 7. Orcasa Netimóveis
+    "orcasa": {
+        "url": "https://www.orcasa.com.br/wp-content/uploads/2019/09/cropped-cropped-Orcasa_Hor_Colorida.png",
+        "filename": "orcasa.png"
+    },
+
+    # 8. Drogarias Pacheco
+    "drogarias-pacheco": {
+        "url": "https://logodownload.org/wp-content/uploads/2022/08/drogarias-pacheco-logo.png",
+        "filename": "drogarias-pacheco.png"
+    },
+
+    # 9. Pague Menos
+    "pague-menos": {
+        "url": "https://cdn.worldvectorlogo.com/logos/pague-menos-logo.svg",
+        "filename": "pague-menos.svg"
+    },
+
+    # 10. Portal Auto Shopping
+    "portal-auto-shopping": {
+        "url": "https://cdn.brandfetch.io/id8VkaZAZD/w/400/h/150/theme/light/logo.png",
+        "filename": "portal-auto-shopping.png"
+    },
+
+    # === LOGOS QUE PRECISAM SER BAIXADAS MANUALMENTE ===
+    # - Grupo Jorlan: Não encontrado em bancos de logos. Baixar de https://grupojorlan.com.br
+    # - Pontua X: Empresa pequena (fintech), logo não disponível em bancos. Baixar de https://cubo.network/startups/pontua-x
 }
 
 def download_logo(name, info):
