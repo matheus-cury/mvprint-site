@@ -1,0 +1,44 @@
+---
+// Seção de Clientes - Impacto visual
+const clients = [
+  { name: "CBF", logo: "/images/logos/cbf.svg" },
+  { name: "CEMIG", logo: "/images/logos/cemig.svg" },
+  { name: "CSN Mineração", logo: "/images/logos/csn.svg" },
+  { name: "Citroën", logo: "/images/logos/citroen.svg" },
+  { name: "Renault", logo: "/images/logos/renault.svg" },
+  { name: "Claro", logo: "/images/logos/claro.svg" },
+];
+---
+
+<section class="py-16 bg-[#1D3557]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+        Grandes empresas confiam na MV Print
+      </h2>
+      <p class="text-gray-300 text-lg">
+        Atendemos desde pequenos negócios até multinacionais
+      </p>
+    </div>
+
+    <!-- Logos Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center">
+      {clients.map((client) => (
+        <div class="group bg-white rounded-xl p-6 flex items-center justify-center h-24 sm:h-28 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#E91E8C]/20">
+          <img
+            src={client.logo}
+            alt={`Logo ${client.name} - Cliente MV Print`}
+            class="max-h-14 sm:max-h-16 max-w-full object-contain filter transition-all duration-300"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom text -->
+    <p class="text-center text-gray-400 mt-10 text-sm">
+      E mais de <span class="text-white font-semibold">200 empresas</span> em Belo Horizonte e região
+    </p>
+  </div>
+</section>

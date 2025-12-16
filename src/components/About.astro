@@ -1,13 +1,5 @@
 ---
 // Seção Sobre
-const clientLogos = [
-  { name: "CBF", logo: "/images/logos/cbf.svg" },
-  { name: "CEMIG", logo: "/images/logos/cemig.svg" },
-  { name: "CSN Mineração", logo: "/images/logos/csn.svg" },
-  { name: "Citroën", logo: "/images/logos/citroen.svg" },
-  { name: "Renault", logo: "/images/logos/renault.svg" },
-  { name: "Claro", logo: "/images/logos/claro.svg" },
-];
 ---
 
 <section id="sobre" class="py-20 bg-[#F8F9FA]">
@@ -126,22 +118,6 @@ const clientLogos = [
               <h4 class="font-semibold text-[#1D3557]">Todo o Brasil</h4>
               <p class="text-sm text-[#6C757D]">Entregamos em todo território</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Clients Logos -->
-        <div>
-          <h4 class="font-semibold text-[#1D3557] mb-4">Clientes que confiam em nós:</h4>
-          <div class="grid grid-cols-3 sm:grid-cols-6 gap-4 items-center">
-            {clientLogos.map((client) => (
-              <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex items-center justify-center h-16 grayscale hover:grayscale-0 transition-all duration-300">
-                <img
-                  src={client.logo}
-                  alt={`Logo ${client.name}`}
-                  class="max-h-10 max-w-full object-contain"
-                />
-              </div>
-            ))}
           </div>
         </div>
       </div>
