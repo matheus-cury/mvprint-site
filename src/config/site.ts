@@ -43,9 +43,9 @@ export const SOCIAL = {
 };
 
 export const HOURS = {
-  weekdays: '08:00 às 18:00',
-  saturday: '08:00 às 12:00',
-  display: 'Seg a Sex: 08h às 18h | Sáb: 08h às 12h',
+  weekdays: '09:00 às 19:00',
+  saturday: '09:00 às 13:00',
+  display: 'Seg a Sex: 09h às 19h',
 };
 
 // Mensagens pré-preenchidas do WhatsApp
