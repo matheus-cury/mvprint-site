@@ -19,7 +19,7 @@ const clients = [
   { name: "Orcasa Netimóveis", logo: "/images/logos/orcasa.png" },
   { name: "Grupo Jorlan", logo: "/images/logos/grupo jorlan.jpg" },
   { name: "Pontua X", logo: "/images/logos/pontua x.jpg" },
-  { name: "RTI", logo: "/images/logos/RTI.jpg", darkBg: true },
+  { name: "RTI", logo: "/images/logos/RTI.jpg", invert: true },
 ];
 ---
 
@@ -38,11 +38,11 @@ const clients = [
     <!-- Logos Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center">
       {clients.map((client) => (
-        <div class={`group rounded-xl p-6 flex items-center justify-center h-24 sm:h-28 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#E91E8C]/20 ${client.darkBg ? 'bg-gray-700' : 'bg-white'}`}>
+        <div class="group bg-white rounded-xl p-6 flex items-center justify-center h-24 sm:h-28 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#E91E8C]/20">
           <img
             src={client.logo}
             alt={`Logo ${client.name} - Cliente MV Print`}
-            class="max-h-14 sm:max-h-16 max-w-full object-contain filter transition-all duration-300"
+            class={`max-h-14 sm:max-h-16 max-w-full object-contain transition-all duration-300 ${client.invert ? 'invert' : ''}`}
             loading="lazy"
           />
         </div>
