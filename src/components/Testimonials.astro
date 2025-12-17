@@ -254,6 +254,26 @@ for (let i = 0; i < testimonials.length; i += 3) {
       });
     }
 
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+      // Só navega se o carrossel estiver visível na tela
+      const carouselRect = carousel?.getBoundingClientRect();
+      if (!carouselRect) return;
+
+      const isVisible = carouselRect.top < window.innerHeight && carouselRect.bottom > 0;
+      if (!isVisible) return;
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = currentIndex > 0 ? currentIndex - 1 : totalSets - 1;
+        goToSlide(prev);
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextSlide();
+      }
+    });
+
     // Inicializa
     updateDots();
     startAutoPlay();

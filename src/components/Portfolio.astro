@@ -66,8 +66,11 @@ const portfolioItems = [
         <div class="group relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer">
           <img
             src={item.image}
-            alt={item.title}
+            alt={`${item.title} - ${item.category} realizado pela MV Print BH`}
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            loading="lazy"
+            width="400"
+            height="300"
           />
           <!-- Overlay -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -11,6 +11,9 @@ const {
   description = "Gráfica e comunicação visual em Belo Horizonte. Plotagem veicular, envelopamento, adesivos, banners, fachadas e tapumes. Atendemos CBF, CEMIG, Citroën. Orçamento grátis!"
 } = Astro.props;
 
+// URL canônica dinâmica baseada na página atual
+const canonicalURL = new URL(Astro.url.pathname, "https://mvprint.com.br").href;
+
 // Schema LocalBusiness para SEO Local
 const schemaData = {
   "@context": "https://schema.org",
@@ -154,7 +157,7 @@ const schemaData = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://mvprint.com.br/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.jpg" />
-    <meta property="og:url" content="https://mvprint.com.br" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="MV Print" />
@@ -180,7 +183,7 @@ const schemaData = {
     <link rel="icon" type="image/png" href="/images/logo-mvprint.png" />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://mvprint.com.br" />
+    <link rel="canonical" href={canonicalURL} />
 
     <title>{title}</title>
   </head>

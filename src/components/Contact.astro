@@ -1,5 +1,6 @@
 ---
 // Seção de Contato
+import { CONTACT, ADDRESS, HOURS, getWhatsAppLink } from '../config/site';
 ---
 
 <section id="contato" class="py-20 bg-white">
@@ -101,7 +102,7 @@
 
           <div class="space-y-4">
             <a
-              href="https://wa.me/5531973024426"
+              href={getWhatsAppLink('default')}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-smooth"
@@ -112,13 +113,13 @@
                 </svg>
               </div>
               <div>
-                <div class="font-semibold">(31) 97302-4426</div>
+                <div class="font-semibold">{CONTACT.whatsapp.display}</div>
                 <div class="text-sm text-gray-300">WhatsApp</div>
               </div>
             </a>
 
             <a
-              href="tel:+553132226708"
+              href={`tel:${CONTACT.phone.number}`}
               class="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-smooth"
             >
               <div class="w-12 h-12 bg-[#E91E8C] rounded-full flex items-center justify-center">
@@ -127,13 +128,13 @@
                 </svg>
               </div>
               <div>
-                <div class="font-semibold">(31) 3222-6708</div>
+                <div class="font-semibold">{CONTACT.phone.display}</div>
                 <div class="text-sm text-gray-300">Telefone fixo</div>
               </div>
             </a>
 
             <a
-              href="mailto:atendimento@mvprint.com.br"
+              href={`mailto:${CONTACT.email}`}
               class="flex items-center gap-4 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-smooth"
             >
               <div class="w-12 h-12 bg-[#00B4D8] rounded-full flex items-center justify-center">
@@ -142,7 +143,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-semibold">atendimento@mvprint.com.br</div>
+                <div class="font-semibold">{CONTACT.email}</div>
                 <div class="text-sm text-gray-300">E-mail</div>
               </div>
             </a>
@@ -154,7 +155,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-semibold">Seg a Sex: 09h às 19h</div>
+                <div class="font-semibold">{HOURS.display}</div>
                 <div class="text-sm text-gray-300">Horário de funcionamento</div>
               </div>
             </div>
@@ -177,9 +178,9 @@
 
         <!-- Address -->
         <div class="text-center text-[#6C757D]">
-          <p class="font-semibold text-[#1D3557]">Rua Bernardes Carvalho, 21</p>
-          <p>Santa Terezinha - Belo Horizonte/MG</p>
-          <p>CEP: 31.360-130</p>
+          <p class="font-semibold text-[#1D3557]">{ADDRESS.street}</p>
+          <p>{ADDRESS.neighborhood} - {ADDRESS.city}/{ADDRESS.state}</p>
+          <p>CEP: {ADDRESS.zip}</p>
         </div>
       </div>
     </div>

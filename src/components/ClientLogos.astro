@@ -16,8 +16,8 @@ const clients = [
   { name: "Grupo Roma", logo: "/images/logos/grupo-roma.svg" },
   { name: "Mit Car", logo: "/images/logos/mit-car.png" },
   { name: "Orcasa Netimóveis", logo: "/images/logos/orcasa.png" },
-  { name: "Grupo Jorlan", logo: "/images/logos/grupo jorlan.jpg" },
-  { name: "Pontua X", logo: "/images/logos/pontua x.jpg" },
+  { name: "Grupo Jorlan", logo: "/images/logos/grupo-jorlan.jpg" },
+  { name: "Pontua X", logo: "/images/logos/pontua-x.jpg" },
   { name: "RTI", logo: "/images/logos/RTI.jpg" },
 ];
 ---
@@ -41,7 +41,7 @@ const clients = [
           <img
             src={client.logo}
             alt={`Logo ${client.name} - Cliente MV Print`}
-            class={`max-h-14 sm:max-h-16 max-w-full object-contain transition-all duration-300 ${client.invert ? 'invert' : ''}`}
+            class="max-h-14 sm:max-h-16 max-w-full object-contain transition-all duration-300"
             loading="lazy"
           />
         </div>

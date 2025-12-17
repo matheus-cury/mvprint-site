@@ -1,5 +1,7 @@
 ---
 // Seção de Serviços
+import { getWhatsAppLink } from '../config/site';
+
 const services = [
   {
     icon: "car",
@@ -110,7 +112,7 @@ const services = [
             </ul>
             <!-- CTA Contextual -->
             <a
-              href={`https://wa.me/5531973024426?text=${encodeURIComponent(service.whatsappMsg)}`}
+              href={getWhatsAppLink(service.whatsappMsg)}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-2 text-[#25D366] hover:text-[#20bd5a] font-semibold text-sm transition-smooth"
@@ -128,7 +130,7 @@ const services = [
     <!-- CTA -->
     <div class="text-center mt-12">
       <a
-        href="https://wa.me/5531973024426?text=Olá! Vim pelo site da MV Print e gostaria de saber mais sobre os serviços."
+        href={getWhatsAppLink('default')}
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 bg-[#E91E8C] hover:bg-[#C4177A] text-white px-8 py-4 rounded-full font-semibold transition-smooth"

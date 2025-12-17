@@ -1,5 +1,9 @@
 ---
 // Seção FAQ - Perguntas Frequentes com Schema SEO
+import { getWhatsAppLink } from '../config/site';
+
+const whatsappLink = getWhatsAppLink('duvida');
+
 const faqs = [
   {
     question: "Qual o prazo de entrega para adesivação?",
@@ -76,7 +80,7 @@ const faqSchema = {
     <div class="text-center mt-12">
       <p class="text-[#6C757D] mb-4">Ainda tem dúvidas?</p>
       <a
-        href="https://wa.me/5531973024426?text=Olá! Tenho uma dúvida sobre os serviços da MV Print."
+        href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-6 py-3 rounded-full font-semibold transition-smooth"
