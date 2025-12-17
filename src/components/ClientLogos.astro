@@ -4,19 +4,19 @@
 const clients = [
   // Grandes marcas (antigas)
   { name: "CBF", logo: "/images/logos/cbf.svg" },
-  { name: "CEMIG", logo: "/images/logos/cemig.svg" },
-  { name: "CSN Mineração", logo: "/images/logos/csn.svg" },
+  { name: "CEMIG", logo: "/images/logos/cemig.svg", bigger: true },
+  { name: "CSN Mineração", logo: "/images/logos/csn.svg", bigger: true },
   { name: "Citroën", logo: "/images/logos/citroen.svg" },
   { name: "Renault", logo: "/images/logos/renault.svg" },
   { name: "Claro", logo: "/images/logos/claro.svg" },
   // Novas logos
   { name: "Drogarias Pacheco", logo: "/images/logos/drogarias-pacheco.png" },
   { name: "Pague Menos", logo: "/images/logos/pague-menos.svg" },
-  { name: "AeC Contact Center", logo: "/images/logos/aec.svg" },
-  { name: "Grupo Roma", logo: "/images/logos/grupo-roma.svg" },
+  { name: "AeC Contact Center", logo: "/images/logos/aec.svg", bigger: true },
+  { name: "Grupo Roma", logo: "/images/logos/grupo-roma.svg", bigger: true },
   { name: "Mit Car", logo: "/images/logos/mit-car.png" },
   { name: "Orcasa Netimóveis", logo: "/images/logos/orcasa.png" },
-  { name: "Grupo Jorlan", logo: "/images/logos/grupo-jorlan.jpg" },
+  { name: "Grupo Jorlan", logo: "/images/logos/grupo-jorlan.jpg", bigger: true },
   { name: "Pontua X", logo: "/images/logos/pontua-x.jpg" },
   { name: "RTI", logo: "/images/logos/RTI.jpg" },
 ];
@@ -41,7 +41,7 @@ const clients = [
           <img
             src={client.logo}
             alt={`Logo ${client.name} - Cliente MV Print`}
-            class="max-h-14 sm:max-h-16 max-w-full object-contain transition-all duration-300"
+            class={`max-w-full object-contain transition-all duration-300 ${client.bigger ? 'max-h-16 sm:max-h-20' : 'max-h-14 sm:max-h-16'}`}
             loading="lazy"
           />
         </div>
