@@ -22,3 +22,14 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Documentacao interna (NUNCA commitar)
+*TEMP*
+*TEMP*
+*TEMP*
+*AVALIACAO*
+*OBSERVACOES*
+*CONSULTA*
+
+
+
