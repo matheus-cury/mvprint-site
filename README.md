@@ -1,86 +1,59 @@
 # MV Print - Site Institucional
 
-Site institucional da MV Print, grafica e comunicacao visual em Belo Horizonte.
+[![Site](https://img.shields.io/badge/Site-mvprint.com.br-blue)](https://mvprint.com.br)
+[![Astro](https://img.shields.io/badge/Astro-FF5D01?logo=astro&logoColor=white)](https://astro.build)
+[![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare%20Pages-F38020?logo=cloudflare&logoColor=white)](https://pages.cloudflare.com)
 
-## Tecnologias
+Site institucional da **MV Print**, grafica e comunicacao visual em Belo Horizonte/MG.
 
-- **Astro** - Framework web estatico
-- **Tailwind CSS** - Framework de estilos
-- **Vanilla JS** - Interacoes simples
+🔗 **[Ver site ao vivo](https://mvprint.com.br)**
 
-## Como executar
+![Preview do site](https://image.thum.io/get/width/1200/https://mvprint.com.br)
+
+## Sobre o projeto
+
+Site desenvolvido para apresentar os servicos da grafica:
+- Plotagem veicular e envelopamento
+- Comunicacao visual (fachadas, letreiros)
+- Adesivos, banners e lonas
+- Grafica rapida (cartoes, panfletos)
+
+## Stack
+
+| Tecnologia | Uso |
+|------------|-----|
+| **Astro** | Framework SSG |
+| **Tailwind CSS** | Estilizacao |
+| **Vanilla JS** | Interacoes |
+| **Cloudflare Pages** | Hospedagem |
+
+## Rodar localmente
 
 ```bash
-# Instalar dependencias
 npm install
-
-# Rodar em desenvolvimento
 npm run dev
-
-# Abrir no navegador
-http://localhost:4321
+# http://localhost:4321
 ```
 
-## Build para producao
+## Build
 
 ```bash
-# Gerar build
 npm run build
-
-# Os arquivos serao gerados em ./dist
+# Arquivos em ./dist
 ```
 
-## Estrutura do projeto
+## Estrutura
 
 ```
-mvprint-site/
-├── public/
-│   └── images/
-│       ├── logo-mvprint.png
-│       └── portfolio/         # Fotos selecionadas
-├── src/
-│   ├── components/
-│   │   ├── Header.astro
-│   │   ├── Hero.astro
-│   │   ├── Services.astro
-│   │   ├── Portfolio.astro
-│   │   ├── About.astro
-│   │   ├── Contact.astro
-│   │   ├── Footer.astro
-│   │   └── WhatsAppButton.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   ├── pages/
-│   │   ├── index.astro        # Pagina principal
-│   │   └── portfolio.astro    # Galeria completa
-│   └── styles/
-│       └── global.css
-├── astro.config.mjs
-├── package.json
-└── README.md
+src/
+├── components/    # Header, Hero, Services, Portfolio, Contact, Footer
+├── layouts/       # Layout base
+├── pages/         # index.astro, portfolio.astro
+└── styles/        # CSS global
 ```
-
-## Deploy
-
-### Vercel (recomendado)
-
-1. Crie uma conta em vercel.com
-2. Conecte seu repositorio GitHub
-3. Vercel detectara automaticamente o Astro
-4. Deploy automatico a cada push
-
-### Netlify
-
-1. Crie uma conta em netlify.com
-2. Arraste a pasta `dist` para o painel
-3. Ou conecte o repositorio GitHub
 
 ## Contato
 
-- **Site:** mvprint.com.br
-- **WhatsApp:** (31) 97302-4426
+- **Site:** [mvprint.com.br](https://mvprint.com.br)
 - **Email:** atendimento@mvprint.com.br
-
----
-
-Desenvolvido com Astro + Tailwind CSS
