@@ -9,7 +9,7 @@ Site institucional da **MV Print**, grafica e comunicacao visual em Belo Horizon
 
 🔗 **[Ver site ao vivo](https://mvprint.com.br)**
 
-![Preview do site](https://image.thum.io/get/width/1200/https://mvprint.com.br)
+![Preview do site](public/preview.png)
 
 ## Sobre o projeto
 
