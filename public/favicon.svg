@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="mv" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#00A0E3" />
-      <stop offset=".55" stop-color="#E6007E" />
-      <stop offset="1" stop-color="#FFB300" />
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="#16120E" />
-  <path d="M11 45V29.5a7.5 7.5 0 0 1 15 0V45M26 29.5a7.5 7.5 0 0 1 15 0V45M40 22l6.5 23L53 22" fill="none" stroke="url(#mv)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8.8 -56.4 262 262"><defs><linearGradient id="mv-front-gradient" gradientUnits="userSpaceOnUse" x1="-61.326" y1="78.493" x2="51.762" y2="-66.252"><stop offset="0" stop-color="#3db3ed"/><stop offset="0.0909" stop-color="#3eb4ec"/><stop offset="0.1818" stop-color="#3cafea"/><stop offset="0.2727" stop-color="#4297d9"/><stop offset="0.3636" stop-color="#5882c8"/><stop offset="0.4545" stop-color="#776bb9"/><stop offset="0.5455" stop-color="#a250a4"/><stop offset="0.6364" stop-color="#d52690"/><stop offset="0.7273" stop-color="#e73979"/><stop offset="0.8182" stop-color="#e96c63"/><stop offset="0.9091" stop-color="#ef974e"/><stop offset="1" stop-color="#f8d440"/></linearGradient><linearGradient id="mv-back-gradient" gradientUnits="userSpaceOnUse" x1="170.776" y1="119.578" x2="208.232" y2="145.806"><stop offset="0" stop-color="#eaa056"/><stop offset="0.1111" stop-color="#e4845c"/><stop offset="0.2222" stop-color="#db5e6f"/><stop offset="0.3333" stop-color="#e1237d"/><stop offset="0.4444" stop-color="#9c48a1"/><stop offset="0.5556" stop-color="#6374bc"/><stop offset="0.6667" stop-color="#616fb6"/><stop offset="0.7778" stop-color="#5378bc"/><stop offset="0.8889" stop-color="#4b79b8"/><stop offset="1" stop-color="#3a72aa"/></linearGradient></defs><g>
+<path fill="url(#mv-back-gradient)" d="M196 124L233.5 28.5
+C238.15 17.15 250.35 13.15 269.0 13.15L217.1 138.65Z"/>
+<path fill="url(#mv-front-gradient)" d="M10.7 138.25V67.2C10.7 35.35 32.2 10.4 59.4 10.4
+C73.95 10.4 86.65 16.35 97.75 28.2
+C110.1 16.45 120.95 10.4 134.85 10.4
+C153.45 10.4 171.85 23.55 177.7 37.15
+L217.1 138.65H194.55L161.55 54.35
+C156.45 41.25 147.85 35.25 135.5 35.25
+C121.1 35.25 110.25 44.4 110.25 60.8V138.3H85.1V58.4
+C85.1 43.55 75.35 35.15 62.05 35.15
+C45.3 35.15 36.25 46.2 36.25 67.4V138.25Z"/>
+</g></svg>

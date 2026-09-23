@@ -120,6 +120,15 @@ const pad = (value: number) => String(value).padStart(2, '0');
   @keyframes seal-spin { to { transform: rotate(360deg); } }
 
   .featured-progress { display: none; }
+  @media (min-width: 900px) {
+    .featured:not(.is-pinned) .featured-cards {
+      padding-bottom: 1.25rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgb(244 239 231 / 40%) transparent;
+    }
+    .featured:not(.is-pinned) .featured-cards::-webkit-scrollbar { display: block; height: 8px; }
+    .featured:not(.is-pinned) .featured-cards::-webkit-scrollbar-thumb { background: rgb(244 239 231 / 40%); border-radius: 8px; }
+  }
 
   /* ---------- Desktop: faixa fixa que anda na horizontal ---------- */
   @media (min-width: 900px) {

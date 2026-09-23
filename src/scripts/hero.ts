@@ -86,10 +86,28 @@ function initPress(hero: HTMLElement) {
   watchVisibility(figure, visible => { if (visible) figure.classList.add('is-in'); }, '0px 0px -10% 0px');
 
   const prints: PrintData[] = JSON.parse(dataTag.textContent || '[]');
-  // Sem WebGL (ou se a foto falhar), mostra a foto comum no lugar da retícula.
+  const indexLabel = $('[data-press-index]', figure);
+  const clientLabel = $('[data-press-client]', figure);
+  const serviceLabel = $('[data-press-service]', figure);
+  const status = $('[data-press-status]', figure);
+
+  const setCaption = (i: number, announce: boolean) => {
+    const print = prints[i];
+    if (!print) return;
+    if (indexLabel) indexLabel.textContent = String(i + 1).padStart(2, '0');
+    if (clientLabel) clientLabel.textContent = print.client;
+    if (serviceLabel) serviceLabel.textContent = print.service;
+    canvas.setAttribute('aria-label', `${print.service} para ${print.client}, impresso em retícula`);
+    if (announce && status) status.textContent = `${print.client}: ${print.service}`;
+  };
+
+  // Sem WebGL (ou se a primeira foto falhar), mostra a foto comum e para a troca.
+  let stopped = false;
   const fallback = () => {
+    stopped = true;
     figure.classList.remove('gl');
     figure.classList.add('no-gl');
+    setCaption(0, false);
     const template = $<HTMLTemplateElement>('template[data-press-fallback]', figure);
     if (template && !stage.querySelector('picture')) {
       stage.prepend(template.content.cloneNode(true));
@@ -105,10 +123,6 @@ function initPress(hero: HTMLElement) {
 
   const head = $('.press-head', figure)!;
   const loupe = $<SVGSVGElement>('.press-loupe', figure);
-  const indexLabel = $('[data-press-index]', figure);
-  const clientLabel = $('[data-press-client]', figure);
-  const serviceLabel = $('[data-press-service]', figure);
-  const status = $('[data-press-status]', figure);
   const toggle = $<HTMLButtonElement>('[data-press-toggle]', figure);
   const hint = $('[data-press-hint]', figure);
   const pauseButton = $<HTMLButtonElement>('[data-press-pause]', figure);
@@ -147,19 +161,10 @@ function initPress(hero: HTMLElement) {
     if (printing) head.style.transform = `translate3d(0, ${(front * size().height).toFixed(1)}px, 0)`;
   };
 
-  const setCaption = (i: number, announce: boolean) => {
-    const print = prints[i];
-    if (indexLabel) indexLabel.textContent = String(i + 1).padStart(2, '0');
-    if (clientLabel) clientLabel.textContent = print.client;
-    if (serviceLabel) serviceLabel.textContent = print.service;
-    canvas.setAttribute('aria-label', `${print.service} para ${print.client}, impresso em retícula`);
-    if (announce && status) status.textContent = `${print.client}: ${print.service}`;
-  };
-
   const schedule = () => {
     clearTimeout(holdTimer);
     timer?.classList.remove('is-running');
-    if (paused || hovering || revealed || !inView || document.hidden || busy) return;
+    if (stopped || paused || hovering || revealed || !inView || document.hidden || busy) return;
     if (timer) {
       timer.style.setProperty('--t', `${HOLD}ms`);
       void timer.getBoundingClientRect();
@@ -169,19 +174,24 @@ function initPress(hero: HTMLElement) {
   };
 
   const show = async (target: number, announce: boolean) => {
-    if (busy) return;
+    if (busy || stopped) return;
     busy = true;
     clearTimeout(holdTimer);
     timer?.classList.remove('is-running');
-    index = (target + prints.length) % prints.length;
-    setCaption(index, announce);
+    const next = (target + prints.length) % prints.length;
     try {
-      const texture = await load(index);
+      const texture = await load(next);
+      if (stopped) return;
+      // A legenda só muda quando a foto nova já está pronta para imprimir.
+      index = next;
+      setCaption(index, announce);
       if (revealed) setReveal(false);
       head.classList.add('is-on');
       await press.print(texture, reduced ? 0 : 1800);
     } catch {
-      // Se uma foto falhar, segue para a próxima na próxima rodada.
+      // Foto com erro: pula para a seguinte e tenta de novo numa próxima volta.
+      delete textures[next];
+      index = next;
     } finally {
       head.classList.remove('is-on');
       busy = false;
@@ -197,9 +207,11 @@ function initPress(hero: HTMLElement) {
     const cy = y ?? rect.height / 2;
     const diagonal = Math.hypot(Math.max(cx, rect.width - cx), Math.max(cy, rect.height - cy));
     press.pointer(cx, cy, on ? diagonal + 20 : (hovering && finePointer() ? 92 : 0), on ? 1 : 1.35);
-    toggle?.setAttribute('aria-pressed', String(on));
     if (hint) hint.textContent = on ? 'Voltar à retícula' : 'Ver foto original';
     figure.classList.toggle('is-revealed', on);
+    // Com a foto aberta a lupa some, então o cursor normal volta a aparecer.
+    stage.dataset.cursor = on ? '' : 'hide';
+    document.dispatchEvent(new Event('mv:cursor'));
     if (!on) schedule();
     else { clearTimeout(holdTimer); timer?.classList.remove('is-running'); }
   };
@@ -236,13 +248,9 @@ function initPress(hero: HTMLElement) {
   pauseButton?.addEventListener('click', () => {
     paused = !paused;
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', paused ? 'Retomar troca automática' : 'Pausar troca automática');
     schedule();
   });
-  if (reduced) {
-    pauseButton?.setAttribute('aria-pressed', 'true');
-    pauseButton?.setAttribute('aria-label', 'Retomar troca automática');
-  }
+  if (reduced) pauseButton?.setAttribute('aria-pressed', 'true');
 
   watchVisibility(stage, visible => {
     inView = visible;

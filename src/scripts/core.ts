@@ -77,7 +77,13 @@ export function initCursor() {
     ring.classList.toggle('is-link', !label && !typing && Boolean(link));
   };
 
-  document.addEventListener('pointerover', event => setState(event.target as Element), { passive: true });
+  let lastTarget: Element | null = null;
+  document.addEventListener('pointerover', event => {
+    lastTarget = event.target as Element;
+    setState(lastTarget);
+  }, { passive: true });
+  // Componentes avisam quando mudam o tipo de cursor sob o mouse.
+  document.addEventListener('mv:cursor', () => setState(lastTarget));
   document.addEventListener('pointerdown', () => ring.classList.add('is-press'), { passive: true });
   document.addEventListener('pointerup', () => ring.classList.remove('is-press'), { passive: true });
   // Ao entrar num iframe (mapa) o documento deixa de receber o mouse.

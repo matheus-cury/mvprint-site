@@ -1,6 +1,7 @@
 ---
 // Rodapé
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 import { CONTACT, ADDRESS, SOCIAL, HOURS, SITE, getWhatsAppLink } from '../config/site';
 
 const currentYear = new Date().getFullYear();
@@ -58,9 +59,12 @@ const nav = [
       </div>
     </div>
 
-    <p class="wordmark display" aria-hidden="true">
-      <span class="reg reg-light" data-reg-footer data-text="MV Print">MV Print</span>
-    </p>
+    <!-- Logo gigante: duas chapas (ciano e magenta) atrás da logo desalinham com o mouse. -->
+    <div class="footer-mark" data-reg-footer>
+      <Logo tone="light" class="fm fm-c" />
+      <Logo tone="light" class="fm fm-m" />
+      <Logo tone="light" class="fm fm-main" label="MV Print" />
+    </div>
 
     <div class="footer-bottom mono">
       <p>&copy; {currentYear} MV Print BH Digital LTDA · CNPJ {SITE.cnpj}</p>
@@ -112,14 +116,20 @@ const nav = [
   .footer-social a:hover { background: var(--color-paper); color: var(--color-ink); }
   .footer-social :global(svg) { width: 1.15rem; height: 1.15rem; }
 
-  .wordmark {
-    margin: clamp(1rem, 3vw, 2.5rem) 0 0;
-    padding-bottom: .06em;
-    font-size: clamp(5rem, 32.5vw, 34rem); line-height: .78; letter-spacing: -0.055em;
-    text-align: center;
-    white-space: nowrap;
-    user-select: none;
+  .footer-mark {
+    --rx: 0px; --ry: 0px;
+    position: relative;
+    margin: clamp(1.5rem, 4vw, 3.5rem) auto clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 1280px;
+    isolation: isolate;
   }
+  .footer-mark :global(.logo) { display: block; width: 100%; height: auto; }
+  .footer-mark :global(.fm-c), .footer-mark :global(.fm-m) { position: absolute; inset: 0; mix-blend-mode: screen; }
+  .footer-mark :global(.fm-c path), .footer-mark :global(.fm-c rect) { fill: #00A0E3 !important; stroke: none !important; }
+  .footer-mark :global(.fm-m path), .footer-mark :global(.fm-m rect) { fill: #E6007E !important; stroke: none !important; }
+  .footer-mark :global(.fm-c) { transform: translate3d(calc(var(--rx) * -1), calc(var(--ry) * -0.6), 0); }
+  .footer-mark :global(.fm-m) { transform: translate3d(var(--rx), calc(var(--ry) * 0.5), 0); }
+  .footer-mark :global(.fm-main) { position: relative; }
 
   .footer-bottom {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem;

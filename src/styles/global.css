@@ -451,6 +451,10 @@ html.menu-open { overflow: hidden; }
 }
 .cursor-tag.is-on { opacity: 1; scale: 1; }
 .has-cursor, .has-cursor * { cursor: none !important; }
+/* Janelas modais ficam na camada de cima, acima do cursor desenhado: usam o do sistema. */
+.has-cursor dialog[open], .has-cursor dialog[open] * { cursor: auto !important; }
+.has-cursor dialog[open] :is(a, button, label, summary) { cursor: pointer !important; }
+:root:has(dialog[open]) :is(.cursor-ring, .cursor-dot, .cursor-tag) { display: none; }
 .has-cursor input, .has-cursor textarea, .has-cursor select, .has-cursor [contenteditable] { cursor: auto !important; }
 .has-cursor input[type="text"], .has-cursor input[type="tel"], .has-cursor textarea { cursor: text !important; }
 

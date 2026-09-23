@@ -160,7 +160,8 @@ const schemaData = {
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" type="image/png" href="/images/logo-mvprint.png" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -172,6 +173,13 @@ const schemaData = {
       // Liga as animações só quando há JavaScript; se o script principal não
       // iniciar em 4 s (rede ruim), mostra todo o conteúdo sem animação.
       document.documentElement.classList.add('js');
+      // A logo faz a animação de entrada só na primeira página da visita.
+      try {
+        if (!sessionStorage.getItem('mv-intro')) {
+          document.documentElement.classList.add('intro');
+          sessionStorage.setItem('mv-intro', '1');
+        }
+      } catch (error) { /* navegação privada sem storage: segue sem a entrada */ }
       setTimeout(function () {
         if (window.__mv) return;
         document.documentElement.classList.remove('js');

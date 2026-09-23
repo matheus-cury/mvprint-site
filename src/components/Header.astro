@@ -1,6 +1,7 @@
 ---
 // Cabeçalho flutuante + menu em tela cheia (celular e tablet)
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 import { CONTACT, SOCIAL, getWhatsAppLink } from '../config/site';
 
 const whatsappLink = getWhatsAppLink('default');
@@ -16,7 +17,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
 <header id="header" class="site-header">
   <div class="bar">
     <a href="/" class="brand" aria-label="MV Print, página inicial">
-      <span class="brand-crop"><img src="/images/logo-mvprint.png" alt="" width="400" height="264" /></span>
+      <Logo class="brand-logo" />
     </a>
 
     <nav class="nav" aria-label="Menu principal">
@@ -46,7 +47,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
 <dialog id="site-menu" class="menu" aria-label="Menu">
   <div class="menu-top">
     <a href="/" class="brand" aria-label="MV Print, página inicial">
-      <span class="brand-crop"><img src="/images/logo-mvprint.png" alt="" width="400" height="264" loading="lazy" /></span>
+      <Logo class="brand-logo" />
     </a>
     <button type="button" class="menu-close" aria-label="Fechar menu" data-menu-close>
       <Icon name="close" />
@@ -107,10 +108,20 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   }
 
   .brand { display: inline-flex; flex: none; }
-  .brand-crop { display: block; width: 104px; height: 36px; overflow: hidden; }
-  .brand-crop img { width: 104px; height: auto; max-width: none; transition: filter .45s var(--ease-expo); }
-  /* No hover, o logo "sai de registro" como numa impressão desalinhada. */
-  .brand:hover .brand-crop img { filter: drop-shadow(-2px -1px 0 rgb(0 160 227 / 70%)) drop-shadow(2px 1.5px 0 rgb(230 0 126 / 65%)); }
+  .brand :global(.brand-logo) { display: block; width: auto; height: 38px; overflow: visible; transition: filter .45s var(--ease-expo); }
+  /* No hover, a logo "sai de registro" como numa impressão desalinhada. */
+  .brand:hover :global(.brand-logo) { filter: drop-shadow(-2px -1px 0 rgb(0 160 227 / 70%)) drop-shadow(2px 1.5px 0 rgb(230 0 126 / 65%)); }
+
+  /* Entrada da logo, uma vez por sessão: o "MV" é impresso da esquerda para a
+     direita e as letras de "Print" sobem uma a uma. */
+  :global(html.intro) .site-header :global(.logo-mv) { animation: logo-wipe 1.3s var(--ease-expo) .1s both; }
+  :global(html.intro) .site-header :global(.logo-print path) {
+    transform-box: fill-box;
+    animation: logo-letter 1s var(--ease-expo) both;
+    animation-delay: calc(.5s + var(--i, 0) * .07s);
+  }
+  @keyframes logo-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes logo-letter { from { opacity: 0; transform: translateY(55%); } }
 
   .nav { display: none; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.4rem); }
   @media (min-width: 1024px) { .nav { display: flex; } }
@@ -147,6 +158,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   .burger:hover span:first-child { transform: translateX(3px); }
   .burger:hover span:last-child { transform: translateX(-3px); }
   @media (min-width: 1024px) { .burger { display: none; } }
+  :global(html:not(.js)) .burger { display: none; }
 
   /* ---------- Menu em tela cheia ---------- */
 

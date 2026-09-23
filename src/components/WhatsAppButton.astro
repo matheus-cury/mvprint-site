@@ -23,10 +23,11 @@ import { getWhatsAppLink } from '../config/site';
     position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 70;
     display: flex; align-items: center; gap: .6rem;
     transform: translate3d(0, 140%, 0);
-    transition: transform .8s var(--ease-expo);
+    visibility: hidden;
+    transition: transform .8s var(--ease-expo), visibility 0s linear .8s;
   }
-  .wa-float.is-visible { transform: none; }
-  :global(html:not(.js)) .wa-float { transform: none; }
+  .wa-float.is-visible { transform: none; visibility: visible; transition: transform .8s var(--ease-expo), visibility 0s; }
+  :global(html:not(.js)) .wa-float { transform: none; visibility: visible; }
 
   .wa-icon {
     position: relative;

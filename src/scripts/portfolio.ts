@@ -64,9 +64,21 @@ export function initPortfolio() {
   };
 
   filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button.dataset.filter ?? 'all')));
-  addEventListener('hashchange', () => applyFilter(location.hash.slice(1), true));
-  applyFilter(decodeURIComponent(location.hash.slice(1)));
+  // Só reage a #categoria (ou # vazio): o link "Pular para o conteúdo" e outras
+  // âncoras da página não mexem no filtro. Hash malformado não quebra nada.
+  const hashFilter = () => {
+    let hash = location.hash.slice(1);
+    try { hash = decodeURIComponent(hash); } catch { return null; }
+    if (!hash) return 'all';
+    return sections.some(section => section.dataset.category === hash) ? hash : null;
+  };
+  addEventListener('hashchange', () => {
+    const filter = hashFilter();
+    if (filter) applyFilter(filter, true);
+  });
+  // Mostra os filtros antes de aplicar, para o chip ativo poder rolar até a vista.
   $('#portfolio-filters')?.removeAttribute('hidden');
+  applyFilter(hashFilter() ?? 'all');
 
   // ---------- Ampliação ----------
 

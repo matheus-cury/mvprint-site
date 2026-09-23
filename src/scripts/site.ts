@@ -15,21 +15,16 @@ declare global {
 
 window.__mv = true;
 
-initHero();
-initHScroll();
-initReveals();
-initImageFades();
-initHeader();
-initMenu();
-initCursor();
-initMagnetic();
-initParallax();
-initMarquees();
-initServices();
-initBeforeAfter();
-initQuotes();
-initCounters();
-initContact();
-initPortfolio();
-initFloatingWhatsApp();
-initFooterWordmark();
+// Cada módulo roda isolado: um erro inesperado num deles não desliga os outros.
+const modules = [
+  initHero, initHScroll, initReveals, initImageFades, initHeader, initMenu, initCursor,
+  initMagnetic, initParallax, initMarquees, initServices, initBeforeAfter, initQuotes,
+  initCounters, initContact, initPortfolio, initFloatingWhatsApp, initFooterWordmark,
+];
+for (const init of modules) {
+  try {
+    init();
+  } catch (error) {
+    console.error(`[mvprint] ${init.name} falhou:`, error);
+  }
+}

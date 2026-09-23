@@ -63,7 +63,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
             })}
             <path d="M100 92v16M92 100h16" stroke="currentColor" stroke-width="1" />
           </svg>
-          <button type="button" class="press-toggle" data-press-toggle aria-pressed="false">
+          <button type="button" class="press-toggle" data-press-toggle data-cursor="">
             <Icon name="loupe" class="press-toggle-icon" />
             <span data-press-hint>Ver foto original</span>
           </button>
@@ -238,6 +238,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
   .press-toggle :global(.press-toggle-icon) { width: 1rem; height: 1rem; }
   .press-toggle:hover, .press-toggle[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
   .press.no-gl .press-toggle, .press:not(.gl) .press-toggle { display: none; }
+  .press.no-gl .press-controls { display: none; }
 
   .press-mark { position: absolute; width: 18px; height: 18px; color: var(--color-ink); opacity: .55; }
   .press-mark :global(svg) { width: 100%; height: 100%; }

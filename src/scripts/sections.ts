@@ -19,7 +19,7 @@ export function initServices() {
     rotation = lerp(rotation, clamp((x - cx) * 0.06, -9, 9), 0.12);
     const rect = float.getBoundingClientRect();
     float.style.transform = `translate3d(${(cx - rect.width / 2).toFixed(1)}px, ${(cy - rect.height / 2).toFixed(1)}px, 0) rotate(${rotation.toFixed(2)}deg)`;
-    if (hovering || Math.abs(cx - x) + Math.abs(cy - y) > 0.5) frame = requestAnimationFrame(loop);
+    if (Math.abs(cx - x) + Math.abs(cy - y) > 0.5 || Math.abs(rotation) > 0.05) frame = requestAnimationFrame(loop);
     else frame = 0;
   };
 
@@ -132,22 +132,39 @@ export function initBeforeAfter() {
       set(((event.clientX - rect.left) / rect.width) * 100);
     };
 
-    root.addEventListener('pointerdown', event => {
+    // No toque, rolar a página por cima da foto não mexe na divisória: o arraste
+    // só começa depois de um movimento horizontal claro.
+    let pending: { id: number; x: number; y: number } | null = null;
+    const startDrag = (event: PointerEvent) => {
       interacted = true;
       dragging = true;
       root.classList.add('is-dragging');
       if (event.pointerType !== 'mouse') root.setPointerCapture(event.pointerId);
       fromEvent(event);
+    };
+    root.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse') startDrag(event);
+      else pending = { id: event.pointerId, x: event.clientX, y: event.clientY };
     });
     root.addEventListener('pointermove', event => {
+      if (pending && event.pointerId === pending.id) {
+        const dx = Math.abs(event.clientX - pending.x);
+        const dy = Math.abs(event.clientY - pending.y);
+        if (dx > 8 && dx > dy) { pending = null; startDrag(event); }
+        else if (dy > 8) pending = null;
+        return;
+      }
       // No mouse, a divisória acompanha o cursor; no toque, só arrastando.
       if (dragging || (event.pointerType === 'mouse' && finePointer())) {
         interacted = true;
         fromEvent(event);
       }
     });
-    const stop = () => { dragging = false; root.classList.remove('is-dragging'); };
-    root.addEventListener('pointerup', stop);
+    const stop = () => { pending = null; dragging = false; root.classList.remove('is-dragging'); };
+    root.addEventListener('pointerup', event => {
+      if (pending && event.pointerId === pending.id) { interacted = true; fromEvent(event); }
+      stop();
+    });
     root.addEventListener('pointercancel', stop);
     range?.addEventListener('input', () => { interacted = true; set(Number(range.value)); });
 
@@ -188,6 +205,12 @@ export function initQuotes() {
   let focused = false;
   let visible = false;
   let timer = 0;
+  // Só a avaliação ativa fica acessível; as outras aguardam a vez.
+  quotes.forEach((quote, i) => {
+    if (i === index) return;
+    quote.inert = true;
+    quote.setAttribute('aria-hidden', 'true');
+  });
 
   const schedule = () => {
     clearTimeout(timer);
@@ -204,10 +227,12 @@ export function initQuotes() {
   const go = (target: number, announce: boolean) => {
     const previous = quotes[index];
     previous.classList.remove('is-active');
-    previous.hidden = true;
+    previous.inert = true;
+    previous.setAttribute('aria-hidden', 'true');
     index = (target + quotes.length) % quotes.length;
     const current = quotes[index];
-    current.hidden = false;
+    current.inert = false;
+    current.removeAttribute('aria-hidden');
     requestAnimationFrame(() => requestAnimationFrame(() => current.classList.add('is-active')));
     if (counter) counter.textContent = String(index + 1).padStart(2, '0');
     if (announce && status) status.textContent = current.querySelector('blockquote')?.textContent?.trim() ?? '';
@@ -219,12 +244,10 @@ export function initQuotes() {
   pauseButton?.addEventListener('click', () => {
     paused = !paused;
     pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', paused ? 'Retomar troca automática' : 'Pausar troca automática');
     schedule();
   });
   if (paused) {
     pauseButton?.setAttribute('aria-pressed', 'true');
-    pauseButton?.setAttribute('aria-label', 'Retomar troca automática');
   }
   root.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; schedule(); } });
   root.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovering = false; schedule(); } });
@@ -302,8 +325,8 @@ export function initFooterWordmark() {
   footer.addEventListener('pointermove', event => {
     if (event.pointerType !== 'mouse') return;
     const rect = footer.getBoundingClientRect();
-    tx = ((event.clientX - rect.left) / rect.width - 0.5) * 40;
-    ty = ((event.clientY - rect.top) / rect.height - 0.5) * 22;
+    tx = ((event.clientX - rect.left) / rect.width - 0.5) * 34;
+    ty = ((event.clientY - rect.top) / rect.height - 0.5) * 18;
     kick();
   });
   footer.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
