@@ -43,11 +43,14 @@ def validate(directory):
             errors.append(f'Missing required deployment file: {required}')
     pages = {}
     for path in directory.rglob('*'):
+        if path.is_symlink() or not path.resolve().is_relative_to(directory):
+            errors.append(f'Symlinks and external files must not be deployed: {path.relative_to(directory)}')
+            continue
         if not path.is_file():
             continue
         name = path.relative_to(directory).as_posix()
         if any(part == '.git' or part == '.env' or part.startswith('.env.')
-               or part == '.dev.vars' or part.startswith('.dev.vars.') for part in Path(name).parts):
+               or part == '.dev.vars' or part.startswith('.dev.vars.') for part in name.lower().split('/')):
             errors.append(f'Private configuration must not be deployed: {name}')
         if path.stat().st_size > 25 * 1024 * 1024:
             errors.append(f'Cloudflare 25 MiB per-file limit exceeded: {name}')
