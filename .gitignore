@@ -16,6 +16,10 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
 
 # macOS-specific files
 .DS_Store
@@ -34,3 +38,7 @@ pnpm-debug.log*
 
 # Responsive images generated from preserved originals
 public/images/optimized/
+
+# Local deployment packages and Python cache
+mvprint-deploy.zip
+__pycache__/
