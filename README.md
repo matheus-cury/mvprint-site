@@ -85,3 +85,24 @@ src/
 - Conferidos arquivos referenciados, IDs, âncoras, H1 e textos alternativos.
 - Menu móvel, filtros e lightbox testados com toque/teclado; Escape devolve o foco ao cartão; navegação limitada à categoria selecionada.
 - Fotos de destaque: 1.264.208 bytes de JPG para 196.232 bytes (480 px) ou 553.404 bytes (960 px). Isso mede peso dos arquivos, não representa uma nota PageSpeed nem tempo garantido de carregamento.
+
+## Coordenação: front-end e infraestrutura
+
+Em 23/09/2026, Math definiu: Claude cuida do design/front-end; Asuna/Codex cuida da infraestrutura. O visual publicado na revisão #1 foi rejeitado por Math e não deve ser considerado design aprovado. A proposta clara/editorial ficou a cargo do Claude; não há redesign adicional publicado pelo Codex.
+
+- O projeto é estático: não há servidor de aplicação, banco, login ou serviço de envio de e-mail. O formulário prepara uma mensagem e abre o WhatsApp; o visitante confirma o envio lá.
+- Fontes do visual: `src/components`, `src/pages`, `src/styles` e `src/layouts`. Contatos e dados da empresa: `src/config/site.ts`.
+- Infraestrutura: `.github/workflows`, `scripts`, versões/lockfile, configuração Astro e `public/_headers`. Preservar `_headers`, `robots.txt`, `sitemap.xml` e `404.html` no build.
+- O workflow **Validate site** instala, audita vulnerabilidades altas/críticas, gera o build e verifica páginas, arquivos locais, âncoras, IDs e limite de 25 MiB por arquivo. O build completo fica disponível por sete dias como artifact; ele não publica em produção.
+- Validação local após mudar o front-end: `npm run build` e `python scripts/validate-build.py`. Depois, testar menu, filtros, ampliação de fotos e contato no navegador em computador e celular.
+- A geração de imagens refaz variantes se a receita mudar e remove somente derivados órfãos. Originais permanecem em `public/images/portfolio`.
+- O arquivo ZIP do painel deve ficar fora de `dist`. A ferramenta interrompe se ultrapassar 1.000 arquivos; nesse caso usar Wrangler com `dist`, sem remover fotos para caber. O artifact completo do GitHub também deve ser publicado por Wrangler se exceder 1.000 arquivos.
+- Produção do domínio principal: `mvprint-bh`, deployment `61e057fa-268b-42d8-acdd-3727d4dee6ef`. Reversão ao site anterior à revisão #1: `cb57935b-b207-42b5-8234-84b3668470cc`.
+- Há integrações herdadas de preview com Netlify e outro projeto Pages (`mvprint-site`). Não confundir um check verde desses serviços com publicação no domínio principal.
+- Nunca incluir tokens no código ou no artifact. Deploy automático ao projeto principal exigiria credencial específica e configuração separada; isso não está habilitado.
+
+### Proteções do empacotador
+
+O empacotador valida tanto `dist` quanto a pasta exata que entrará no ZIP. Preserva logos referenciados em CSS, URLs com parâmetros, nomes codificados e coleções dinâmicas em JavaScript. Arquivos privados, links simbólicos e referências locais quebradas interrompem o processo. O pacote anterior só é substituído depois que a nova compactação termina com sucesso.
+
+Execute `python -m unittest discover -s tests -v` para reproduzir os cenários de falha; a mesma suíte roda no GitHub. A validação verifica arquivos e referências estáticas, não substitui testes das interações no navegador nem faz análise de tipos TypeScript.
