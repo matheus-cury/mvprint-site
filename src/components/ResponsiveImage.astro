@@ -1,0 +1,19 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width: number | string;
+  height: number | string;
+  class?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+const { src, alt, width, height, class: className, sizes = '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw', loading = 'lazy', fetchpriority = 'auto' } = Astro.props;
+const name = src.split('/').pop()?.replace(/\.(jpg|webp)$/i, '');
+const base = `/images/optimized/${name}`;
+---
+<picture>
+  <source type="image/webp" srcset={`${base}-480.webp 480w, ${base}-960.webp 960w`} sizes={sizes} />
+  <img src={src} alt={alt} width={width} height={height} class={className} loading={loading} decoding="async" fetchpriority={fetchpriority} />
+</picture>

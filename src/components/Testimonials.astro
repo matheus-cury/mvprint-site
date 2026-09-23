@@ -73,7 +73,7 @@ for (let i = 0; i < testimonials.length; i += 3) {
       <span class="text-[#E91E8C] font-semibold text-sm uppercase tracking-wider">
         Avaliações
       </span>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1D3557] mt-2 mb-4">
+      <h2 id="testimonials-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1D3557] mt-2 mb-4">
         O que nossos clientes dizem
       </h2>
       <a
@@ -111,12 +111,18 @@ for (let i = 0; i < testimonials.length; i += 3) {
     </div>
 
     <!-- Carrossel Container -->
-    <div class="relative">
+    <div class="relative" role="region" aria-roledescription="carrossel" aria-labelledby="testimonials-heading">
       <!-- Cards Container -->
       <div id="testimonials-carousel" class="overflow-hidden">
         <div id="testimonials-track" class="flex transition-transform duration-500 ease-in-out">
           {testimonialSets.map((set, setIndex) => (
-            <div class="testimonial-set flex-shrink-0 w-full grid grid-cols-1 md:grid-cols-3 gap-6 px-1" data-set={setIndex}>
+            <div
+              class="testimonial-set flex-shrink-0 w-full grid grid-cols-1 md:grid-cols-3 gap-6 px-1"
+              data-set={setIndex}
+              role="group"
+              aria-label={`Grupo ${setIndex + 1} de ${testimonialSets.length}`}
+              aria-hidden={setIndex !== 0 ? 'true' : 'false'}
+            >
               {set.map((testimonial) => (
                 <div class="bg-[#F8F9FA] rounded-2xl p-6 relative h-full">
                   <!-- Quote icon -->
@@ -166,15 +172,21 @@ for (let i = 0; i < testimonials.length; i += 3) {
       </div>
 
       <!-- Dots Navigation -->
-      <div class="flex justify-center gap-2 mt-8">
+      <div id="testimonials-navigation" class="flex justify-center gap-2 mt-6" role="group" aria-label="Escolher grupo de avaliações">
         {testimonialSets.map((_, index) => (
           <button
-            class="carousel-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-[#E91E8C] transition-colors duration-300"
+            type="button"
+            class="carousel-dot inline-flex items-center justify-center w-11 h-11 rounded-full hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D3557]"
             data-index={index}
             aria-label={`Ver avaliações ${index * 3 + 1} a ${Math.min((index + 1) * 3, testimonials.length)}`}
-          ></button>
+            aria-controls="testimonials-track"
+            aria-pressed={index === 0 ? 'true' : 'false'}
+          >
+            <span aria-hidden="true" class="carousel-dot-indicator w-3 h-3 rounded-full transition-colors duration-300"></span>
+          </button>
         ))}
       </div>
+      <p id="testimonials-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
     </div>
 
     <!-- Trust badges -->
@@ -220,92 +232,58 @@ for (let i = 0; i < testimonials.length; i += 3) {
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('testimonials-track');
-    const dots = document.querySelectorAll('.carousel-dot');
-    const totalSets = dots.length;
-    let currentIndex = 0;
-    let autoPlayInterval: ReturnType<typeof setInterval>;
-    let isPaused = false;
+  const track = document.getElementById('testimonials-track');
+  const navigation = document.getElementById('testimonials-navigation');
+  const status = document.getElementById('testimonials-status');
+  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('.carousel-dot'));
+  const sets = Array.from(document.querySelectorAll<HTMLElement>('.testimonial-set'));
 
-    function goToSlide(index: number) {
-      currentIndex = index;
-      if (track) {
-        track.style.transform = `translateX(-${index * 100}%)`;
-      }
-      updateDots();
-    }
+  function goToSlide(index: number) {
+    if (!track || !dots[index]) return;
 
-    function updateDots() {
-      dots.forEach((dot, i) => {
-        if (i === currentIndex) {
-          dot.classList.remove('bg-gray-300');
-          dot.classList.add('bg-[#E91E8C]');
-        } else {
-          dot.classList.remove('bg-[#E91E8C]');
-          dot.classList.add('bg-gray-300');
-        }
-      });
-    }
-
-    function nextSlide() {
-      const next = (currentIndex + 1) % totalSets;
-      goToSlide(next);
-    }
-
-    function startAutoPlay() {
-      autoPlayInterval = setInterval(() => {
-        if (!isPaused) {
-          nextSlide();
-        }
-      }, 5000);
-    }
-
-    // Click nos dots
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        goToSlide(index);
-      });
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, dotIndex) => {
+      dot.setAttribute('aria-pressed', String(dotIndex === index));
     });
-
-    // Pausa no hover
-    const carousel = document.getElementById('testimonials-carousel');
-    if (carousel) {
-      carousel.addEventListener('mouseenter', () => {
-        isPaused = true;
-      });
-      carousel.addEventListener('mouseleave', () => {
-        isPaused = false;
-      });
-    }
-
-    // Navegação por teclado
-    document.addEventListener('keydown', (e) => {
-      // Só navega se o carrossel estiver visível na tela
-      const carouselRect = carousel?.getBoundingClientRect();
-      if (!carouselRect) return;
-
-      const isVisible = carouselRect.top < window.innerHeight && carouselRect.bottom > 0;
-      if (!isVisible) return;
-
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const prev = currentIndex > 0 ? currentIndex - 1 : totalSets - 1;
-        goToSlide(prev);
-      }
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        nextSlide();
-      }
+    sets.forEach((set, setIndex) => {
+      set.setAttribute('aria-hidden', String(setIndex !== index));
     });
+    if (status) status.textContent = `Grupo ${index + 1} de ${dots.length} avaliações`;
+  }
 
-    // Inicializa
-    updateDots();
-    startAutoPlay();
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToSlide(index));
+  });
+
+  // As setas atuam apenas quando um controle do carrossel tem foco.
+  navigation?.addEventListener('keydown', (event) => {
+    if (!(event.target instanceof HTMLButtonElement)) return;
+    const index = dots.indexOf(event.target);
+    if (index < 0) return;
+
+    let nextIndex: number;
+    switch (event.key) {
+      case 'ArrowLeft': nextIndex = (index - 1 + dots.length) % dots.length; break;
+      case 'ArrowRight': nextIndex = (index + 1) % dots.length; break;
+      case 'Home': nextIndex = 0; break;
+      case 'End': nextIndex = dots.length - 1; break;
+      default: return;
+    }
+    event.preventDefault();
+    dots[nextIndex].focus();
+    goToSlide(nextIndex);
   });
 </script>
 
 <style>
+  .carousel-dot-indicator {
+    background: #9ca3af;
+  }
+
+  .carousel-dot[aria-pressed="true"] .carousel-dot-indicator {
+    background: #c4177a;
+  }
+
   /* Respeita preferência de movimento reduzido */
   @media (prefers-reduced-motion: reduce) {
     #testimonials-track {

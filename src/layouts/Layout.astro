@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SITE, CONTACT, ADDRESS } from '../config/site';
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ const {
 } = Astro.props;
 
 // URL canônica dinâmica baseada na página atual
-const canonicalURL = new URL(Astro.url.pathname, "https://mvprint.com.br").href;
+const canonicalURL = new URL(Astro.url.pathname, SITE.url).href;
 
 // Schema LocalBusiness para SEO Local
 const schemaData = {
@@ -22,8 +23,8 @@ const schemaData = {
   "legalName": "Mv Print Bh Digital Ltda",
   "image": "https://mvprint.com.br/images/logo-mvprint.png",
   "description": "Soluções completas em comunicação visual e gráfica rápida em Belo Horizonte. Plotagem veicular, envelopamento, adesivos, banners, fachadas, tapumes e muito mais.",
-  "telephone": "+55 31 3222-6708",
-  "email": "atendimento@mvprint.com.br",
+  "telephone": CONTACT.phone.number,
+  "email": CONTACT.email,
   "url": "https://mvprint.com.br",
   "taxID": "33.770.142/0001-97",
   "foundingDate": "2019-05-29",
@@ -38,8 +39,8 @@ const schemaData = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": -19.8876,
-    "longitude": -43.9541
+    "latitude": ADDRESS.geo.latitude,
+    "longitude": ADDRESS.geo.longitude
   },
   "areaServed": [
     "Belo Horizonte",
@@ -112,40 +113,15 @@ const schemaData = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="7ieW-lLqqMtq57QOtO125RsuyKLoKbUH6YWZ5IOG8xU" />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4CW944HDXN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4CW944HDXN');
-
-      // Rastrear cliques no WhatsApp como conversão
-      document.addEventListener('DOMContentLoaded', function() {
-        document.addEventListener('click', function(e) {
-          const link = e.target.closest('a[href*="wa.me"]');
-          if (link) {
-            gtag('event', 'whatsapp_click', {
-              'event_category': 'conversao',
-              'event_label': link.textContent.trim() || 'WhatsApp',
-              'value': 1
-            });
-          }
-        });
-
-        // Rastrear envio do formulário de contato
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-          contactForm.addEventListener('submit', function() {
-            gtag('event', 'form_submit', {
-              'event_category': 'conversao',
-              'event_label': 'Formulário de Contato',
-              'value': 1
-            });
-          });
-        }
-      });
-    </script>
+    <!-- Keep the tracking configuration verified on the published site. -->
+    {Astro.url.hostname === 'mvprint.com.br' && <>
+      <script is:inline>
+        if (location.hostname === 'mvprint.com.br') (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MKQL39R6');
+      </script>
+      <script is:inline>
+        if (location.hostname === 'mvprint.com.br') (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','v4zw84zw45');
+      </script>
+    </>}
     <meta name="description" content={description} />
     <meta name="keywords" content="gráfica belo horizonte, plotagem veicular bh, comunicação visual bh, adesivos personalizados bh, banner bh, fachada de loja belo horizonte, envelopamento de veículos bh, gráfica rápida bh, tapume bh, letreiro bh" />
     <meta name="author" content="MV Print" />
@@ -176,8 +152,8 @@ const schemaData = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-    <!-- Preload LCP Image (WebP com fallback JPG) -->
-    <link rel="preload" as="image" href="/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.webp" type="image/webp" />
+
+    <meta name="theme-color" content="#1D3557" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/logo-mvprint.png" />
