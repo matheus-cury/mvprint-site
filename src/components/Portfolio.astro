@@ -1,46 +1,56 @@
 ---
+import ResponsiveImage from './ResponsiveImage.astro';
+
 // Seção de Portfolio
 const portfolioItems = [
   {
     image: "/images/portfolio/cbf-a12901df-096c-463a-a874-f648c684dd2a.jpg",
     title: "CBF - Seleção Brasileira",
     category: "Lona Gigante",
+    slug: "cbf",
     featured: true
   },
   {
     image: "/images/portfolio/veiculos-8982d6d7-b525-4103-8dad-a33e1b6342d8.jpg",
     title: "CSN Mineração",
-    category: "Plotagem Veicular"
+    category: "Plotagem Veicular",
+    slug: "veiculos"
   },
   {
     image: "/images/portfolio/tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151.jpg",
     title: "Restaurante Tokai",
-    category: "Tapume"
+    category: "Tapume",
+    slug: "tapumes"
   },
   {
     image: "/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.jpg",
     title: "AeC Tecnologia",
-    category: "Adesivação de Ambiente"
+    category: "Adesivação de Ambiente",
+    slug: "ambientes"
   },
   {
     image: "/images/portfolio/vitrines-29fa897e-40d2-4fed-bdb6-0b65dd97312b.jpg",
     title: "Zak Outlet",
-    category: "Vitrine"
+    category: "Vitrine",
+    slug: "vitrines"
   },
   {
     image: "/images/portfolio/carros-225cc5a4-81cd-472c-bd4a-4c146fa9d1c2.jpg",
     title: "BH France Citroën",
-    category: "Plotagem Veicular"
+    category: "Plotagem Veicular",
+    slug: "carros"
   },
   {
     image: "/images/portfolio/veiculos-08fb2026-b534-49f6-9ad6-00be78ba9381.jpg",
     title: "CEMIG / Brasilencorp",
-    category: "Plotagem Veicular"
+    category: "Plotagem Veicular",
+    slug: "veiculos"
   },
   {
     image: "/images/portfolio/ambientes-21f8527a-4975-4e21-9fad-983d515d6904.jpg",
     title: "ECAD",
-    category: "Adesivação de Ambiente"
+    category: "Adesivação de Ambiente",
+    slug: "ambientes"
   }
 ];
 ---
@@ -63,23 +73,24 @@ const portfolioItems = [
     <!-- Portfolio Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {portfolioItems.map((item) => (
-        <div class="group relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer">
-          <img
+        <a href={`/portfolio#${item.slug}`} class="portfolio-card group relative block overflow-hidden rounded-xl aspect-[4/3]" aria-label={`${item.title}: ver projetos de ${item.category.toLowerCase()}`}>
+          <ResponsiveImage
             src={item.image}
             alt={`${item.title} - ${item.category} realizado pela MV Print BH`}
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            class="w-full h-full object-cover group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-500"
             loading="lazy"
-            width="400"
-            height="300"
+            width={400}
+            height={300}
+            sizes="(min-width: 1280px) 286px, (min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw"
           />
           <!-- Overlay -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
             <div class="absolute bottom-0 left-0 right-0 p-4">
               <span class="text-[#F4A261] text-sm font-medium">{item.category}</span>
               <h3 class="text-white font-bold text-lg">{item.title}</h3>
             </div>
           </div>
-        </div>
+        </a>
       ))}
     </div>
 
@@ -97,3 +108,10 @@ const portfolioItems = [
     </div>
   </div>
 </section>
+
+<style>
+  .portfolio-card:focus-visible {
+    outline: 3px solid #1D3557;
+    outline-offset: 4px;
+  }
+</style>

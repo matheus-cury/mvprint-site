@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 
 
+
+# Responsive images generated from preserved originals
+public/images/optimized/
