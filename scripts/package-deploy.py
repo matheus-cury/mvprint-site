@@ -10,7 +10,12 @@ import sys
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
-dist = root / 'dist'
+dist = (root / 'dist').resolve()
+if len(sys.argv) != 2:
+    raise SystemExit('Usage: python scripts/package-deploy.py path/to/mvprint.zip')
+target = Path(sys.argv[1]).resolve()
+if target.is_relative_to(dist):
+    raise SystemExit('The deployment archive must be outside dist to avoid including or overwriting itself.')
 if not (dist / 'index.html').is_file():
     raise SystemExit('Run npm run build first.')
 html = '\n'.join(p.read_text(encoding='utf-8') for p in dist.rglob('*.html'))
@@ -22,10 +27,11 @@ for path in sorted(dist.rglob('*')):
     relative = path.relative_to(dist).as_posix()
     if relative.startswith('images/logos/') and '/' + relative not in used_logos:
         continue
+    if path.stat().st_size > 25 * 1024 * 1024:
+        raise SystemExit(f'{relative} exceeds the Cloudflare 25 MiB per-file limit.')
     files.append((path, relative))
 if len(files) > 1000:
     raise SystemExit(f'{len(files)} files exceed the dashboard limit. Deploy dist using Wrangler instead.')
-target = Path(sys.argv[1]).resolve()
 target.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as archive:
     for path, relative in files:
