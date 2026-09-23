@@ -2,24 +2,42 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
 import Services from '../components/Services.astro';
 import Portfolio from '../components/Portfolio.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import Process from '../components/Process.astro';
 import Testimonials from '../components/Testimonials.astro';
 import About from '../components/About.astro';
 import FAQ from '../components/FAQ.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
-import ClientLogos from '../components/ClientLogos.astro';
+import { heroPrints } from '../data/portfolio';
+import { fullWebp, optimized } from '../lib/images';
+
+// A prensa do hero começa pela primeira foto: pré-carrega a versão certa para a tela.
+const firstPrint = heroPrints[0].image;
+const retinaDesktop = '(min-width: 1024px) and (min-resolution: 1.5dppx)';
+
+const ticker = ['Plotagem veicular', 'Fachadas', 'Adesivos', 'Tapumes', 'Lonas & banners', 'Vitrines', 'Envelopamento', 'Gráfica rápida'];
 ---
 
 <Layout title="MV Print | Gráfica e Comunicação Visual em BH">
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/webp" href={fullWebp(firstPrint)} media={retinaDesktop} fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={optimized(firstPrint, 960)} media={`not all and ${retinaDesktop}`} fetchpriority="high" />
+  </Fragment>
   <Header />
   <main id="main-content">
     <Hero />
+    <Marquee items={ticker} />
     <Services />
     <Portfolio />
+    <BeforeAfter />
     <ClientLogos />
+    <Process />
     <Testimonials />
     <About />
     <FAQ />

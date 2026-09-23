@@ -1,56 +1,96 @@
 ---
-// Seção de Clientes - Impacto visual
-// Logos antigas (grandes marcas) + novas
+// Mural de clientes: logos "impressos" no papel (multiply), coloridos no hover.
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+
 const clients = [
-  // Grandes marcas (antigas)
-  { name: "CBF", logo: "/images/logos/cbf.svg" },
-  { name: "CEMIG", logo: "/images/logos/cemig.svg", bigger: true },
-  { name: "CSN Mineração", logo: "/images/logos/csn.svg", bigger: true },
-  { name: "Citroën", logo: "/images/logos/citroen.svg" },
-  { name: "Renault", logo: "/images/logos/renault.svg" },
-  { name: "Claro", logo: "/images/logos/claro.svg" },
-  // Novas logos
-  { name: "Drogarias Pacheco", logo: "/images/logos/drogarias-pacheco.png" },
-  { name: "Pague Menos", logo: "/images/logos/pague-menos.svg" },
-  { name: "AeC Contact Center", logo: "/images/logos/aec.svg", bigger: true },
-  { name: "Grupo Roma", logo: "/images/logos/grupo-roma.svg", bigger: true },
-  { name: "Mit Car", logo: "/images/logos/mit-car.png" },
-  { name: "Orcasa Netimóveis", logo: "/images/logos/orcasa.png" },
-  { name: "Grupo Jorlan", logo: "/images/logos/grupo-jorlan.jpg", bigger: true },
-  { name: "Pontua X", logo: "/images/logos/pontua-x.jpg" },
-  { name: "RTI", logo: "/images/logos/RTI.jpg" },
+  { name: 'CBF', logo: '/images/logos/cbf.svg', scale: 1.45 },
+  { name: 'Cemig', logo: '/images/logos/cemig.svg', scale: 1 },
+  { name: 'CSN Mineração', logo: '/images/logos/csn.svg', scale: 1 },
+  { name: 'Citroën', logo: '/images/logos/citroen.svg', scale: 1.1 },
+  { name: 'Renault', logo: '/images/logos/renault.svg', scale: 1.2 },
+  { name: 'Claro', logo: '/images/logos/claro.svg', scale: 1.15 },
+  { name: 'Drogarias Pacheco', logo: '/images/logos/drogarias-pacheco.png', scale: 1 },
+  { name: 'Pague Menos', logo: '/images/logos/pague-menos.svg', scale: 1 },
+  { name: 'AeC', logo: '/images/logos/aec.svg', scale: 1 },
+  { name: 'Grupo Roma', logo: '/images/logos/grupo-roma.svg', scale: 1 },
+  { name: 'Mit Car', logo: '/images/logos/mit-car.png', scale: 1 },
+  { name: 'Orcasa Netimóveis', logo: '/images/logos/orcasa.png', scale: 1 },
+  // JPG quadrado com muita margem: recorta a faixa central.
+  { name: 'Grupo Jorlan', logo: '/images/logos/grupo-jorlan.jpg', scale: 1, cover: true },
+  { name: 'Pontua X', logo: '/images/logos/pontua-x.jpg', scale: 1, lift: true },
+  { name: 'RTI', logo: '/images/logos/RTI.jpg', scale: 1.1, lift: true },
 ];
 ---
 
-<section class="py-16 bg-[#1D3557]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="text-center mb-12">
-      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
-        Grandes empresas confiam na MV Print
-      </h2>
-      <p class="text-gray-300 text-lg">
-        Atendemos desde pequenos negócios até multinacionais
-      </p>
+<section id="clientes" class="sec clients" aria-labelledby="clients-title">
+  <div class="wrap">
+    <p class="rule"><span>(04) — <b>Clientes</b></span><Icon name="reg" class="reg-mark" /></p>
+    <div class="clients-head">
+      <SplitText id="clients-title" class="display t-h2" text="Grandes marcas *já imprimiram com a gente.*" />
+      <p class="lede" data-reveal style="--d:.15s">De pequenos negócios a multinacionais: são mais de <strong>200 empresas</strong> atendidas em Belo Horizonte e região.</p>
     </div>
 
-    <!-- Logos Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center">
-      {clients.map((client) => (
-        <div class="group bg-white rounded-xl p-6 flex items-center justify-center h-24 sm:h-28 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#E91E8C]/20">
+    <ul class="logo-wall" role="list">
+      {clients.map((client, index) => (
+        <li class="logo-cell" data-reveal="fade" style={`--d:${(index % 5) * 0.06}s`}>
           <img
             src={client.logo}
-            alt={`Logo ${client.name} - Cliente MV Print`}
-            class={`max-w-full object-contain transition-all duration-300 ${client.bigger ? 'max-h-20 sm:max-h-24' : 'max-h-14 sm:max-h-16'}`}
+            alt={client.name}
+            class:list={['logo', { 'logo-lift': client.lift, 'logo-cover': client.cover }]}
+            style={`--s:${client.scale}`}
             loading="lazy"
+            decoding="async"
           />
-        </div>
+        </li>
       ))}
-    </div>
-
-    <!-- Bottom text -->
-    <p class="text-center text-gray-400 mt-10 text-sm">
-      E mais de <span class="text-white font-semibold">200 empresas</span> em Belo Horizonte e região
-    </p>
+    </ul>
   </div>
 </section>
+
+<style>
+  .clients-head {
+    display: grid; gap: 1.5rem 4rem; align-items: end;
+    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4.5rem);
+  }
+  @media (min-width: 1024px) { .clients-head { grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); } }
+  .clients-head strong { font-weight: 600; color: var(--color-ink); }
+
+  .logo-wall {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none; margin: 0; padding: 0;
+    border-top: 1px solid var(--line-strong);
+    border-left: 1px solid var(--line-strong);
+  }
+  @media (min-width: 900px) { .logo-wall { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+  .logo-cell {
+    position: relative;
+    display: grid; place-items: center;
+    aspect-ratio: 3 / 2;
+    padding: 1.25rem;
+    border-right: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    transition: background-color .4s;
+  }
+  .logo-cell::after {
+    content: ""; position: absolute; left: 8px; top: 8px; width: 7px; height: 7px;
+    border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong);
+  }
+  .logo {
+    width: 64%;
+    height: calc(clamp(30px, 3.6vw, 52px) * var(--s, 1));
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    filter: grayscale(1) contrast(1.1);
+    opacity: .78;
+    transition: filter .5s, opacity .5s, transform .7s var(--ease-expo);
+  }
+  .logo-lift { filter: grayscale(1) brightness(1.13) contrast(1.15); }
+  .logo-cover { object-fit: cover; }
+  @media (hover: hover) {
+    .logo-cell:hover { background: var(--color-paper-2); }
+    .logo-cell:hover .logo { filter: none; opacity: 1; transform: scale(1.06); }
+    .logo-cell:hover .logo-lift { filter: brightness(1.13) contrast(1.1); }
+  }
+</style>

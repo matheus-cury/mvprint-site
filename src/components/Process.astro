@@ -1,0 +1,76 @@
+---
+// Como funciona: quatro etapas, uma para cada cor de processo (C, M, Y, K).
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+
+const steps = [
+  { ink: 'c', label: 'Ciano', title: 'Conversa', text: 'Você conta a ideia pelo WhatsApp: o que precisa, medidas aproximadas e referências, se tiver.' },
+  { ink: 'm', label: 'Magenta', title: 'Orçamento', text: 'A gente responde em até 24 horas com valores e prazo. Sem compromisso.' },
+  { ink: 'y', label: 'Amarelo', title: 'Produção', text: 'Impressão com materiais de alta qualidade, com proteção UV nos adesivos para áreas externas.' },
+  { ink: 'k', label: 'Preto', title: 'Instalação ou envio', text: 'Instalamos em Belo Horizonte e região metropolitana e enviamos para todo o Brasil.' },
+];
+---
+
+<section id="como-funciona" class="sec sec-paper-2 process" aria-labelledby="process-title">
+  <div class="wrap">
+    <p class="rule"><span>(05) — <b>Como funciona</b></span><Icon name="reg" class="reg-mark" /></p>
+    <SplitText id="process-title" class="display t-h2 process-title" text="Quatro passadas, *do briefing à instalação.*" />
+
+    <ol class="steps" data-reveal="fade">
+      {steps.map((step, index) => (
+        <li class={`step step-${step.ink}`} style={`--d:${index * 0.12}s`}>
+          <div class="step-bar" aria-hidden="true"><span></span></div>
+          <div class="step-top">
+            <span class="step-num display" aria-hidden="true">{index + 1}</span>
+            <span class="step-ink mono"><i class={`dot dot-${step.ink}`}></i>{step.label}</span>
+          </div>
+          <h3 class="step-title display">{step.title}</h3>
+          <p class="step-text">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process-title { margin-top: clamp(2rem, 4vw, 3.5rem); max-width: 16ch; }
+
+  .steps {
+    list-style: none; margin: clamp(3rem, 6vw, 5.5rem) 0 0; padding: 0;
+    display: grid; gap: 3rem 2rem;
+  }
+  @media (min-width: 720px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+
+  .step { --ink: var(--color-cyan); position: relative; }
+  .step-m { --ink: var(--color-magenta); }
+  .step-y { --ink: var(--color-yellow); }
+  .step-k { --ink: var(--color-ink); }
+
+  .step-bar { position: relative; height: 6px; background: rgb(22 18 14 / 8%); overflow: hidden; }
+  .step-bar span {
+    position: absolute; inset: 0; background: var(--ink);
+    transform-origin: left; transform: scaleX(0);
+    transition: transform 1.4s var(--ease-expo) calc(var(--d) + .2s);
+  }
+  :global(.js) .steps:not(.is-in) .step-bar span { transform: scaleX(0); }
+  .steps.is-in .step-bar span, :global(html:not(.js)) .step-bar span { transform: none; }
+
+  .step-top { display: flex; align-items: flex-start; justify-content: space-between; margin-top: 1.6rem; }
+  .step-num {
+    font-size: clamp(5rem, 9vw, 8rem); line-height: .8; font-style: italic;
+    color: var(--ink);
+    mix-blend-mode: multiply;
+  }
+  .step-y .step-num { color: #F2C200; }
+  .step-ink { display: inline-flex; align-items: center; gap: .45rem; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
+  .step-title { margin-top: 1.4rem; font-size: clamp(1.9rem, 2.6vw, 2.4rem); line-height: 1; }
+  .step-text { margin-top: .8rem; color: var(--color-ink-2); max-width: 22rem; }
+
+  :global(.js) .steps .step { opacity: 0; transform: translate3d(0, 2rem, 0); transition: opacity 1s var(--ease-expo) var(--d), transform 1.2s var(--ease-expo) var(--d); }
+  :global(.js) .steps.is-in .step { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .steps .step { opacity: 1; transform: none; }
+    .step-bar span { transform: none !important; }
+  }
+</style>

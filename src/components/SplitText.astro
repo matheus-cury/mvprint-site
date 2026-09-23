@@ -1,0 +1,47 @@
+---
+// Título dividido em palavras para a animação de entrada (feito no build).
+// Marcação simples no texto: *itálico*, _destaque_ e "\n" para quebrar linha.
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div';
+  class?: string;
+  id?: string;
+  delay?: number;
+}
+
+const { text, as: Tag = 'h2', class: className = '', id, delay = 0, ...rest } = Astro.props;
+
+interface Word { text: string; italic: boolean; accent: boolean }
+let index = 0;
+let italic = false;
+let accent = false;
+const lines = text.split('\n').map(line => line.split(/\s+/).filter(Boolean).map(token => {
+  let value = token;
+  let closeItalic = false;
+  let closeAccent = false;
+  if (value.startsWith('*')) { italic = true; value = value.slice(1); }
+  if (value.startsWith('_')) { accent = true; value = value.slice(1); }
+  if (value.endsWith('*')) { closeItalic = true; value = value.slice(0, -1); }
+  if (value.endsWith('_')) { closeAccent = true; value = value.slice(0, -1); }
+  if (value.endsWith('*')) { closeItalic = true; value = value.slice(0, -1); }
+  const word: Word & { i: number } = { text: value, italic, accent, i: index++ };
+  if (closeItalic) italic = false;
+  if (closeAccent) accent = false;
+  return word;
+}));
+const plain = text.replace(/[*_]/g, '').replace(/\s*\n\s*/g, ' ');
+---
+<Tag class={`split ${className}`} id={id} aria-label={plain} style={delay ? `--d:${delay}s` : undefined} {...rest}>
+  <span aria-hidden="true">
+    {lines.map((line, lineIndex) => (
+      <>
+        {line.map((word, wordIndex) => (
+          <>
+            <span class:list={['w', { 'is-accent': word.accent }]}>{word.italic ? <em style={`--i:${word.i}`}>{word.text}</em> : <span style={`--i:${word.i}`}>{word.text}</span>}</span>{wordIndex < line.length - 1 ? ' ' : ''}
+          </>
+        ))}
+        {lineIndex < lines.length - 1 ? <br /> : ' '}
+      </>
+    ))}
+  </span>
+</Tag>

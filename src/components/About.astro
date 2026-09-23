@@ -1,126 +1,142 @@
 ---
-// Seção Sobre
+// Sobre a MV Print
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+import { SITE } from '../config/site';
+import { totalPhotos } from '../data/portfolio';
+import { optimized } from '../lib/images';
+
+const founded = new Date(`${SITE.foundingDate}T00:00:00-03:00`);
+const years = Math.floor((Date.now() - founded.getTime()) / (365.25 * 24 * 3600 * 1000));
+
+const prints = [
+  { image: 'ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b', alt: 'Parede adesivada com desenho geométrico rosa e dourado', caption: 'Adesivo de parede' },
+  { image: 'recortes-ae08b933-cb37-402e-a407-17a1e22a32e4', alt: 'Logo do Studio GS Fit em recorte preto sobre pastilhas', caption: 'Recorte · Studio GS Fit' },
+  { image: 'veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c', alt: 'Carro da Office plotado pela MV Print', caption: 'Plotagem · Office' },
+];
+
+const stats = [
+  { value: 1000, prefix: '+', label: 'projetos entregues' },
+  { value: 200, prefix: '+', label: 'empresas atendidas' },
+  { value: totalPhotos, prefix: '', label: 'fotos no portfólio' },
+  { value: years, prefix: '', label: 'anos de estrada' },
+];
+
+const features = [
+  { title: 'Qualidade garantida', text: 'Materiais de primeira linha.' },
+  { title: 'Entrega rápida', text: 'Prazos que cabem no seu projeto.' },
+  { title: 'Atendimento personalizado', text: 'Cada projeto é único.' },
+  { title: 'Todo o Brasil', text: 'Enviamos para todo o território.' },
+];
+const format = (value: number) => value.toLocaleString('pt-BR');
 ---
 
-<section id="sobre" class="py-20 bg-[#F8F9FA]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <!-- Image Column -->
-      <div class="relative">
-        <div class="grid grid-cols-2 gap-4">
-          <picture>
-            <source srcset="/images/portfolio/veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c.webp" type="image/webp" />
-            <img
-              src="/images/portfolio/veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c.jpg"
-              alt="Plotagem veicular realizada pela MV Print em Belo Horizonte"
-              class="rounded-2xl shadow-lg w-full h-48 object-cover"
-              loading="lazy"
-              width="280"
-              height="192"
-            />
-          </picture>
-          <picture>
-            <source srcset="/images/portfolio/ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b.webp" type="image/webp" />
-            <img
-              src="/images/portfolio/ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b.jpg"
-              alt="Adesivação de ambiente corporativo pela MV Print"
-              class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8"
-              loading="lazy"
-              width="280"
-              height="192"
-            />
-          </picture>
-          <picture>
-            <source srcset="/images/portfolio/tapumes-036fd989-71f7-40de-9cb0-9a72467d561e.webp" type="image/webp" />
-            <img
-              src="/images/portfolio/tapumes-036fd989-71f7-40de-9cb0-9a72467d561e.jpg"
-              alt="Tapume promocional instalado pela MV Print"
-              class="rounded-2xl shadow-lg w-full h-48 object-cover"
-              loading="lazy"
-              width="280"
-              height="192"
-            />
-          </picture>
-          <picture>
-            <source srcset="/images/portfolio/carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e.webp" type="image/webp" />
-            <img
-              src="/images/portfolio/carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e.jpg"
-              alt="Envelopamento de veículo pela MV Print BH"
-              class="rounded-2xl shadow-lg w-full h-48 object-cover mt-8"
-              loading="lazy"
-              width="280"
-              height="192"
-            />
-          </picture>
-        </div>
+<section id="sobre" class="sec about" aria-labelledby="about-title">
+  <div class="wrap">
+    <p class="rule"><span>(07) — <b>Sobre</b></span><Icon name="reg" class="reg-mark" /></p>
+
+    <div class="about-grid">
+      <div class="about-prints" aria-label="Alguns trabalhos da MV Print" role="group">
+        {prints.map((print, index) => (
+          <figure class={`print print-${index + 1}`} data-parallax={[0.06, 0.12, 0.03][index]}>
+            <span class="tape" aria-hidden="true"></span>
+            <img src={optimized(print.image, 480)} alt={print.alt} width="480" height="360" loading="lazy" decoding="async" />
+            <figcaption class="mono">{print.caption}</figcaption>
+          </figure>
+        ))}
       </div>
 
-      <!-- Content Column -->
-      <div>
-        <span class="text-[#E91E8C] font-semibold text-sm uppercase tracking-wider">
-          Sobre Nós
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#1D3557] mt-2 mb-6">
-          Transformando ideias em comunicação visual de qualidade
-        </h2>
-
-        <div class="space-y-4 text-[#6C757D] mb-8">
-          <p>
-            Desde 2019, a <strong class="text-[#1D3557]">MV Print</strong> transforma ideias em comunicação visual de qualidade. Nascemos em Belo Horizonte com a missão de oferecer soluções completas em impressão gráfica e comunicação visual para empresas de todos os portes.
-          </p>
-          <p>
-            Do cartão de visita ao envelopamento completo de frotas, nossa equipe está pronta para dar vida ao seu projeto com <strong class="text-[#1D3557]">qualidade, agilidade e preço justo</strong>.
-          </p>
+      <div class="about-copy">
+        <SplitText id="about-title" class="display t-h2" text="Uma gráfica de BH *com a mão na tinta.*" />
+        <div class="about-text" data-reveal style="--d:.15s">
+          <p class="lede">Desde 2019, a <strong>MV Print</strong> transforma ideias em comunicação visual de qualidade. Nascemos em Belo Horizonte para oferecer soluções completas em impressão e comunicação visual para empresas de todos os portes.</p>
+          <p>Do cartão de visita ao envelopamento completo de frotas, nossa equipe dá vida ao seu projeto com qualidade, agilidade e preço justo.</p>
         </div>
 
-        <!-- Features -->
-        <div class="grid grid-cols-2 gap-4 mb-8">
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-[#1D3557]">Qualidade Garantida</h3>
-              <p class="text-sm text-[#6C757D]">Materiais de primeira linha</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-[#1D3557]">Entrega Rápida</h3>
-              <p class="text-sm text-[#6C757D]">Prazos que cabem no seu projeto</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-[#1D3557]">Atendimento Personalizado</h3>
-              <p class="text-sm text-[#6C757D]">Cada projeto é único</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 bg-[#E91E8C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-[#1D3557]">Todo o Brasil</h3>
-              <p class="text-sm text-[#6C757D]">Entregamos em todo território</p>
-            </div>
-          </div>
-        </div>
+        <ul class="features" role="list">
+          {features.map((feature, index) => (
+            <li data-reveal style={`--d:${0.1 + index * 0.07}s`}>
+              <span class="mono feature-num">{String(index + 1).padStart(2, '0')}</span>
+              <span><strong>{feature.title}</strong><span class="feature-text">{feature.text}</span></span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+
+    <dl class="stats">
+      {stats.map((stat, index) => (
+        <div class="stat" data-reveal style={`--d:${index * 0.08}s`}>
+          <dt class="stat-label mono">{stat.label}</dt>
+          <dd class="stat-value display tabular">
+            {stat.prefix}<span data-count={stat.value}>{format(stat.value)}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
   </div>
 </section>
+
+<style>
+  .about-grid {
+    display: grid; gap: clamp(3.5rem, 7vw, 7rem);
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 1024px) { .about-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } }
+
+  .about-prints { position: relative; aspect-ratio: 1 / 1; max-width: 640px; width: 100%; justify-self: center; }
+  .print {
+    position: absolute; margin: 0;
+    width: 62%;
+    padding: 3.2% 3.2% 0;
+    background: #FCFAF6;
+    box-shadow: 0 1px 1px rgb(22 18 14 / 8%), 0 28px 45px -26px rgb(22 18 14 / 50%);
+    transform: translate3d(0, var(--py, 0), 0) rotate(var(--r));
+    transition: transform 1.2s var(--ease-expo);
+  }
+  .print img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .print figcaption { padding: .7rem 0 .8rem; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
+  .print-1 { --r: -5deg; left: 0; top: 4%; }
+  .print-2 { --r: 4deg; right: 0; top: 30%; z-index: 2; }
+  .print-3 { --r: -2deg; left: 12%; bottom: 0; z-index: 1; }
+  .about-prints:hover .print { --r: 0deg; }
+  .tape {
+    position: absolute; top: -12px; left: 50%; width: 88px; height: 26px; margin-left: -44px;
+    background: rgb(255 235 170 / 55%);
+    box-shadow: 0 1px 2px rgb(22 18 14 / 8%);
+    transform: rotate(-3deg);
+    backdrop-filter: blur(1px);
+  }
+  .print-2 .tape { transform: rotate(4deg); background: rgb(160 220 245 / 50%); }
+  .print-3 .tape { transform: rotate(-6deg); background: rgb(245 170 205 / 50%); }
+
+  .about-copy { display: grid; gap: 1.8rem; }
+  .about-text { display: grid; gap: 1rem; max-width: 38rem; color: var(--color-ink-2); }
+  .about-text strong { color: var(--color-ink); font-weight: 600; }
+
+  .features { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+  .features li { display: flex; gap: .8rem; padding: 1.1rem .8rem 1.1rem 0; border-bottom: 1px solid var(--line); }
+  .features li:nth-child(odd) { border-right: 1px solid var(--line); }
+  .features li:nth-child(even) { padding-left: 1rem; }
+  .feature-num { font-size: .66rem; color: var(--color-magenta-deep); padding-top: .2rem; }
+  .features strong { display: block; font-weight: 600; line-height: 1.3; }
+  .feature-text { display: block; font-size: .92rem; color: var(--color-muted); margin-top: .2rem; }
+  @media (max-width: 520px) {
+    .features { grid-template-columns: 1fr; }
+    .features li:nth-child(odd) { border-right: 0; }
+    .features li:nth-child(even) { padding-left: 0; }
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: clamp(4rem, 8vw, 7rem) 0 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  @media (min-width: 900px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .stat { padding: 1.4rem 1rem 0 0; display: flex; flex-direction: column-reverse; gap: .6rem; }
+  .stat + .stat { padding-left: 1rem; border-left: 1px solid var(--line); }
+  @media (max-width: 899px) { .stat:nth-child(3) { border-left: 0; padding-left: 0; } }
+  .stat-label { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
+  .stat-value { margin: 0; font-size: clamp(3.6rem, 7.5vw, 7rem); line-height: .9; letter-spacing: -0.03em; }
+</style>

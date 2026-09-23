@@ -1,0 +1,53 @@
+---
+// Letreiro decorativo com os serviços; acelera e inverte conforme a rolagem.
+interface Props { items: string[]; duration?: number; tone?: 'paper' | 'ink' }
+const { items, duration = 42, tone = 'paper' } = Astro.props;
+---
+<div class:list={['ticker', `ticker-${tone}`]} aria-hidden="true">
+  <div class="marquee" data-marquee="1">
+    {[0, 1].map(() => (
+      <div class="marquee-track" style={`--dur:${duration}s`}>
+        {items.map((item, index) => (
+          <>
+            <span class:list={['ticker-item', { 'is-italic': index % 2 === 1 }]}>{item}</span>
+            <span class="rosette"><i></i><i></i><i></i><i></i></span>
+          </>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker {
+    position: relative;
+    padding-block: clamp(1.4rem, 3vw, 2.4rem);
+    border-block: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .ticker-ink { background: var(--color-ink); color: var(--color-paper); border-color: transparent; }
+  .marquee { transform: skewX(var(--skew, 0deg)); transition: transform .3s linear; }
+  .ticker-item {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8.5vw, 8.25rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    padding-inline: .15em;
+  }
+  .ticker-item.is-italic { font-style: italic; }
+  .rosette {
+    position: relative; display: inline-block; flex: none;
+    width: clamp(1.8rem, 3.6vw, 3.2rem); height: clamp(1.8rem, 3.6vw, 3.2rem);
+    margin-inline: clamp(1rem, 2.5vw, 2.4rem);
+    isolation: isolate;
+  }
+  .rosette i { position: absolute; width: 58%; height: 58%; border-radius: 50%; mix-blend-mode: multiply; }
+  .rosette i:nth-child(1) { left: 0; top: 0; background: var(--color-cyan); }
+  .rosette i:nth-child(2) { right: 0; top: 0; background: var(--color-magenta); }
+  .rosette i:nth-child(3) { left: 0; bottom: 0; background: var(--color-yellow); }
+  .rosette i:nth-child(4) { right: 0; bottom: 0; background: var(--color-ink); opacity: .9; }
+  .ticker-ink .rosette i { mix-blend-mode: screen; }
+  .ticker-ink .rosette i:nth-child(4) { background: var(--color-paper); }
+  .marquee-track { animation-duration: var(--dur); }
+</style>

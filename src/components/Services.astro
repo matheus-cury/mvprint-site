@@ -1,135 +1,197 @@
 ---
-import ResponsiveImage from './ResponsiveImage.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
 import { getWhatsAppLink } from '../config/site';
+import { optimized } from '../lib/images';
 
 const services = [
   {
-    icon: "car",
-    title: "Plotagem Veicular",
-    description: "Transforme sua frota em mídia móvel",
-    items: ["Envelopamento completo", "Plotagem de frotas", "Personalização de veículos", "Caminhões e utilitários"],
-    image: "/images/portfolio/veiculos-8982d6d7-b525-4103-8dad-a33e1b6342d8",
-    whatsappMsg: "Olá! Gostaria de um orçamento para plotagem veicular."
+    title: 'Plotagem veicular',
+    description: 'Carros, vans, caminhões e frotas inteiras viram mídia rodando pela cidade.',
+    tags: ['Envelopamento', 'Frotas', 'Para-brisa', 'Caminhões'],
+    image: 'carros-225cc5a4-81cd-472c-bd4a-4c146fa9d1c2',
+    alt: 'Doblò da Super Benefícios plotado pela MV Print',
+    slug: 'veiculos',
+    message: 'plotagem',
   },
   {
-    icon: "building",
-    title: "Comunicação Visual",
-    description: "Destaque sua marca no ponto de venda",
-    items: ["Fachadas e letreiros", "Placas e sinalização", "Adesivação de ambientes", "Vitrines e tapumes"],
-    image: "/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4",
-    whatsappMsg: "Olá! Gostaria de um orçamento para comunicação visual."
+    title: 'Fachadas & sinalização',
+    description: 'Placas, letreiros, totens e sinalização para a sua empresa ser encontrada e lembrada.',
+    tags: ['Fachadas', 'Placas em PVC', 'Totens', 'Sinalização'],
+    image: 'placas-lonas-81114010-4ab1-48ec-a96c-8af2eec87f98',
+    alt: 'Placa de estacionamento para clientes da Minas France',
+    slug: 'placas-lonas',
+    message: 'comunicacao',
   },
   {
-    icon: "image",
-    title: "Adesivos & Banners",
-    description: "Materiais promocionais de alto impacto",
-    items: ["Adesivos personalizados", "Banners e backdrops", "Faixas e lonas", "Material imobiliário"],
-    image: "/images/portfolio/tapumes-11e2f421-a874-4c97-b166-2dac2c960d24",
-    whatsappMsg: "Olá! Gostaria de um orçamento para adesivos/banners."
+    title: 'Ambientes & vitrines',
+    description: 'Paredes, escritórios e vitrines adesivados com a identidade da marca.',
+    tags: ['Adesivo de parede', 'Vitrines', 'Jateado', 'Recorte'],
+    image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7',
+    alt: 'Parede do Ecad adesivada com ilustração de trompete',
+    slug: 'ambientes',
+    message: 'Olá! Gostaria de um orçamento para adesivação de ambiente ou vitrine.',
   },
   {
-    icon: "printer",
-    title: "Gráfica Rápida",
-    description: "Impressos com qualidade e agilidade",
-    items: ["Cartões de visita", "Panfletos e folders", "Blocos e formulários", "Encadernação"],
-    image: "/images/portfolio/blocos-446d5a03-dbde-463f-9cb0-909077d3be96",
-    whatsappMsg: "Olá! Gostaria de um orçamento para gráfica rápida."
-  }
+    title: 'Tapumes & grandes formatos',
+    description: 'Tapumes, lonas, faixas e backdrops que transformam obra e evento em anúncio.',
+    tags: ['Tapumes', 'Lonas', 'Backdrops', 'Banners'],
+    image: 'tapumes-cdf90ef0-bc09-4604-b007-e1b0e1446ca1',
+    alt: 'Instalação do tapume da loja LEGO',
+    slug: 'tapumes',
+    message: 'Olá! Gostaria de um orçamento para tapume, lona ou banner.',
+  },
+  {
+    title: 'Adesivos & etiquetas',
+    description: 'Rótulos, etiquetas e adesivos personalizados para produtos, embalagens e brindes.',
+    tags: ['Etiquetas', 'Rótulos', 'Adesivos', 'Recorte eletrônico'],
+    image: 'etiquetas-cb8d7103-84f9-43a1-a99c-ab77af361841',
+    alt: 'Cartela de etiquetas redondas impressas',
+    slug: 'etiquetas',
+    message: 'adesivos',
+  },
+  {
+    title: 'Gráfica rápida',
+    description: 'Cartões de visita, panfletos, blocos e impressos do dia a dia, com agilidade.',
+    tags: ['Cartões de visita', 'Panfletos', 'Blocos', 'Encadernação'],
+    image: 'blocos-446d5a03-dbde-463f-9cb0-909077d3be96',
+    alt: 'Blocos personalizados impressos',
+    slug: 'blocos',
+    message: 'grafica',
+  },
 ];
 ---
 
-<section id="servicos" class="py-20 bg-[#F8F9FA]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="text-center mb-16">
-      <span class="text-[#E91E8C] font-semibold text-sm uppercase tracking-wider">
-        Nossos Serviços
-      </span>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1D3557] mt-2 mb-4">
-        Soluções completas para sua marca
-      </h2>
-      <p class="text-[#6C757D] text-lg max-w-2xl mx-auto">
-        Do cartão de visita ao envelopamento completo de frotas, temos a solução ideal para destacar sua empresa.
-      </p>
+<section id="servicos" class="sec services" aria-labelledby="services-title">
+  <div class="wrap">
+    <p class="rule"><span>(01) — <b>Serviços</b></span><Icon name="reg" class="reg-mark" /></p>
+
+    <div class="services-head">
+      <SplitText id="services-title" class="display t-h2" text="Tudo que a sua marca precisa para *ser vista.*" />
+      <div class="services-aside" data-reveal style="--d:.2s">
+        <p class="lede">Do cartão de visita ao envelopamento de frotas inteiras. A gente produz, instala em BH e região e envia para todo o Brasil.</p>
+        <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" variant="line" external />
+      </div>
     </div>
 
-    <!-- Services Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {services.map((service) => (
-        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover transition-smooth group">
-          <!-- Image -->
-          <div class="relative h-48 overflow-hidden">
-            <ResponsiveImage src={`${service.image}.jpg`} alt={`Serviço de ${service.title} - MV Print BH`} width={600} height={240} sizes="(min-width: 1280px) 592px, (min-width: 768px) 46vw, calc(100vw - 32px)" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <!-- Icon -->
-            <div class="absolute bottom-4 left-4 w-12 h-12 bg-[#E91E8C] rounded-xl flex items-center justify-center">
-              {service.icon === "car" && (
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 5h8m-4 5v-5m-8 5h16a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0017 8h-2V6a1 1 0 00-1-1H6a1 1 0 00-1 1v10a1 1 0 001 1z"/>
-                </svg>
-              )}
-              {service.icon === "building" && (
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                </svg>
-              )}
-              {service.icon === "image" && (
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-              )}
-              {service.icon === "printer" && (
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                </svg>
-              )}
-            </div>
-          </div>
-
-          <!-- Content -->
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-[#1D3557] mb-2">{service.title}</h3>
-            <p class="text-[#6C757D] mb-4">{service.description}</p>
-            <ul class="space-y-2 mb-4">
-              {service.items.map((item) => (
-                <li class="flex items-center gap-2 text-sm text-[#1D3557]">
-                  <svg class="w-4 h-4 text-[#E91E8C] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  {item}
-                </li>
-              ))}
+    <ol class="svc-list" data-services>
+      {services.map((service, index) => (
+        <li class="svc" data-index={index} data-reveal style={`--d:${(index % 3) * 0.06}s`}>
+          <span class="svc-num mono">{String(index + 1).padStart(2, '0')}</span>
+          <div class="svc-main">
+            <h3 class="svc-title display">{service.title}</h3>
+            <p class="svc-desc">{service.description}</p>
+            <ul class="svc-tags" aria-label={`Exemplos de ${service.title.toLowerCase()}`}>
+              {service.tags.map(tag => <li class="tag">{tag}</li>)}
             </ul>
-            <!-- CTA Contextual -->
-            <a
-              href={getWhatsAppLink(service.whatsappMsg)}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-[#137a3d] hover:text-[#106632] font-semibold text-sm transition-smooth"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Solicitar orçamento
-            </a>
           </div>
-        </div>
+          <figure class="svc-thumb media">
+            <img src={optimized(service.image, 480)} alt={service.alt} width="480" height="360" loading="lazy" decoding="async" />
+          </figure>
+          <div class="svc-actions">
+            <a href={getWhatsAppLink(service.message)} target="_blank" rel="noopener noreferrer" class="svc-link svc-link-main">
+              Orçar <Icon name="arrow-up-right" />
+            </a>
+            <a href={`/portfolio#${service.slug}`} class="svc-link u-link">Ver trabalhos</a>
+          </div>
+        </li>
       ))}
-    </div>
+    </ol>
+  </div>
 
-    <!-- CTA -->
-    <div class="text-center mt-12">
-      <a
-        href={getWhatsAppLink('default')}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 bg-[#E91E8C] hover:bg-[#C4177A] text-white px-8 py-4 rounded-full font-semibold transition-smooth"
-      >
-        Solicitar Orçamento
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-        </svg>
-      </a>
-    </div>
+  <div class="svc-float" aria-hidden="true">
+    {services.map(service => (
+      <img src={optimized(service.image, 480)} alt="" width="480" height="360" loading="lazy" decoding="async" />
+    ))}
   </div>
 </section>
+
+<style>
+  .services-head {
+    display: grid; gap: 2rem 4rem; align-items: end;
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    margin-bottom: clamp(3rem, 6vw, 5.5rem);
+  }
+  @media (min-width: 1024px) { .services-head { grid-template-columns: minmax(0, 1.45fr) minmax(0, .8fr); } }
+  .services-aside { display: grid; gap: 1.6rem; justify-items: start; }
+
+  .svc-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+
+  .svc {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: .5rem 1rem;
+    padding: clamp(1.6rem, 3vw, 2.4rem) 0;
+    border-bottom: 1px solid var(--line-strong);
+    isolation: isolate;
+  }
+  .svc::before {
+    content: ""; position: absolute; inset: 0 calc(var(--gutter) * -1); z-index: -1;
+    background: var(--color-paper-2);
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path .7s var(--ease-expo);
+  }
+  .svc-num { font-size: .75rem; letter-spacing: .1em; color: var(--color-muted); padding-top: .8rem; transition: color .4s; }
+  .svc-title {
+    font-size: clamp(2.3rem, 5.2vw, 5rem); line-height: .95; letter-spacing: -0.025em;
+    transition: transform .8s var(--ease-expo);
+  }
+  .svc-desc { margin-top: .9rem; max-width: 34rem; color: var(--color-ink-2); }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 1.1rem 0 0; padding: 0; }
+
+  .svc-thumb { grid-column: 2; aspect-ratio: 4 / 3; border-radius: 4px; margin: .8rem 0 0; max-width: 28rem; }
+
+  .svc-actions { grid-column: 2; display: flex; align-items: center; gap: 1.5rem; margin-top: 1.2rem; }
+  .svc-link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; font-size: .95rem; }
+  .svc-link :global(svg) { width: 1rem; height: 1rem; transition: transform .5s var(--ease-expo); }
+  .svc-link-main {
+    padding: .7rem 1.1rem; border-radius: 999px;
+    background: var(--color-ink); color: var(--color-paper);
+    transition: background-color .3s;
+  }
+  .svc-link-main:hover { background: var(--color-magenta); color: #fff; }
+  .svc-link-main:hover :global(svg) { transform: rotate(45deg); }
+
+  @media (min-width: 1024px) {
+    .svc {
+      grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+      align-items: center;
+      padding-block: clamp(2rem, 3vw, 2.75rem);
+    }
+    .svc-main { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: .75rem 3rem; align-items: center; }
+    .svc-desc { margin-top: 0; }
+    .svc-tags { grid-column: 2; margin-top: 0; }
+    .svc-title { grid-row: span 2; }
+    .svc-thumb { display: none; }
+    .svc-actions { grid-column: 3; flex-direction: column; align-items: flex-end; gap: .8rem; margin-top: 0; }
+    .svc-num { padding-top: 0; }
+  }
+
+  @media (hover: hover) and (min-width: 1024px) {
+    .svc:hover::before { clip-path: inset(0 0 0 0); }
+    .svc:hover .svc-title { transform: translate3d(1.25rem, 0, 0); }
+    .svc:hover .svc-num { color: var(--color-magenta-deep); }
+  }
+
+  /* Foto flutuante que segue o cursor */
+  .svc-float {
+    position: fixed; left: 0; top: 0; z-index: 30;
+    width: clamp(240px, 22vw, 340px); aspect-ratio: 4 / 3;
+    pointer-events: none;
+    opacity: 0; scale: .6;
+    transition: opacity .35s, scale .6s var(--ease-expo);
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 40px 60px -30px rgb(22 18 14 / 55%);
+    display: none;
+  }
+  @media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .svc-float { display: block; } }
+  .svc-float.is-on { opacity: 1; scale: 1; }
+  .svc-float img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transform: scale(1.12);
+    transition: opacity .45s, transform .9s var(--ease-expo);
+  }
+  .svc-float img.is-active { opacity: 1; transform: none; }
+</style>
