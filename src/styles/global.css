@@ -103,6 +103,7 @@ input, select, textarea { font-size: 16px; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
 [hidden] { display: none !important; }
+html.menu-open { overflow: hidden; }
 
 .sr-only-focusable:not(:focus):not(:focus-within) {
   position: absolute !important; width: 1px; height: 1px; overflow: hidden;
@@ -334,11 +335,11 @@ button { cursor: pointer; }
 .reg::before, .reg::after {
   content: attr(data-text);
   content: attr(data-text) / "";
-  position: absolute; left: 0; top: 0; z-index: 1;
+  /* Mesma caixa do texto: se o título quebrar em duas linhas, as camadas quebram igual. */
+  position: absolute; inset: 0; z-index: 1;
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
-  white-space: nowrap;
 }
 .reg::before { color: var(--color-cyan); transform: translate3d(calc(var(--rx) * -0.5), calc(var(--ry) * -1.4), 0); }
 .reg::after { color: var(--color-magenta); transform: translate3d(calc(var(--rx) * 1.5), calc(var(--ry) * -0.4), 0); }

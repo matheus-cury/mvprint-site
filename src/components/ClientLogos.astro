@@ -10,16 +10,16 @@ const clients = [
   { name: 'Citroën', logo: '/images/logos/citroen.svg', scale: 1.1 },
   { name: 'Renault', logo: '/images/logos/renault.svg', scale: 1.2 },
   { name: 'Claro', logo: '/images/logos/claro.svg', scale: 1.15 },
-  { name: 'Drogarias Pacheco', logo: '/images/logos/drogarias-pacheco.png', scale: 1 },
+  { name: 'Drogarias Pacheco', logo: '/images/logos/drogarias-pacheco.png', scale: 1, width: 74 },
   { name: 'Pague Menos', logo: '/images/logos/pague-menos.svg', scale: 1 },
   { name: 'AeC', logo: '/images/logos/aec.svg', scale: 1 },
   { name: 'Grupo Roma', logo: '/images/logos/grupo-roma.svg', scale: 1 },
   { name: 'Mit Car', logo: '/images/logos/mit-car.png', scale: 1 },
-  { name: 'Orcasa Netimóveis', logo: '/images/logos/orcasa.png', scale: 1 },
+  { name: 'Orcasa Netimóveis', logo: '/images/logos/orcasa.png', scale: 1, width: 84 },
   // JPG quadrado com muita margem: recorta a faixa central.
   { name: 'Grupo Jorlan', logo: '/images/logos/grupo-jorlan.jpg', scale: 1, cover: true },
   { name: 'Pontua X', logo: '/images/logos/pontua-x.jpg', scale: 1, lift: true },
-  { name: 'RTI', logo: '/images/logos/RTI.jpg', scale: 1.1, lift: true },
+  { name: 'RTI', logo: '/images/logos/RTI.jpg', scale: 1.3, lift: true },
 ];
 ---
 
@@ -38,7 +38,7 @@ const clients = [
             src={client.logo}
             alt={client.name}
             class:list={['logo', { 'logo-lift': client.lift, 'logo-cover': client.cover }]}
-            style={`--s:${client.scale}`}
+            style={`--s:${client.scale}${client.width ? `;--w:${client.width}%` : ''}`}
             loading="lazy"
             decoding="async"
           />
@@ -78,7 +78,7 @@ const clients = [
     border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong);
   }
   .logo {
-    width: 64%;
+    width: var(--w, 64%);
     height: calc(clamp(30px, 3.6vw, 52px) * var(--s, 1));
     object-fit: contain;
     mix-blend-mode: multiply;

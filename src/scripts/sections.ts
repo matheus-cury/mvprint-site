@@ -58,7 +58,6 @@ export function initHScroll() {
   const desktop = matchMedia('(min-width: 900px)');
   let enabled = false;
   let distance = 0;
-  let top = 0;
 
   const measure = () => {
     enabled = desktop.matches && !reducedMotion();
@@ -71,13 +70,15 @@ export function initHScroll() {
     }
     distance = Math.max(0, track.scrollWidth - innerWidth);
     section.style.height = `${distance + innerHeight}px`;
-    top = section.getBoundingClientRect().top + scrollY;
-    update(scrollY);
+    update();
   };
 
-  const update = (y: number) => {
+  // Posição lida a cada quadro: continua certa mesmo se algo acima mudar de altura.
+  const sectionTop = () => section.getBoundingClientRect().top + scrollY;
+
+  const update = () => {
     if (!enabled) return;
-    const p = clamp((y - top) / Math.max(1, distance));
+    const p = clamp(-section.getBoundingClientRect().top / Math.max(1, distance));
     track.style.transform = `translate3d(${(-p * distance).toFixed(1)}px, 0, 0)`;
     progress?.style.setProperty('--p', p.toFixed(4));
     const center = innerWidth / 2;
@@ -89,7 +90,7 @@ export function initHScroll() {
     }
   };
 
-  onScroll(({ y }) => update(y));
+  onScroll(() => update());
 
   // Teclado: ao focar um card fora da faixa visível, rola até ele aparecer.
   track.addEventListener('focusin', event => {
@@ -100,7 +101,7 @@ export function initHScroll() {
     const cardRect = card.getBoundingClientRect();
     const x = cardRect.left - trackRect.left;
     const target = clamp(x - innerWidth * 0.25, 0, distance);
-    scrollTo({ top: top + target, behavior: 'auto' });
+    scrollTo({ top: sectionTop() + target, behavior: 'auto' });
   });
   desktop.addEventListener('change', measure);
   addEventListener('resize', measure);

@@ -80,7 +80,7 @@ const services = [
         <li class="svc" data-index={index} data-reveal style={`--d:${(index % 3) * 0.06}s`}>
           <span class="svc-num mono">{String(index + 1).padStart(2, '0')}</span>
           <div class="svc-main">
-            <h3 class="svc-title display">{service.title}</h3>
+            <h3 class="svc-title display"><span class="reg" data-text={service.title}>{service.title}</span></h3>
             <p class="svc-desc">{service.description}</p>
             <ul class="svc-tags" aria-label={`Exemplos de ${service.title.toLowerCase()}`}>
               {service.tags.map(tag => <li class="tag">{tag}</li>)}
@@ -169,9 +169,12 @@ const services = [
     .svc-num { padding-top: 0; }
   }
 
+  /* Título registrado (preto) em repouso; no hover as chapas C, M e Y desalinham. */
+  .svc-title .reg, .svc-title .reg::before, .svc-title .reg::after { transition: transform .7s var(--ease-expo); }
   @media (hover: hover) and (min-width: 1024px) {
     .svc:hover::before { clip-path: inset(0 0 0 0); }
     .svc:hover .svc-title { transform: translate3d(1.25rem, 0, 0); }
+    .svc:hover .svc-title .reg { --rx: 5px; --ry: 3px; }
     .svc:hover .svc-num { color: var(--color-magenta-deep); }
   }
 

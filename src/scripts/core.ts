@@ -55,7 +55,9 @@ export function initCursor() {
     if (!running) { running = true; requestAnimationFrame(loop); }
   }, { passive: true });
 
-  document.addEventListener('pointerleave', () => {
+  // Esconde ao sair da janela (o evento vem com relatedTarget nulo).
+  document.addEventListener('mouseout', event => {
+    if (event.relatedTarget) return;
     shown = false;
     document.documentElement.classList.remove('has-cursor');
   });
