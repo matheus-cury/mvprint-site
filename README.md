@@ -100,3 +100,9 @@ Em 23/09/2026, Math definiu: Claude cuida do design/front-end; Asuna/Codex cuida
 - Produção do domínio principal: `mvprint-bh`, deployment `61e057fa-268b-42d8-acdd-3727d4dee6ef`. Reversão ao site anterior à revisão #1: `cb57935b-b207-42b5-8234-84b3668470cc`.
 - Há integrações herdadas de preview com Netlify e outro projeto Pages (`mvprint-site`). Não confundir um check verde desses serviços com publicação no domínio principal.
 - Nunca incluir tokens no código ou no artifact. Deploy automático ao projeto principal exigiria credencial específica e configuração separada; isso não está habilitado.
+
+### Proteções do empacotador
+
+O empacotador valida tanto `dist` quanto a pasta exata que entrará no ZIP. Preserva logos referenciados em CSS, URLs com parâmetros, nomes codificados e coleções dinâmicas em JavaScript. Arquivos privados, links simbólicos e referências locais quebradas interrompem o processo. O pacote anterior só é substituído depois que a nova compactação termina com sucesso.
+
+Execute `python -m unittest discover -s tests -v` para reproduzir os cenários de falha; a mesma suíte roda no GitHub. A validação verifica arquivos e referências estáticas, não substitui testes das interações no navegador nem faz análise de tipos TypeScript.
