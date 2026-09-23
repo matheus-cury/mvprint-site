@@ -108,7 +108,9 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
 
   .brand { display: inline-flex; flex: none; }
   .brand-crop { display: block; width: 104px; height: 36px; overflow: hidden; }
-  .brand-crop img { width: 104px; height: auto; max-width: none; }
+  .brand-crop img { width: 104px; height: auto; max-width: none; transition: filter .45s var(--ease-expo); }
+  /* No hover, o logo "sai de registro" como numa impressão desalinhada. */
+  .brand:hover .brand-crop img { filter: drop-shadow(-2px -1px 0 rgb(0 160 227 / 70%)) drop-shadow(2px 1.5px 0 rgb(230 0 126 / 65%)); }
 
   .nav { display: none; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.4rem); }
   @media (min-width: 1024px) { .nav { display: flex; } }

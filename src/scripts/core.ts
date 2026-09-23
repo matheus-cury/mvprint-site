@@ -200,3 +200,16 @@ export function initMarquees(root: ParentNode = document) {
 
   onScroll(() => { if (!frame) frame = requestAnimationFrame(update); }, false);
 }
+
+// ---------- Fotos surgem ao terminar de carregar ----------
+
+export function initImageFades(root: ParentNode = document) {
+  const mark = (image: HTMLImageElement) => image.classList.add('is-loaded');
+  $$<HTMLImageElement>('img.fade-img', root).forEach(image => {
+    if (image.complete && image.naturalWidth) mark(image);
+    else {
+      image.addEventListener('load', () => mark(image), { once: true });
+      image.addEventListener('error', () => mark(image), { once: true });
+    }
+  });
+}

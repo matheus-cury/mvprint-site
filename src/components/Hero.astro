@@ -26,7 +26,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
         <span class="line" style="--d:.2s"><span class="line-in">A gente <em class="reg" data-reg data-text="imprime.">imprime.</em></span></span>
       </h1>
 
-      <p class="lede hero-lede" data-hero-in style="--d:.45s">
+      <p class="lede hero-lede">
         Adesivos, fachadas, plotagem de veículos, tapumes e impressos. Da arte à instalação, com o cuidado de quem vive de tinta e papel.
       </p>
 
@@ -112,19 +112,20 @@ const pad = (value: number) => String(value).padStart(2, '0');
 <style>
   .hero {
     position: relative;
-    padding-top: clamp(7.5rem, 13vw, 10.5rem);
+    isolation: isolate;
+    padding-top: clamp(6.5rem, min(13vw, 17vh), 10.5rem);
     padding-bottom: clamp(2rem, 4vw, 3rem);
     overflow: clip;
   }
 
+  /* Retícula de fundo: um véu cor de papel esmaece os pontos (sem mask-image,
+     que em conjunto com as animações gerava camadas fantasmas no Chrome). */
   .hero-dots {
-    position: absolute; inset: 0 0 auto auto; width: min(70vw, 900px); height: 100%;
-    background-image: radial-gradient(circle, rgb(230 0 126 / 22%) 1.1px, transparent 1.6px);
-    background-size: 13px 13px;
-    mask-image: radial-gradient(ellipse 70% 60% at 85% 20%, #000 0%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 85% 20%, #000 0%, transparent 70%);
+    position: absolute; inset: 0 0 auto auto; z-index: -1; width: min(70vw, 900px); height: 100%;
+    background:
+      radial-gradient(ellipse 70% 60% at 85% 20%, rgb(244 239 231 / 0%) 0%, var(--color-paper) 70%),
+      radial-gradient(circle, rgb(230 0 126 / 16%) 1.1px, transparent 1.6px) 0 0 / 13px 13px;
     pointer-events: none;
-    opacity: .7;
   }
 
   .hero-grid {

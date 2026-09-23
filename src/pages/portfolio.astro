@@ -150,9 +150,14 @@ const gallery = await Promise.all(categories.map(async category => ({
     overflow-x: auto; scrollbar-width: none;
     padding-inline: var(--gutter);
     scroll-padding-inline: var(--gutter);
-    mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
   }
+  /* Bordas esmaecidas da faixa de filtros (degradê por cima, sem mask-image). */
+  .pf-filters::before, .pf-filters::after {
+    content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: var(--gutter);
+    pointer-events: none;
+  }
+  .pf-filters::before { left: 0; background: linear-gradient(90deg, var(--color-paper), rgb(244 239 231 / 0%)); }
+  .pf-filters::after { right: 0; background: linear-gradient(270deg, var(--color-paper), rgb(244 239 231 / 0%)); }
   .pf-filters-inner::-webkit-scrollbar { display: none; }
   .pf-chip {
     flex: none; display: inline-flex; align-items: center; gap: .5rem;
@@ -217,12 +222,12 @@ const gallery = await Promise.all(categories.map(async category => ({
   }
   .pf-cta-card::before {
     content: ""; position: absolute; right: -10%; top: -30%; width: 60%; aspect-ratio: 1;
-    background-image: radial-gradient(circle, rgb(230 0 126 / 45%) 1.4px, transparent 2px);
-    background-size: 14px 14px;
-    mask-image: radial-gradient(circle, #000, transparent 70%);
-    -webkit-mask-image: radial-gradient(circle, #000, transparent 70%);
+    background:
+      radial-gradient(circle, rgb(22 18 14 / 0%) 0%, var(--color-ink) 70%),
+      radial-gradient(circle, rgb(230 0 126 / 45%) 1.4px, transparent 2px) 0 0 / 14px 14px;
     pointer-events: none;
   }
+  .pf-cta-card > * { position: relative; }
   .pf-cta-kicker { color: var(--color-yellow); }
   .pf-cta-title { font-size: clamp(2.8rem, 6.5vw, 6.5rem); line-height: .92; letter-spacing: -0.03em; max-width: 14ch; }
   .pf-cta-text { color: rgb(244 239 231 / 75%); max-width: 32rem; }

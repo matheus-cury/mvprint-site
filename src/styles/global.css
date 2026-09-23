@@ -20,13 +20,34 @@
   --color-wa: #25D366;
   --color-wa-deep: #128C4A;
 
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", "Instrument Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Fontes reserva com a mesma largura média das fontes do site (medida com
+   canvas): enquanto as fontes do Google carregam, as linhas quebram igual e a
+   página não "pula" na troca. */
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Times");
+  font-style: normal;
+  size-adjust: 83.5%;
+}
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("Times Italic");
+  font-style: italic;
+  size-adjust: 96.8%;
+}
+@font-face {
+  font-family: "Instrument Sans Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 103.5%;
 }
 
 :root {
@@ -152,7 +173,8 @@ button { cursor: pointer; }
 }
 .display em, .display i { font-style: italic; letter-spacing: -0.01em; }
 
-.t-hero { font-size: clamp(3.5rem, 10.4vw, 11.5rem); line-height: .86; letter-spacing: -0.035em; }
+/* Limitado também pela altura da tela, para o botão principal caber na primeira dobra. */
+.t-hero { font-size: clamp(3.4rem, min(10.4vw, 16.5vh), 10rem); line-height: .86; letter-spacing: -0.035em; }
 .t-h2 { font-size: clamp(2.9rem, 6.6vw, 6.75rem); line-height: .9; letter-spacing: -0.03em; }
 .t-h3 { font-size: clamp(2.1rem, 3.8vw, 3.75rem); line-height: .95; letter-spacing: -0.02em; }
 .t-h4 { font-size: clamp(1.7rem, 2.4vw, 2.4rem); line-height: 1; letter-spacing: -0.015em; }
@@ -369,6 +391,10 @@ button { cursor: pointer; }
 .media { position: relative; overflow: hidden; background: var(--color-paper-3); }
 .media img { width: 100%; height: 100%; object-fit: cover; }
 .parallax-img { will-change: transform; transform: translate3d(0, var(--py, 0), 0) scale(1.14); }
+
+/* Fotos surgem suavemente quando terminam de carregar. */
+.fade-img { transition: opacity .9s var(--ease-expo); }
+.js .fade-img:not(.is-loaded) { opacity: 0; }
 
 /* Marcas de corte em volta de uma imagem */
 .cropmarks { position: relative; }

@@ -1,4 +1,5 @@
 // Hero: entrada coreografada, título em registro CMYK e a prensa em retícula.
+import { initImageFades } from './core';
 import { Press, type PressTexture } from './halftone';
 import { $, $$, clamp, finePointer, lerp, reducedMotion, scrollVelocity, watchVisibility } from './lib';
 
@@ -90,7 +91,10 @@ function initPress(hero: HTMLElement) {
     figure.classList.remove('gl');
     figure.classList.add('no-gl');
     const template = $<HTMLTemplateElement>('template[data-press-fallback]', figure);
-    if (template && !stage.querySelector('picture')) stage.prepend(template.content.cloneNode(true));
+    if (template && !stage.querySelector('picture')) {
+      stage.prepend(template.content.cloneNode(true));
+      initImageFades(stage);
+    }
   };
   const press = Press.create(canvas, { cell: 7.5, paper: [0.984, 0.976, 0.957] });
   if (!press || !prints.length) {

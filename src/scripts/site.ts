@@ -1,5 +1,5 @@
 // Ponto de entrada único: um só arquivo JS para o site inteiro.
-import { initCursor, initHeader, initMagnetic, initMarquees, initParallax, initReveals } from './core';
+import { initCursor, initHeader, initImageFades, initMagnetic, initMarquees, initParallax, initReveals } from './core';
 import { initContact } from './contact';
 import { initHero } from './hero';
 import { initMenu } from './menu';
@@ -18,6 +18,7 @@ window.__mv = true;
 initHero();
 initHScroll();
 initReveals();
+initImageFades();
 initHeader();
 initMenu();
 initCursor();

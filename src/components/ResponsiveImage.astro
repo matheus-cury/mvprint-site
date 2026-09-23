@@ -15,5 +15,5 @@ const base = `/images/optimized/${name}`;
 ---
 <picture>
   <source type="image/webp" srcset={`${base}-480.webp 480w, ${base}-960.webp 960w`} sizes={sizes} />
-  <img src={src} alt={alt} width={width} height={height} class={className} loading={loading} decoding="async" fetchpriority={fetchpriority} {...rest} />
+  <img src={src} alt={alt} width={width} height={height} class:list={[className, 'fade-img']} loading={loading} decoding="async" fetchpriority={fetchpriority} {...rest} />
 </picture>
