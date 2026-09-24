@@ -14,7 +14,7 @@ const steps = [
 <section id="como-funciona" class="sec sec-paper-2 process" aria-labelledby="process-title">
   <div class="wrap">
     <p class="rule"><span><b>Como funciona</b></span><Icon name="reg" class="reg-mark" /></p>
-    <SplitText id="process-title" class="display t-h2 grotesk process-title" text="Do pedido à instalação, *sem complicação.*" />
+    <SplitText id="process-title" class="display t-h2 process-title" text="Do pedido à instalação, *sem complicação.*" />
 
     <ol class="steps" role="list">
       {steps.map((step, index) => (
@@ -47,6 +47,6 @@ const steps = [
   .step-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--c); color: #fff; }
   .step-icon :global(svg) { width: 26px; height: 26px; }
   .step-num { font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
-  .step-title { font-size: clamp(1.7rem, 2.2vw, 2.1rem); line-height: 1.05; }
+  .step-title { font-size: clamp(1.25rem, 1.6vw, 1.5rem); line-height: 1.15; }
   .step-text { color: var(--color-ink-2); }
 </style>

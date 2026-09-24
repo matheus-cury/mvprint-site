@@ -132,7 +132,7 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
   .pf-hero { padding-top: clamp(8rem, 14vw, 11rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
   .pf-hero-grid { display: grid; gap: 2rem 4rem; align-items: end; margin-top: clamp(2rem, 4vw, 3rem); }
   @media (min-width: 1024px) { .pf-hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, .7fr); } }
-  .pf-title { font-size: clamp(3rem, 7vw, 7rem); }
+  .pf-title { font-size: clamp(2.6rem, 5.6vw, 5.4rem); }
   .pf-hero-aside { display: grid; gap: 1.2rem; }
   .pf-hint { display: inline-flex; align-items: center; gap: .5rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
   .pf-hint :global(svg) { width: 1.1rem; height: 1.1rem; }
@@ -184,7 +184,7 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
     padding-bottom: 1rem; margin-bottom: 1.1rem;
     border-bottom: 1px solid var(--line-strong);
   }
-  .pf-cat-title { font-size: clamp(2.2rem, 4.5vw, 4rem); line-height: .95; grid-column: 1; }
+  .pf-cat-title { font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.02; grid-column: 1; }
   .pf-cat-blurb { grid-column: 1; color: var(--color-muted); }
   .pf-cat-count { grid-column: 2; grid-row: 1 / span 2; align-self: end; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
 
@@ -233,7 +233,7 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
     background: linear-gradient(90deg, var(--color-cyan) 0 25%, var(--color-magenta) 25% 50%, var(--color-yellow) 50% 75%, var(--color-paper) 75%);
   }
   .pf-cta-kicker { color: var(--color-yellow); }
-  .pf-cta-title { font-size: clamp(2.8rem, 6.5vw, 6.5rem); line-height: .92; letter-spacing: -0.03em; max-width: 14ch; }
+  .pf-cta-title { font-size: clamp(2.3rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -0.04em; max-width: 14ch; }
   .pf-cta-text { color: rgb(244 239 231 / 75%); max-width: 32rem; }
 
   /* ---------- Lightbox ---------- */
@@ -248,7 +248,7 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
   .lb::backdrop { background: rgb(0 0 0 / 60%); }
   @keyframes lb-in { from { opacity: 0; } }
   .lb-top { display: flex; align-items: center; gap: 1rem; width: min(100%, 90rem); margin-inline: auto; }
-  .lb-title { flex: 1; min-width: 0; font-size: clamp(1.4rem, 2.4vw, 2rem); line-height: 1.1; }
+  .lb-title { flex: 1; min-width: 0; font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.15; }
   .lb-counter { font-size: var(--fs-micro); letter-spacing: var(--ls-micro); color: rgb(244 239 231 / 60%); }
   .lb-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: .5rem;

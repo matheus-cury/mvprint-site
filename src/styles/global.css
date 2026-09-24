@@ -21,9 +21,8 @@
   --color-wa-deep: #128C4A;
 
   --font-sans: "Instrument Sans", "Instrument Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Bricolage Grotesque", "Bricolage Grotesque Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Instrument Sans", "Instrument Sans Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-grotesk: "Bricolage Grotesque", "Bricolage Grotesque Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -33,18 +32,6 @@
 /* Fontes reserva com a mesma largura média das fontes do site (medida com
    canvas): enquanto as fontes do Google carregam, as linhas quebram igual e a
    página não "pula" na troca. */
-@font-face {
-  font-family: "Instrument Serif Fallback";
-  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Times");
-  font-style: normal;
-  size-adjust: 83.5%;
-}
-@font-face {
-  font-family: "Instrument Serif Fallback";
-  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("Times Italic");
-  font-style: italic;
-  size-adjust: 96.8%;
-}
 @font-face {
   font-family: "Bricolage Grotesque Fallback";
   src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Helvetica Bold");
@@ -181,28 +168,20 @@ html.menu-open { overflow: hidden; }
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: .92;
-  letter-spacing: -0.02em;
-  font-feature-settings: "kern", "liga", "dlig";
-}
-.display em, .display i { font-style: italic; letter-spacing: -0.01em; }
-
-/* Limitado também pela altura da tela, para o botão principal caber na primeira dobra. */
-.t-hero { font-size: clamp(3.4rem, min(10.4vw, 16.5vh), 10rem); line-height: .86; letter-spacing: -0.035em; }
-.t-h2 { font-size: clamp(2.2rem, 3.7vw, 3.7rem); line-height: 1; letter-spacing: -0.025em; }
-.t-h3 { font-size: clamp(2.1rem, 3.8vw, 3.75rem); line-height: .95; letter-spacing: -0.02em; }
-.t-h4 { font-size: clamp(1.7rem, 2.4vw, 2.4rem); line-height: 1; letter-spacing: -0.015em; }
-
-/* Grotesca (Bricolage) nos títulos de frase longa, onde a serifa condensada
-   ficava apertada. O destaque vira cor em vez de itálico. */
-.display.grotesk {
-  font-family: var(--font-grotesk); font-weight: 600;
-  line-height: 1.02; letter-spacing: -0.035em;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   font-feature-settings: "kern", "liga";
 }
-.t-h2.grotesk { font-size: clamp(2rem, 3.25vw, 3.25rem); }
-.display.grotesk em { font-style: normal; letter-spacing: inherit; color: var(--title-accent); }
+/* O trecho em destaque dos títulos vira cor (roxo-magenta da logo) em vez de itálico. */
+.display em, .display i { font-style: normal; letter-spacing: inherit; color: var(--title-accent); }
+
+/* Limitado também pela altura da tela, para o botão principal caber na primeira dobra. */
+.t-hero { font-size: clamp(3rem, min(8vw, 13vh), 8rem); line-height: .95; letter-spacing: -0.045em; }
+.t-h2 { font-size: clamp(2rem, 3.25vw, 3.25rem); line-height: 1.02; letter-spacing: -0.035em; }
+.t-h3 { font-size: clamp(1.8rem, 3.2vw, 3.2rem); line-height: 1; letter-spacing: -0.035em; }
+.t-h4 { font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.05; letter-spacing: -0.03em; }
+
 
 .eyebrow {
   font-family: var(--font-mono);

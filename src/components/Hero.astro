@@ -135,11 +135,17 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   }
   .hero-inks { display: inline-flex; gap: .3rem; }
 
+  .hero-title { letter-spacing: -0.04em; }
   /* Compensa o recuo natural do V/A para a tinta alinhar com o resto do texto. */
-  .hero-title { margin-left: .02em; }
+  .hero-title { margin-left: .01em; }
   .hero-title .line { display: block; overflow: hidden; padding: .02em .12em .16em .04em; margin: -.02em -.12em -.16em -.04em; }
   .hero-title .line-in { display: block; }
-  .hero-title .reg { font-style: italic; margin-right: -.04em; }
+  /* "imprime.": na entrada, ciano, magenta e amarelo se sobrepõem como numa impressão
+     (preto); depois as chapas somem e fica o roxo-magenta dos outros títulos. */
+  .hero-title .reg { color: var(--title-accent); transition: color .9s ease; }
+  .hero-title .reg::before, .hero-title .reg::after { opacity: 0; transition: opacity .9s ease; }
+  .hero-title .reg.is-ink { color: var(--color-yellow); }
+  .hero-title .reg.is-ink::before, .hero-title .reg.is-ink::after { opacity: 1; }
   :global(.js) .hero-title .line-in { transform: translate3d(0, 108%, 0); transition: transform 1.5s var(--ease-expo) var(--d, 0s); }
   :global(.js) .hero-title .line.is-in .line-in { transform: none; }
   .hero-title .line.is-done { overflow: visible; }
@@ -161,7 +167,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     padding-top: 1.25rem;
     border-top: 1px solid var(--line);
   }
-  .hero-facts dt { font-family: var(--font-display); font-size: clamp(1.35rem, 2.2vw, 1.85rem); line-height: 1.05; letter-spacing: -0.01em; }
+  .hero-facts dt { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.6vw, 1.45rem); line-height: 1.1; letter-spacing: -0.02em; }
   .hero-facts dd { margin-top: .35rem; font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
 
   /* ---------- Prensa ---------- */
@@ -230,7 +236,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   .press-count { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); }
   .press-count b { color: var(--color-ink); font-weight: 500; }
   .press-label { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-  .press-client { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.05; }
+  .press-client { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1.1; letter-spacing: -0.02em; }
   .press-service { font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); margin-top: .25rem; }
   .press-controls { display: flex; gap: .4rem; }
   .press-btn {
@@ -315,7 +321,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     .hero-copy, .press { grid-row: 1 / span 2; display: grid; grid-template-rows: subgrid; }
     .hero-main { align-self: start; }
     .hero-kicker { margin-bottom: clamp(.9rem, 2.4vh, 1.8rem); }
-    .hero-title { font-size: clamp(3.2rem, min(8.6vw, 13.5vh), 9rem); }
+    .hero-title { font-size: clamp(2.8rem, min(8.4vw, 13.4vh), 8.6rem); }
     .hero-lede { margin-top: clamp(1rem, 2.8vh, 2rem); }
     .hero-actions { margin-top: clamp(1rem, 3vh, 2.2rem); }
     .press { width: min(100%, calc(var(--stage-h) * 1.1)); justify-self: end; }
@@ -323,5 +329,9 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     .press-stage { flex: 1 1 auto; aspect-ratio: auto; }
     .hero-facts, .press-caption { align-self: start; margin-top: 0; padding-top: 1.25rem; }
     .hero-foot { margin-top: var(--foot-gap); }
+  }
+  /* Desktop estreito (1024–1180px): o título fica em duas linhas para caber. */
+  @media (min-width: 1024px) and (max-width: 1180px) {
+    .hero-title { font-size: clamp(2.8rem, min(7vw, 12vh), 8.6rem); }
   }
 </style>
