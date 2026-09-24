@@ -59,6 +59,19 @@ src/
 - **Email:** atendimento@mvprint.com.br
 
 
+## Publicação final de 23/09/2026
+
+O novo front-end do Claude foi publicado a pedido de Math, com o filtro detalhado das 24 categorias restaurado. Código integrado pelo PR #4, commit `0f714ea8672828bd5b5b5533dc3fffcf0a90837d`.
+
+- Produção: https://mvprint.com.br — deployment `ad720408-ab0c-44ce-aeae-9accd2cae167`, projeto `mvprint-bh`.
+- Prévia validada: https://revisao-final.mvprint-bh.pages.dev — deployment `0c4d1a7e-4289-4808-a889-450a94856d52`.
+- Reversão imediata: `61e057fa-268b-42d8-acdd-3727d4dee6ef`, preservado no histórico de deployments.
+- Pacote publicado: 1.000 arquivos, 80.354.629 bytes; SHA-256 `ac506b4cd7ff816b26828e4c02550b17efa70beb323fc444a39b9fc49d06f00a`. O painel está no limite de arquivos: não remover fotos para acomodar novas adições; usar Wrangler se o pacote crescer.
+- Validação: CI completo aprovado, três páginas e 1.117 referências locais, 30 opções do filtro conferidas, menu/ampliação/teclado em computador e celular, formulário testado offline sem enviar mensagem. Domínio oficial com páginas 200, 404 real, redirecionamentos HTTPS/www e arquivos JS/CSS correspondentes ao pacote. Produção indexável; prévias com noindex.
+- Geração de imagens com memória limitada e gravação atômica, preservando as 242 fotos originais.
+
+Os registros da revisão inicial abaixo permanecem como histórico; o estado publicado acima é o atual.
+
 ## Manutenção e publicação (revisado em 23/09/2026)
 
 - Domínio: https://mvprint.com.br
@@ -74,7 +87,7 @@ src/
 
 1. Execute `npm ci` e `npm run build`.
 2. Faça primeiro um deploy de prévia no projeto `mvprint-bh` e confira menu, fotos, filtros e contato em computador e celular.
-3. Para o painel, a pasta tem que respeitar o limite de 1.000 arquivos. `python scripts/package-deploy.py mvprint-deploy.zip` cria um pacote com 993 arquivos neste estado do projeto; só exclui do pacote cópias de logos não usadas. O ZIP ultrapassa 25 MiB: extraia-o e selecione a **pasta** no painel, pois o upload do ZIP inteiro excede o limite por arquivo.
+3. Para o painel, a pasta tem que respeitar o limite de 1.000 arquivos. `python scripts/package-deploy.py mvprint-deploy.zip` cria um pacote com 1.000 arquivos neste estado do projeto; só exclui do pacote cópias de logos não usadas. O ZIP ultrapassa 25 MiB: extraia-o e selecione a **pasta** no painel, pois o upload do ZIP inteiro excede o limite por arquivo.
 4. Alternativamente, com Wrangler autenticado, publique `dist` por CLI (limite maior): `npx wrangler pages deploy dist --project-name mvprint-bh --branch nome-da-previa`. Só use `--branch main` para a publicação final.
 5. Confira `https://mvprint.com.br`, `/portfolio`, uma URL inexistente (deve retornar 404) e os cabeçalhos/cache depois da publicação.
 6. Reversão: no painel Pages, use o deployment anterior. A produção anterior a esta revisão era `cb57935b-b207-42b5-8234-84b3668470cc`.
@@ -97,7 +110,7 @@ Em 23/09/2026, Math definiu: Claude cuida do design/front-end; Asuna/Codex cuida
 - Validação local após mudar o front-end: `npm run build` e `python scripts/validate-build.py`. Depois, testar menu, filtros, ampliação de fotos e contato no navegador em computador e celular.
 - A geração de imagens refaz variantes se a receita mudar e remove somente derivados órfãos. Originais permanecem em `public/images/portfolio`.
 - O arquivo ZIP do painel deve ficar fora de `dist`. A ferramenta interrompe se ultrapassar 1.000 arquivos; nesse caso usar Wrangler com `dist`, sem remover fotos para caber. O artifact completo do GitHub também deve ser publicado por Wrangler se exceder 1.000 arquivos.
-- Produção do domínio principal: `mvprint-bh`, deployment `61e057fa-268b-42d8-acdd-3727d4dee6ef`. Reversão ao site anterior à revisão #1: `cb57935b-b207-42b5-8234-84b3668470cc`.
+- Produção do domínio principal: `mvprint-bh`, deployment `ad720408-ab0c-44ce-aeae-9accd2cae167`. Reversão imediata: `61e057fa-268b-42d8-acdd-3727d4dee6ef`. Versão anterior à revisão #1 também preservada: `cb57935b-b207-42b5-8234-84b3668470cc`.
 - Há integrações herdadas de preview com Netlify e outro projeto Pages (`mvprint-site`). Não confundir um check verde desses serviços com publicação no domínio principal.
 - Nunca incluir tokens no código ou no artifact. Deploy automático ao projeto principal exigiria credencial específica e configuração separada; isso não está habilitado.
 
