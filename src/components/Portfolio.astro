@@ -1,148 +1,80 @@
 ---
-// Trabalhos em destaque: parede editorial em colunas desencontradas (rolagem normal).
+// Trabalhos em destaque: grade uniforme de seis cartões.
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import SplitText from './SplitText.astro';
-import ResponsiveImage from './ResponsiveImage.astro';
 import { featured, totalPhotos, categories } from '../data/portfolio';
-import { imageSize, photoSrc } from '../lib/images';
+import { fullWebp, imageSize, optimized, photoSrc } from '../lib/images';
 
-const works = await Promise.all(featured.map(async (item, index) => {
-  const size = await imageSize(item.image);
-  return { ...item, index, ...size };
-}));
-const pad = (value: number) => String(value).padStart(2, '0');
-
-// Distribuição feita à mão para as três colunas terminarem quase juntas
-// (retratos e paisagens alternados). A terceira coluna fecha com o selo.
-const columns = [
-  [works[0], works[3], works[7]],
-  [works[1], works[4], works[6]],
-  [works[2], works[5]],
-];
+const works = await Promise.all(featured.map(async item => ({ ...item, ...(await imageSize(item.image)) })));
 ---
 
 <section id="portfolio" class="sec sec-ink featured" aria-labelledby="featured-title">
   <div class="wrap">
-    <p class="rule"><span><b>Trabalhos</b></span><Icon name="reg" class="reg-mark" /></p>
-
+    <p class="rule"><span><b>Trabalhos</b></span></p>
     <div class="featured-head">
       <SplitText id="featured-title" class="display t-h2" text="Trabalhos que *viram paisagem.*" />
-      <div class="featured-aside" data-reveal style="--d:.15s">
-        <p class="lede">Uma seleção de projetos para marcas de BH e do Brasil. No portfólio completo são {totalPhotos} fotos em {categories.length} categorias.</p>
-        <Button href="/portfolio" label="Ver portfólio completo" variant="paper" />
-      </div>
+      <p class="lede" data-reveal style="--d:.15s">Uma seleção de projetos para marcas de BH e do Brasil. No portfólio completo são {totalPhotos} fotos em {categories.length} categorias.</p>
     </div>
 
-    <div class="wall">
-      {columns.map((column, columnIndex) => (
-        <div class={`wall-col wall-col-${columnIndex + 1}`}>
-          {column.map(work => (
-            <a href={`/portfolio#${work.slug}`} class="work" data-cursor="view" data-cursor-label="Ver projeto" data-reveal style={`--d:${columnIndex * 0.08}s`}>
-              <figure class="work-media" style={`aspect-ratio:${work.width} / ${work.height}`}>
-                <ResponsiveImage
-                  src={photoSrc(work.image)}
-                  alt={`${work.service} para ${work.client}, feito pela MV Print`}
-                  width={work.width}
-                  height={work.height}
-                  sizes="(min-width: 900px) 30vw, 46vw"
-                  class="work-img"
-                />
-              </figure>
-              <span class="work-meta">
-                <span class="work-num mono">{pad(work.index + 1)}</span>
-                <span class="work-text">
-                  <span class="work-client display">{work.client}</span>
-                  <span class="work-service mono">{work.service}</span>
-                </span>
-                <Icon name="arrow-up-right" class="work-arrow" />
+    <ul class="works" role="list">
+      {works.map((work, index) => (
+        <li data-reveal style={`--d:${(index % 3) * 0.08}s`}>
+          <a href={`/portfolio#${work.slug}`} class="work">
+            <span class="work-media" style={`--fx:${work.focus[0] * 100}%;--fy:${work.focus[1] * 100}%;--z:${work.zoom}`}>
+              <picture>
+                <source type="image/webp" srcset={`${optimized(work.image, 480)} 480w, ${optimized(work.image, 960)} 960w, ${fullWebp(work.image)} ${work.width}w`} sizes="(min-width: 1024px) 30vw, 46vw" />
+                <img src={photoSrc(work.image)} alt={`${work.service} para ${work.client}, feito pela MV Print`} width={work.width} height={work.height} loading="lazy" decoding="async" />
+              </picture>
+            </span>
+            <span class="work-meta">
+              <span>
+                <span class="work-client display">{work.client}</span>
+                <span class="work-service">{work.service}</span>
               </span>
-            </a>
-          ))}
-          {columnIndex === 2 && (
-            <a href="/portfolio" class="wall-end" data-reveal style="--d:.2s" data-cursor="view" data-cursor-label="Abrir">
-              <span class="seal" data-magnetic="0.3" aria-hidden="true">
-                <svg class="seal-text" viewBox="0 0 200 200">
-                  <defs><path id="seal-path" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
-                  <text><textPath href="#seal-path" startOffset="0">PORTFÓLIO COMPLETO · {totalPhotos} FOTOS · MV PRINT · </textPath></text>
-                </svg>
-                <span class="seal-core"><Icon name="arrow-up-right" /></span>
-              </span>
-              <span class="wall-end-text">
-                <span class="display">Ver os {totalPhotos} trabalhos</span>
-                <span class="mono">{categories.length} categorias</span>
-              </span>
-            </a>
-          )}
-        </div>
+              <span class="work-arrow"><Icon name="arrow-up-right" /></span>
+            </span>
+          </a>
+        </li>
       ))}
+    </ul>
+
+    <div class="works-cta" data-reveal>
+      <Button href="/portfolio" label={`Ver os ${totalPhotos} trabalhos`} variant="paper" size="lg" />
     </div>
   </div>
 </section>
 
 <style>
-  .featured-head {
-    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
-    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
-  }
-  .featured-aside { display: grid; gap: 1.6rem; justify-items: start; }
+  .featured-head { display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem; margin: 0 0 clamp(2.5rem, 5vw, 4rem); }
 
-  /* Celular e tablet: duas colunas que se equilibram sozinhas. */
-  .wall { columns: 2; column-gap: clamp(.75rem, 2.5vw, 1.5rem); }
-  .wall-col { display: contents; }
-  .work, .wall-end { break-inside: avoid; margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
-
-  /* Computador: três colunas desencontradas, como uma parede de provas. */
-  @media (min-width: 900px) {
-    .wall { columns: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
-    .wall-col { display: grid; gap: clamp(2.5rem, 4.5vw, 4.5rem); }
-    .wall-col-2 { margin-top: clamp(4rem, 12vw, 11rem); }
-    .wall-col-3 { margin-top: clamp(2rem, 5vw, 4.5rem); }
-    .work, .wall-end { margin-bottom: 0; }
-  }
+  .works { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(1rem, 2.5vw, 2rem); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 1024px) { .works { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
   .work { display: block; }
-  .work-media { margin: 0; overflow: hidden; border-radius: 3px; background: #231d18; }
+  .work-media { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 16px; background: #231d18; }
   .work-media :global(picture), .work-media :global(img) { display: block; width: 100%; height: 100%; }
-  .work-media :global(.work-img) { object-fit: cover; transition: transform 1.2s var(--ease-expo), opacity .9s var(--ease-expo); }
-  .work-meta { display: flex; align-items: flex-start; gap: .8rem; margin-top: 1rem; }
-  .work-num { font-size: .68rem; letter-spacing: .1em; color: rgb(244 239 231 / 50%); padding-top: .45rem; }
-  .work-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-  .work-client { font-size: clamp(1.35rem, 2.2vw, 2.1rem); line-height: 1.05; }
-  .work-service { margin-top: .3rem; font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
-  .work :global(.work-arrow) { width: 1.3rem; height: 1.3rem; margin-top: .35rem; flex: none; opacity: .4; transition: transform .6s var(--ease-expo), opacity .3s; }
+  .work-media :global(img) {
+    object-fit: cover; object-position: var(--fx) var(--fy);
+    transform-origin: var(--fx) var(--fy); transform: scale(var(--z));
+    transition: transform 1.1s var(--ease-expo);
+  }
+  .work-meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+  .work-client { display: block; font-size: clamp(1.3rem, 2vw, 1.75rem); line-height: 1.1; }
+  .work-service { display: block; margin-top: .3rem; font-size: .78rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
+  .work-arrow {
+    display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-dark); transition: background-color .3s, color .3s, transform .5s var(--ease-expo);
+  }
+  .work-arrow :global(svg) { width: 1rem; height: 1rem; }
   @media (hover: hover) {
-    .work:hover .work-media :global(.work-img) { transform: scale(1.045); }
-    .work:hover :global(.work-arrow) { opacity: 1; transform: rotate(45deg); }
+    .work:hover .work-media :global(img) { transform: scale(calc(var(--z) * 1.06)); }
+    .work:hover .work-arrow { background: var(--color-paper); color: var(--color-ink); transform: rotate(45deg); }
   }
   @media (max-width: 599px) {
-    .work-num, .work :global(.work-arrow) { display: none; }
-    .work-meta { margin-top: .6rem; }
-    .work-client { font-size: 1.15rem; }
-    .work-service { font-size: .58rem; letter-spacing: .08em; }
+    .work-arrow { display: none; }
+    .work-client { font-size: 1.1rem; }
+    .work-service { font-size: .66rem; letter-spacing: .06em; }
   }
-
-  /* Selo que fecha a parede */
-  .wall-end {
-    display: grid; justify-items: center; gap: 1.2rem;
-    padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
-    border: 1px solid var(--line-dark); border-radius: 3px;
-    text-align: center;
-    transition: background-color .4s, border-color .4s;
-  }
-  .wall-end:hover { background: rgb(244 239 231 / 5%); border-color: rgb(244 239 231 / 30%); }
-  .seal { position: relative; display: grid; place-items: center; width: clamp(8.5rem, 14vw, 12rem); aspect-ratio: 1; translate: var(--mx, 0) var(--my, 0); transition: translate .6s var(--ease-expo); }
-  .seal-text { position: absolute; inset: 0; width: 100%; height: 100%; animation: seal-spin 22s linear infinite; }
-  .seal-text text { font-family: var(--font-mono); font-size: 13.5px; letter-spacing: 3.2px; fill: var(--color-paper); }
-  .seal-core {
-    display: grid; place-items: center; width: 44%; aspect-ratio: 1; border-radius: 50%;
-    background: var(--color-magenta); color: #fff;
-    transition: transform .6s var(--ease-expo), background-color .3s, color .3s;
-  }
-  .seal-core :global(svg) { width: 36%; height: 36%; }
-  .wall-end:hover .seal-core { transform: scale(1.12) rotate(45deg); background: var(--color-yellow); color: var(--color-ink); }
-  @keyframes seal-spin { to { transform: rotate(360deg); } }
-  .wall-end-text { display: grid; gap: .3rem; }
-  .wall-end-text .display { font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.05; }
-  .wall-end-text .mono { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
+  .works-cta { display: flex; justify-content: center; margin-top: clamp(2.5rem, 5vw, 4rem); }
 </style>

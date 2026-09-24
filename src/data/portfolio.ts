@@ -437,14 +437,13 @@ export const heroPrints = [
   { image: 'cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae', client: 'CBF', service: 'Brasão e letreiro gigantes', slug: 'cbf', focus: [0.4, 0.3], zoom: 1.12 },
 ] as const;
 
-/** Galeria horizontal da home. Rótulos conferidos foto a foto. */
+/** Trabalhos em destaque na home: seis cartões do mesmo tamanho (4:5).
+ *  focus/zoom enquadram cada foto e cortam marcas d'água da câmera. */
 export const featured = [
-  { image: 'cbf-a12901df-096c-463a-a874-f648c684dd2a', client: 'CBF', service: 'Letreiro e brasão gigantes', slug: 'cbf' },
-  { image: 'tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151', client: 'Tokai', service: 'Tapume em shopping', slug: 'tapumes' },
-  { image: 'carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e', client: 'Mit Car · Mitsubishi', service: 'Plotagem veicular', slug: 'carros' },
-  { image: 'ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4', client: 'AeC', service: 'Adesivação de ambiente', slug: 'ambientes' },
-  { image: 'vitrines-005b7af3-22c3-48a3-9920-d1b127e63283', client: 'Zak Outlet', service: 'Vitrine promocional', slug: 'vitrines' },
-  { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', client: 'Ecad', service: 'Adesivação de parede', slug: 'ambientes' },
-  { image: 'veiculos-08fb2026-b534-49f6-9ad6-00be78ba9381', client: 'Brasilencorp · Cemig', service: 'Frota plotada', slug: 'veiculos' },
-  { image: 'comunicacao-visual-da9bcbae-5608-4c0b-9d5b-e09ceacc799b', client: 'Habitus', service: 'Comunicação visual', slug: 'comunicacao-visual' },
+  { image: 'tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151', client: 'Tokai', service: 'Tapume em shopping', slug: 'tapumes', focus: [0.6, 0.15], zoom: 1.12 },
+  { image: 'carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e', client: 'Mit Car · Mitsubishi', service: 'Plotagem veicular', slug: 'carros', focus: [0.5, 0.3], zoom: 1.05 },
+  { image: 'comunicacao-visual-da9bcbae-5608-4c0b-9d5b-e09ceacc799b', client: 'Habitus', service: 'Comunicação visual', slug: 'comunicacao-visual', focus: [0.5, 0.35], zoom: 1.05 },
+  { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', client: 'Ecad', service: 'Adesivação de parede', slug: 'ambientes', focus: [0.72, 0.4], zoom: 1 },
+  { image: 'etiquetas-e874257a-2bab-4c83-9571-6114d97e167d', client: 'Beef Store', service: 'Etiquetas personalizadas', slug: 'etiquetas', focus: [0.7, 0.2], zoom: 1.1 },
+  { image: 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e', client: 'Infinit Telecom', service: 'Envelopamento de frota', slug: 'envelopamento', focus: [0.75, 0.25], zoom: 1.12 },
 ] as const;
