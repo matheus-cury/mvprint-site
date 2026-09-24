@@ -1,41 +1,45 @@
 ---
-// Antes e depois. Se existir public/images/antes-depois/van-antes.jpg (mesmo
-// enquadramento da foto da van da Infinit), o par da van entra sozinho no build.
+// Antes e depois. O "antes" é uma imagem feita a partir da foto real do trabalho
+// (mesmo enquadramento). Basta salvar em public/images/antes-depois/antes-<chave>.jpg
+// com uma das chaves abaixo: a seção aparece sozinha no próximo build.
 import fs from 'node:fs';
 import path from 'node:path';
 import Icon from './Icon.astro';
 import SplitText from './SplitText.astro';
+import { imageSize } from '../lib/images';
 
-const vanBefore = '/images/antes-depois/van-antes.jpg';
-const hasVan = fs.existsSync(path.resolve(process.cwd(), 'public' + vanBefore));
-const van = 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e';
+const PRESETS = {
+  ecad: { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', title: 'Da parede branca *ao palco.*', text: 'Arraste e veja o escritório do Ecad antes e depois da adesivação da parede.', caption: 'Ecad · Adesivação de ambiente' },
+  sala: { image: 'ambientes-7e5f5955-35aa-4945-8141-652b11a622c4', title: 'A sala ganhou *uma cidade.*', text: 'Arraste e veja a sala antes e depois do painel fotográfico na parede.', caption: 'Painel fotográfico · Decoração' },
+  musica: { image: 'ambientes-1a9e665e-db4a-4544-ae9f-0503bd5cc9f5', title: 'O escritório *ganhou ritmo.*', text: 'Arraste e veja o escritório antes e depois da adesivação da parede.', caption: 'Adesivação de ambiente' },
+  van: { image: 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e', title: 'Do branco *à marca na rua.*', text: 'Arraste e compare a van da Infinit Telecom antes e depois da plotagem completa.', caption: 'Infinit Telecom · Plotagem veicular' },
+} as const;
+
+const folder = path.resolve(process.cwd(), 'public/images/antes-depois');
+const key = (Object.keys(PRESETS) as (keyof typeof PRESETS)[]).find(name => fs.existsSync(path.join(folder, `antes-${name}.jpg`)));
+const preset = key ? PRESETS[key] : null;
+const before = key ? `/images/antes-depois/antes-${key}.jpg` : '';
+const size = preset ? await imageSize(preset.image) : { width: 4, height: 3 };
 const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
-const pair = {
-  title: 'Do branco *à marca na rua.*',
-  text: 'Arraste e compare a van da Infinit Telecom antes e depois da plotagem completa.',
-  caption: 'Infinit Telecom · Plotagem veicular',
-  beforeAlt: 'Antes: van branca sem plotagem',
-  afterAlt: 'Depois: van da Infinit Telecom plotada pela MV Print',
-};
 ---
 
-{hasVan && (<section id="antes-depois" class="sec ba-sec" aria-labelledby="ba-title">
+{preset && (<section id="antes-depois" class="sec ba-sec" aria-labelledby="ba-title">
   <div class="wrap">
     <p class="rule"><span><b>Antes &amp; depois</b></span><Icon name="reg" class="reg-mark" /></p>
 
     <div class="ba-head">
-      <SplitText id="ba-title" class="display t-h2" text={pair.title} />
-      <p class="lede" data-reveal style="--d:.15s">{pair.text}</p>
+      <SplitText id="ba-title" class="display t-h2" text={preset.title} />
+      <p class="lede" data-reveal style="--d:.15s">{preset.text}</p>
     </div>
 
-    <div class="ba" data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip" style="--pos:50%">
+    <div class="ba" style={`--ratio:${size.width} / ${size.height}`} data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip" style="--pos:50%">
       <div class="ba-canvas">
         <picture class="ba-img">
-          <source type="image/webp" srcset={`/images/optimized/${van}-960.webp 960w, /images/portfolio/${van}.webp 1600w`} sizes={sizes} />
-          <img src={`/images/portfolio/${van}.jpg`} alt={pair.afterAlt} width="1600" height="1200" loading="lazy" decoding="async" />
+          <source type="image/webp" srcset={`/images/optimized/${preset.image}-960.webp 960w, /images/portfolio/${preset.image}.webp ${size.width}w`} sizes={sizes} />
+          <img src={`/images/portfolio/${preset.image}.jpg`} alt={`Depois: ${preset.caption}, trabalho da MV Print`} width={size.width} height={size.height} loading="lazy" decoding="async" />
         </picture>
         <picture class="ba-img ba-before">
-          <img src={vanBefore} alt={pair.beforeAlt} width="1600" height="1200" loading="lazy" decoding="async" />
+          <img src={before} alt="Antes: o mesmo lugar sem a aplicação" width={size.width} height={size.height} loading="lazy" decoding="async" />
         </picture>
       </div>
       <span class="ba-tag ba-tag-l mono" aria-hidden="true">Antes</span>
@@ -47,7 +51,7 @@ const pair = {
     </div>
 
     <div class="ba-foot" data-reveal style="--d:.1s">
-      <p class="mono">{pair.caption}</p>
+      <p class="mono">{preset.caption}</p>
       <p class="mono ba-hint"><Icon name="drag" /> Arraste para comparar</p>
     </div>
   </div>
@@ -62,7 +66,7 @@ const pair = {
 
   .ba {
     position: relative;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--ratio, 4 / 3);
     width: min(100%, calc(84vh * 4 / 3));
     margin-inline: auto;
     overflow: hidden;
