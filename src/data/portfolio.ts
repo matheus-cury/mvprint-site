@@ -463,7 +463,7 @@ export const heroPrints = [
 /** Trabalhos em destaque na home: seis cartões do mesmo tamanho (4:5).
  *  focus/zoom enquadram cada foto e cortam marcas d'água da câmera. */
 export const featured = [
-  { image: 'tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151', client: 'Tokai', service: 'Tapume em shopping', slug: 'tapumes', focus: [0.6, 0.15], zoom: 1.12 },
+  { image: 'tapumes-3ebc811e-5197-4b10-84bc-aaf8098fd69d', client: 'LEGO', service: 'Tapume em shopping', slug: 'tapumes', focus: [0.82, 0.37], zoom: 1.6 },
   { image: 'carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e', client: 'Mit Car · Mitsubishi', service: 'Plotagem veicular', slug: 'carros', focus: [0.5, 0.3], zoom: 1.05 },
   { image: 'comunicacao-visual-da9bcbae-5608-4c0b-9d5b-e09ceacc799b', client: 'Habitus', service: 'Comunicação visual', slug: 'comunicacao-visual', focus: [0.5, 0.35], zoom: 1.05 },
   { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', client: 'Ecad', service: 'Adesivação de parede', slug: 'ambientes', focus: [0.72, 0.4], zoom: 1 },
