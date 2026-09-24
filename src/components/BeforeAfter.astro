@@ -59,10 +59,9 @@ const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
 
 <style>
   .ba-head {
-    display: grid; gap: 1.5rem 4rem; align-items: end;
-    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
   }
-  @media (min-width: 1024px) { .ba-head { grid-template-columns: minmax(0, 1.3fr) minmax(0, .9fr); } }
 
   .ba {
     position: relative;

@@ -82,10 +82,9 @@ const columns = [
 
 <style>
   .featured-head {
-    display: grid; gap: 2rem 4rem; align-items: end;
-    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(3rem, 6vw, 5.5rem);
+    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
   }
-  @media (min-width: 1024px) { .featured-head { grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr); } }
   .featured-aside { display: grid; gap: 1.6rem; justify-items: start; }
 
   /* Celular e tablet: duas colunas que se equilibram sozinhas. */

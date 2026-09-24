@@ -50,10 +50,9 @@ const clients = [
 
 <style>
   .clients-head {
-    display: grid; gap: 1.5rem 4rem; align-items: end;
-    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4.5rem);
+    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
   }
-  @media (min-width: 1024px) { .clients-head { grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); } }
   .clients-head strong { font-weight: 600; color: var(--color-ink); }
 
   .logo-wall {

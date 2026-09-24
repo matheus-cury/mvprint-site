@@ -104,11 +104,9 @@ const services = [
 
 <style>
   .services-head {
-    display: grid; gap: 2rem 4rem; align-items: end;
-    margin-top: clamp(2rem, 4vw, 3.5rem);
-    margin-bottom: clamp(3rem, 6vw, 5.5rem);
+    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
   }
-  @media (min-width: 1024px) { .services-head { grid-template-columns: minmax(0, 1.45fr) minmax(0, .8fr); } }
   .services-aside { display: grid; gap: 1.6rem; justify-items: start; }
 
   .svc-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
@@ -130,7 +128,7 @@ const services = [
   }
   .svc-num { font-size: .75rem; letter-spacing: .1em; color: var(--color-muted); padding-top: .8rem; transition: color .4s; }
   .svc-title {
-    font-size: clamp(2.3rem, 5.2vw, 5rem); line-height: .95; letter-spacing: -0.025em;
+    font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -0.015em;
     transition: transform .8s var(--ease-expo);
   }
   .svc-desc { margin-top: .9rem; max-width: 34rem; color: var(--color-ink-2); }

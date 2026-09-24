@@ -21,10 +21,9 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
     </a>
 
     <nav class="nav" aria-label="Menu principal">
-      {links.map((link, index) => (
+      {links.map(link => (
         <a href={link.href} class="nav-link">
           <span class="roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
-          <sup aria-hidden="true">{String(index + 1).padStart(2, '0')}</sup>
         </a>
       ))}
     </nav>
