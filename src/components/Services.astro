@@ -114,8 +114,8 @@ const services = [
   .svc {
     position: relative;
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr);
-    gap: .5rem 1rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .6rem;
     padding: clamp(1.6rem, 3vw, 2.4rem) 0;
     border-bottom: 1px solid var(--line-strong);
     isolation: isolate;
@@ -126,17 +126,17 @@ const services = [
     clip-path: inset(100% 0 0 0);
     transition: clip-path .7s var(--ease-expo);
   }
-  .svc-num { font-size: .75rem; letter-spacing: .1em; color: var(--color-muted); padding-top: .8rem; transition: color .4s; }
+  .svc-num { font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--color-magenta-deep); transition: color .4s; }
   .svc-title {
     font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -0.015em;
     transition: transform .8s var(--ease-expo);
   }
-  .svc-desc { margin-top: .9rem; max-width: 34rem; color: var(--color-ink-2); }
+  .svc-desc { margin-top: .6rem; max-width: 34rem; color: var(--color-ink-2); }
   .svc-tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 1.1rem 0 0; padding: 0; }
 
-  .svc-thumb { grid-column: 2; aspect-ratio: 4 / 3; border-radius: 4px; margin: .8rem 0 0; max-width: 28rem; }
+  .svc-thumb { aspect-ratio: 16 / 9; border-radius: 10px; margin: .8rem 0 0; max-width: 28rem; }
 
-  .svc-actions { grid-column: 2; display: flex; align-items: center; gap: 1.5rem; margin-top: 1.2rem; }
+  .svc-actions { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.2rem; }
   .svc-link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; font-size: .95rem; }
   .svc-link :global(svg) { width: 1rem; height: 1rem; transition: transform .5s var(--ease-expo); }
   .svc-link-main {
@@ -157,36 +157,14 @@ const services = [
     .svc-desc { margin-top: 0; }
     .svc-tags { grid-column: 2; margin-top: 0; }
     .svc-title { grid-row: span 2; }
-    .svc-thumb { grid-column: 3; margin: 0; max-width: none; width: 220px; }
+    .svc-thumb { grid-column: 3; margin: 0; max-width: none; width: 220px; aspect-ratio: 4 / 3; border-radius: 6px; }
     .svc-actions { grid-column: 4; flex-direction: column; align-items: flex-end; gap: .8rem; margin-top: 0; }
-    .svc-num { padding-top: 0; }
+    .svc-num { font-weight: 400; color: var(--color-muted); }
   }
 
-  /* Título registrado (preto) em repouso; no hover as chapas C, M e Y desalinham. */
-  .svc-title .reg, .svc-title .reg::before, .svc-title .reg::after { transition: transform .7s var(--ease-expo); }
   @media (hover: hover) and (min-width: 1024px) {
     .svc:hover::before { clip-path: inset(0 0 0 0); }
     .svc:hover .svc-title { transform: translate3d(1.25rem, 0, 0); }
     .svc:hover .svc-num { color: var(--color-magenta-deep); }
   }
-
-  /* Foto flutuante que segue o cursor */
-  .svc-float {
-    position: fixed; left: 0; top: 0; z-index: 30;
-    width: clamp(240px, 22vw, 340px); aspect-ratio: 4 / 3;
-    pointer-events: none;
-    opacity: 0; scale: .6;
-    transition: opacity .35s, scale .6s var(--ease-expo);
-    border-radius: 4px; overflow: hidden;
-    box-shadow: 0 40px 60px -30px rgb(22 18 14 / 55%);
-    display: none;
-  }
-  @media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .svc-float { display: block; } }
-  .svc-float.is-on { opacity: 1; scale: 1; }
-  .svc-float img {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    opacity: 0; transform: scale(1.12);
-    transition: opacity .45s, transform .9s var(--ease-expo);
-  }
-  .svc-float img.is-active { opacity: 1; transform: none; }
 </style>

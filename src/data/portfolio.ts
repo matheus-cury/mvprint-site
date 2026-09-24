@@ -41,11 +41,11 @@ const RAW: Omit<Category, 'blurb'>[] = [
     name: "Projeto CBF",
     slug: "cbf",
     images: [
+      "cbf-a12901df-096c-463a-a874-f648c684dd2a",
+      "cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae",
       "cbf-25013018-690f-4c02-92ce-555cd6099c28",
       "cbf-59f4ab6b-5297-42e5-b6df-2b062b85c6d9",
       "cbf-6ba607eb-88c2-4116-a38f-9d507722c269",
-      "cbf-a12901df-096c-463a-a874-f648c684dd2a",
-      "cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae",
       "cbf-dd3fd591-da0a-46e0-ac79-6b2dd408062b",
       "cbf-eba8c297-949b-47db-8caa-3b042f45e3a0",
     ],
@@ -429,12 +429,35 @@ export const categories: Category[] = RAW.map(category => ({ ...category, blurb:
 
 export const totalPhotos = categories.reduce((sum, category) => sum + category.images.length, 0);
 
+/** Filtros do portfólio: categorias parecidas ficam juntas num grupo só. */
+const GROUPS = [
+  { id: 'grandes-formatos', name: 'Grandes formatos', slugs: ['cbf', 'tapumes', 'lonas', 'backdrop', 'banners'] },
+  { id: 'veiculos-e-frotas', name: 'Veículos e frotas', slugs: ['veiculos', 'carros', 'carros-personalizados', 'envelopamento', 'parabrisas'] },
+  { id: 'fachadas-e-placas', name: 'Fachadas e placas', slugs: ['plotagens', 'comunicacao-visual', 'placas-pvc', 'placas-lonas', 'imobiliarios'] },
+  { id: 'ambientes-e-vitrines', name: 'Ambientes e vitrines', slugs: ['ambientes', 'vitrines', 'piso', 'recortes', 'remocao'] },
+  { id: 'pdv-e-impressos', name: 'PDV e impressos', slugs: ['campanhas', 'promocionais', 'etiquetas', 'blocos'] },
+];
+
+export interface Group { id: string; name: string; categories: Category[] }
+
+export const groups: Group[] = GROUPS.map(group => ({
+  id: group.id,
+  name: group.name,
+  categories: group.slugs.map(slug => {
+    const category = categories.find(item => item.slug === slug);
+    if (!category) throw new Error(`Categoria desconhecida no grupo ${group.id}: ${slug}`);
+    return category;
+  }),
+}));
+
+const ungrouped = categories.filter(category => !GROUPS.some(group => group.slugs.includes(category.slug)));
+if (ungrouped.length) throw new Error(`Categorias sem grupo: ${ungrouped.map(category => category.slug).join(', ')}`);
+
 /** Fotos do hero. focus/zoom enquadram o trabalho e cortam marcas d'água da câmera. */
 export const heroPrints = [
   { image: 'tapumes-0bdea117-6d17-4f14-a941-d86f00e78106', client: 'Eudora', service: 'Tapume de loja', slug: 'tapumes', focus: [1, 0.3], zoom: 1.3 },
   { image: 'veiculos-81cee948-1b99-4414-beba-0f71f45d20e9', client: 'CSN Mineração', service: 'Plotagem veicular', slug: 'veiculos', focus: [0.5, 0.3], zoom: 1.05 },
   { image: 'etiquetas-e9746b73-82b7-4c40-a31a-e58a5c49dab6', client: 'Trattoria Massas', service: 'Etiquetas personalizadas', slug: 'etiquetas', focus: [0.75, 0.2], zoom: 1.15 },
-  { image: 'cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae', client: 'CBF', service: 'Brasão e letreiro gigantes', slug: 'cbf', focus: [0.4, 0.3], zoom: 1.12 },
 ] as const;
 
 /** Trabalhos em destaque na home: seis cartões do mesmo tamanho (4:5).

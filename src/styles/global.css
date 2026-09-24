@@ -12,7 +12,7 @@
   --color-paper-3: #E1D6C3;
   --color-ink: #16120E;
   --color-ink-2: #2B251F;
-  --color-muted: #6B6157;
+  --color-muted: #5C534A;
   --color-cyan: #00A0E3;
   --color-magenta: #E6007E;
   --color-magenta-deep: #C8006E;
@@ -57,7 +57,7 @@
   --line-strong: rgb(22 18 14 / 28%);
   --line-dark: rgb(244 239 231 / 16%);
   --shadow-soft: 0 30px 60px -30px rgb(22 18 14 / 35%);
-  --grain-opacity: 0.4;
+  --grain-opacity: 0.16;
 }
 
 /* ---------- Base ---------- */
@@ -138,7 +138,7 @@ html.menu-open { overflow: hidden; }
 
 .sec {
   position: relative;
-  padding-block: clamp(5.5rem, 11vw, 10.5rem);
+  padding-block: clamp(4.5rem, 8vw, 7.5rem);
 }
 
 .sec-ink { background: var(--color-ink); color: var(--color-paper); }
@@ -170,7 +170,7 @@ html.menu-open { overflow: hidden; }
 
 /* Limitado também pela altura da tela, para o botão principal caber na primeira dobra. */
 .t-hero { font-size: clamp(3.4rem, min(10.4vw, 16.5vh), 10rem); line-height: .86; letter-spacing: -0.035em; }
-.t-h2 { font-size: clamp(2.5rem, 4.6vw, 4.6rem); line-height: 1; letter-spacing: -0.025em; }
+.t-h2 { font-size: clamp(2.2rem, 3.7vw, 3.7rem); line-height: 1; letter-spacing: -0.025em; }
 .t-h3 { font-size: clamp(2.1rem, 3.8vw, 3.75rem); line-height: .95; letter-spacing: -0.02em; }
 .t-h4 { font-size: clamp(1.7rem, 2.4vw, 2.4rem); line-height: 1; letter-spacing: -0.015em; }
 

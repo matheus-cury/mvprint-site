@@ -2,7 +2,7 @@
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import { getWhatsAppLink } from '../config/site';
-import { heroPrints, totalPhotos } from '../data/portfolio';
+import { heroPrints } from '../data/portfolio';
 import { fullWebp, imageSize, optimized, photoSrc } from '../lib/images';
 
 // Fotos em alta: 480/960 px do prebuild + o WebP inteiro para telas grandes e retina.
@@ -104,16 +104,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   </div>
 
   <div class="wrap hero-foot" data-reveal="fade" style="--d:.9s">
-    <a href="#servicos" class="hero-scroll mono"><span class="mouse" aria-hidden="true"><span class="mouse-wheel"></span></span>Role para ver</a>
-    <div class="hero-strip" aria-hidden="true">
-      <span class="mono">Barra de controle</span>
-      <span class="strip">
-        <i style="--c:var(--color-cyan)"></i><i style="--c:var(--color-magenta)"></i><i style="--c:var(--color-yellow)"></i><i style="--c:var(--color-ink)"></i>
-        <i style="--c:color-mix(in srgb, var(--color-cyan) 50%, white)"></i><i style="--c:color-mix(in srgb, var(--color-magenta) 50%, white)"></i><i style="--c:color-mix(in srgb, var(--color-yellow) 50%, white)"></i><i style="--c:color-mix(in srgb, var(--color-ink) 50%, white)"></i>
-        <i style="--c:#2E3192"></i><i style="--c:#ED1C24"></i><i style="--c:#00A651"></i><i style="--c:#231F20"></i>
-      </span>
-      <span class="mono">{totalPhotos} trabalhos no portfólio</span>
-    </div>
+    <a href="#clientes" class="hero-scroll mono"><span class="mouse" aria-hidden="true"><span class="mouse-wheel"></span></span>Role para ver</a>
   </div>
 </section>
 
@@ -230,24 +221,6 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   @keyframes carriage { from { left: 3%; } to { left: calc(97% - 52px); } }
 
 
-
-
-
-  .press-mark { position: absolute; width: 18px; height: 18px; color: var(--color-ink); opacity: .55; }
-  .press-mark :global(svg) { width: 100%; height: 100%; }
-  .press-mark-t { top: -32px; left: 50%; margin-left: -9px; }
-  .press-mark-b { bottom: -32px; left: 50%; margin-left: -9px; }
-  .press-mark-l { left: -32px; top: 50%; margin-top: -9px; }
-  .press-mark-r { right: -32px; top: 50%; margin-top: -9px; }
-  .press-slug {
-    position: absolute; left: 0; top: -30px;
-    font-size: .58rem; letter-spacing: .12em; color: var(--color-muted); white-space: nowrap;
-  }
-  @media (max-width: 640px) {
-    .press-mark-l, .press-mark-r { display: none; }
-    .press-slug { display: none; }
-  }
-
   .press-caption {
     display: flex; align-items: center; gap: 1rem;
     margin-top: 2.6rem;
@@ -285,7 +258,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
 
   .hero-foot {
     display: flex; align-items: center; justify-content: space-between; gap: 2rem;
-    margin-top: clamp(3rem, 6vw, 5rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
   }
   .hero-scroll { display: inline-flex; align-items: center; gap: .8rem; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--color-muted); }
   /* Mousezinho: a rodinha desce e some, convidando a rolar. */
@@ -293,12 +266,18 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   .mouse-wheel { position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--color-ink); animation: mouse-wheel 1.8s var(--ease-quart) infinite; }
   @keyframes mouse-wheel { 0% { opacity: 0; transform: translateY(-3px); } 25% { opacity: 1; } 70% { opacity: 1; transform: translateY(9px); } 100% { opacity: 0; transform: translateY(11px); } }
   .hero-scroll:hover { color: var(--color-ink); }
+  @media (max-width: 1023px) { .hero-foot { display: none; } }
 
-  .hero-strip { display: flex; align-items: center; gap: 1rem; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
-  .strip { display: flex; }
-  .strip i { width: 22px; height: 12px; background: var(--c); }
-  @media (max-width: 900px) {
-    .hero-strip .mono { display: none; }
-    .strip i { width: 16px; height: 10px; }
+  /* No celular a foto sobe para logo depois do título (no fim para vencer as margens acima). */
+  @media (max-width: 1023px) {
+    .hero-grid { gap: 0; }
+    .hero-copy { display: contents; }
+    .hero-kicker { order: 1; justify-self: start; }
+    .hero-title { order: 2; }
+    .press { order: 3; margin-top: 1.8rem; }
+    .hero-lede { order: 4; margin-top: 1.8rem; }
+    .hero-actions { order: 5; margin-top: 1.6rem; }
+    .hero-facts { order: 6; margin-top: 2.2rem; }
+    .press-caption { margin-top: 1.2rem; }
   }
 </style>

@@ -9,10 +9,11 @@ import { optimized } from '../lib/images';
 const founded = new Date(`${SITE.foundingDate}T00:00:00-03:00`);
 const years = Math.floor((Date.now() - founded.getTime()) / (365.25 * 24 * 3600 * 1000));
 
-const prints = [
+const prints: { image: string; alt: string; caption: string; crop?: string }[] = [
   { image: 'ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b', alt: 'Parede adesivada com desenho geométrico rosa e dourado', caption: 'Adesivo de parede' },
   { image: 'recortes-ae08b933-cb37-402e-a407-17a1e22a32e4', alt: 'Logo do Studio GS Fit em recorte preto sobre pastilhas', caption: 'Recorte · Studio GS Fit' },
-  { image: 'veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c', alt: 'Carro da Office plotado pela MV Print', caption: 'Plotagem · Office' },
+  // Zoom com origem no alto esconde a marca d'água da câmera (canto inferior esquerdo).
+  { image: 'recortes-e374e2ba-e03a-4805-be0d-eb0c95701c28', alt: 'Instalador da MV Print aplicando letreiro de recorte numa parede verde', caption: 'Instalação · Centro de Dança', crop: '--z:1.25;--o:60% 30%' },
 ];
 
 const stats = [
@@ -40,7 +41,7 @@ const format = (value: number) => value.toLocaleString('pt-BR');
         {prints.map((print, index) => (
           <figure class={`print print-${index + 1}`} data-parallax={[0.06, 0.12, 0.03][index]}>
             <span class="tape" aria-hidden="true"></span>
-            <img src={optimized(print.image, 480)} alt={print.alt} width="480" height="360" loading="lazy" decoding="async" />
+            <span class="print-media" style={print.crop}><img src={optimized(print.image, 480)} alt={print.alt} width="480" height="360" loading="lazy" decoding="async" /></span>
             <figcaption class="mono">{print.caption}</figcaption>
           </figure>
         ))}
@@ -78,7 +79,7 @@ const format = (value: number) => value.toLocaleString('pt-BR');
 
 <style>
   .about-grid {
-    display: grid; gap: clamp(3.5rem, 7vw, 7rem);
+    display: grid; gap: clamp(3rem, 6vw, 5.5rem);
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
     align-items: center;
   }
@@ -94,7 +95,8 @@ const format = (value: number) => value.toLocaleString('pt-BR');
     transform: translate3d(0, var(--py, 0), 0) rotate(var(--r));
     transition: transform 1.2s var(--ease-expo);
   }
-  .print img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .print-media { display: block; overflow: hidden; aspect-ratio: 4 / 3; }
+  .print img { width: 100%; height: 100%; object-fit: cover; transform: scale(var(--z, 1)); transform-origin: var(--o, 50% 50%); }
   .print figcaption { padding: .7rem 0 .8rem; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
   .print-1 { --r: -5deg; left: 0; top: 4%; }
   .print-2 { --r: 4deg; right: 0; top: 30%; z-index: 2; }
@@ -129,7 +131,7 @@ const format = (value: number) => value.toLocaleString('pt-BR');
 
   .stats {
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: clamp(4rem, 8vw, 7rem) 0 0;
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
     border-top: 1px solid var(--line-strong);
   }
   @media (min-width: 900px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

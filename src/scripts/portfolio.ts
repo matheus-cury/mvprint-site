@@ -37,19 +37,27 @@ export function initPortfolio() {
     });
   };
 
+  // Filtro aceita um grupo (chip) ou uma categoria (links da home, ex.: #tapumes).
+  const groupButton = (id: string) => filterButtons.find(button => id !== 'all' && button.dataset.filter === id);
+  const categorySection = (slug: string) => sections.find(section => section.dataset.category === slug);
+
   const applyFilter = (requested: string, animate = false) => {
-    const match = sections.find(section => section.dataset.category === requested);
-    const filter = match ? requested : 'all';
+    const group = groupButton(requested);
+    const category = group ? undefined : categorySection(requested);
+    const active = group?.dataset.filter ?? category?.dataset.group ?? 'all';
     if (lightbox?.open) lightbox.close();
-    filterButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
-    sections.forEach(section => { section.hidden = filter !== 'all' && section.dataset.category !== filter; });
-    visible = items.filter(item => filter === 'all' || item.dataset.category === filter);
+    filterButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === active)));
+    sections.forEach(section => {
+      section.hidden = group ? section.dataset.group !== requested : category ? section !== category : false;
+    });
+    const shown = new Set(sections.filter(section => !section.hidden).map(section => section.dataset.category));
+    visible = items.filter(item => shown.has(item.dataset.category));
     if (status) {
-      const label = match?.dataset.label ?? 'Todas as categorias';
+      const label = group?.dataset.label ?? category?.dataset.label ?? 'Todas as categorias';
       status.textContent = `${label} · ${visible.length} fotos · Selecione uma imagem para ampliar.`;
     }
     // Mantém o chip ativo visível na faixa rolável.
-    filterButtons.find(button => button.dataset.filter === filter)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+    filterButtons.find(button => button.dataset.filter === active)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
     if (animate) requestAnimationFrame(() => animateIn(visible));
   };
 
@@ -64,13 +72,13 @@ export function initPortfolio() {
   };
 
   filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button.dataset.filter ?? 'all')));
-  // Só reage a #categoria (ou # vazio): o link "Pular para o conteúdo" e outras
+  // Só reage a #grupo, #categoria (ou # vazio): o link "Pular para o conteúdo" e outras
   // âncoras da página não mexem no filtro. Hash malformado não quebra nada.
   const hashFilter = () => {
     let hash = location.hash.slice(1);
     try { hash = decodeURIComponent(hash); } catch { return null; }
     if (!hash) return 'all';
-    return sections.some(section => section.dataset.category === hash) ? hash : null;
+    return groupButton(hash) || categorySection(hash) ? hash : null;
   };
   addEventListener('hashchange', () => {
     const filter = hashFilter();

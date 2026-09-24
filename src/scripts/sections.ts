@@ -1,52 +1,6 @@
 // Interações das seções da home.
 import { $, $$, clamp, easeInOutCubic, easeOutExpo, finePointer, lerp, onScroll, reducedMotion, tween, watchVisibility } from './lib';
 
-// ---------- Serviços: foto que segue o cursor ----------
-
-export function initServices() {
-  const list = $('[data-services]');
-  const float = $('.svc-float');
-  if (!list || !float || !finePointer() || reducedMotion()) return;
-  const images = $$('img', float);
-  let x = 0, y = 0, cx = 0, cy = 0, rotation = 0;
-  let active = -1;
-  let hovering = false;
-  let frame = 0;
-
-  const loop = () => {
-    cx = lerp(cx, x, 0.14);
-    cy = lerp(cy, y, 0.14);
-    rotation = lerp(rotation, clamp((x - cx) * 0.06, -9, 9), 0.12);
-    const rect = float.getBoundingClientRect();
-    float.style.transform = `translate3d(${(cx - rect.width / 2).toFixed(1)}px, ${(cy - rect.height / 2).toFixed(1)}px, 0) rotate(${rotation.toFixed(2)}deg)`;
-    if (Math.abs(cx - x) + Math.abs(cy - y) > 0.5 || Math.abs(rotation) > 0.05) frame = requestAnimationFrame(loop);
-    else frame = 0;
-  };
-
-  list.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse') return;
-    x = event.clientX;
-    y = event.clientY;
-    if (!hovering) {
-      hovering = true;
-      cx = x; cy = y;
-      float.classList.add('is-on');
-    }
-    const row = (event.target as Element).closest<HTMLElement>('.svc');
-    const index = row ? Number(row.dataset.index) : -1;
-    if (index !== active && index >= 0) {
-      images[active]?.classList.remove('is-active');
-      images[index]?.classList.add('is-active');
-      active = index;
-    }
-    if (!frame) frame = requestAnimationFrame(loop);
-  });
-  list.addEventListener('pointerleave', () => {
-    hovering = false;
-    float.classList.remove('is-on');
-  });
-}
-
 // ---------- Antes e depois ----------
 
 export function initBeforeAfter() {

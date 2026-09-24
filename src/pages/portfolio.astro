@@ -8,17 +8,20 @@ import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
 import SplitText from '../components/SplitText.astro';
 import { getWhatsAppLink } from '../config/site';
-import { categories, totalPhotos } from '../data/portfolio';
+import { categories, groups, totalPhotos } from '../data/portfolio';
 import { fullWebp, imageSize, photoSrc } from '../lib/images';
 
 // Dimensões reais de cada foto: a grade justificada mostra a foto inteira, sem cortes.
-const gallery = await Promise.all(categories.map(async category => ({
+// A galeria segue a ordem dos grupos de filtro.
+const gallery = await Promise.all(groups.flatMap(group => group.categories.map(async category => ({
   ...category,
+  group: group.id,
   items: await Promise.all(category.images.map(async (image, index) => {
     const { width, height } = await imageSize(image);
     return { image, index, width, height, ratio: width / height };
   })),
-})));
+}))));
+const chips = groups.map(group => ({ ...group, count: group.categories.reduce((sum, category) => sum + category.images.length, 0) }));
 ---
 
 <Layout
@@ -32,7 +35,7 @@ const gallery = await Promise.all(categories.map(async category => ({
       <div class="pf-hero-grid">
         <SplitText as="h1" id="pf-title" class="display t-hero pf-title" text="O que já *passou pela prensa.*" />
         <div class="pf-hero-aside" data-reveal style="--d:.2s">
-          <p class="lede">{totalPhotos} fotos em {gallery.length} categorias: de etiquetas a lonas gigantes, trabalhos para empresas de BH e de todo o Brasil.</p>
+          <p class="lede">{totalPhotos} fotos em {categories.length} categorias: de etiquetas a lonas gigantes, trabalhos para empresas de BH e de todo o Brasil.</p>
           <p class="pf-hint mono"><Icon name="loupe" /> Toque numa foto para ampliar</p>
         </div>
       </div>
@@ -43,9 +46,9 @@ const gallery = await Promise.all(categories.map(async category => ({
         <button type="button" class="pf-chip filter-btn" data-filter="all" aria-pressed="true" aria-controls="portfolio-gallery">
           Todos <span class="mono">{totalPhotos}</span>
         </button>
-        {gallery.map(category => (
-          <button type="button" class="pf-chip filter-btn" data-filter={category.slug} aria-pressed="false" aria-controls="portfolio-gallery">
-            {category.name} <span class="mono">{category.items.length}</span>
+        {chips.map(group => (
+          <button type="button" class="pf-chip filter-btn" data-filter={group.id} data-label={group.name} aria-pressed="false" aria-controls="portfolio-gallery">
+            {group.name} <span class="mono">{group.count}</span>
           </button>
         ))}
       </div>
@@ -56,7 +59,7 @@ const gallery = await Promise.all(categories.map(async category => ({
 
       <div id="portfolio-gallery">
         {gallery.map(category => (
-          <section id={category.slug} class="pf-cat category-section" data-category={category.slug} data-label={category.name} aria-labelledby={`heading-${category.slug}`}>
+          <section id={category.slug} class="pf-cat category-section" data-category={category.slug} data-group={category.group} data-label={category.name} aria-labelledby={`heading-${category.slug}`}>
             <header class="pf-cat-head">
               <h2 id={`heading-${category.slug}`} class="pf-cat-title display">{category.name}</h2>
               <p class="pf-cat-blurb">{category.blurb}</p>
@@ -129,7 +132,7 @@ const gallery = await Promise.all(categories.map(async category => ({
   .pf-hero { padding-top: clamp(8rem, 14vw, 11rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
   .pf-hero-grid { display: grid; gap: 2rem 4rem; align-items: end; margin-top: clamp(2rem, 4vw, 3rem); }
   @media (min-width: 1024px) { .pf-hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, .7fr); } }
-  .pf-title { font-size: clamp(3.4rem, 9vw, 9.5rem); }
+  .pf-title { font-size: clamp(3rem, 7vw, 7rem); }
   .pf-hero-aside { display: grid; gap: 1.2rem; }
   .pf-hint { display: inline-flex; align-items: center; gap: .5rem; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
   .pf-hint :global(svg) { width: 1.1rem; height: 1.1rem; }
@@ -208,7 +211,12 @@ const gallery = await Promise.all(categories.map(async category => ({
   }
   .pf-item:focus-visible { outline: 3px solid var(--color-magenta); outline-offset: 3px; }
   .pf-fill { flex: 100000 1 0; }
-  @media (max-width: 639px) { .pf-grid { --row: 120px; } }
+  /* No celular: duas colunas de fotos grandes e quadradas (a ampliação mostra a foto inteira). */
+  @media (max-width: 639px) {
+    .pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .pf-item { aspect-ratio: 1; border-radius: 6px; }
+    .pf-fill { display: none; }
+  }
 
   :global(.js) .pf-item.is-enter { animation: pf-in .8s var(--ease-expo) both; animation-delay: var(--delay, 0s); }
   @keyframes pf-in { from { opacity: 0; transform: translate3d(0, 18px, 0) scale(.97); } }
