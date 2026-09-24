@@ -17,29 +17,9 @@ export function initHero() {
     lines.forEach(line => line.classList.add('is-in'));
     // Depois de subir, as linhas deixam as bordas coloridas "vazarem".
     setTimeout(() => lines.forEach(line => line.classList.add('is-done')), 1700);
-    startRegistration(hero);
   }));
 
   initPress(hero);
-}
-
-// ---------- Título: camadas C, M e Y entram em registro e reagem ao mouse ----------
-
-function startRegistration(hero: HTMLElement) {
-  const reg = $('[data-reg]', hero);
-  if (!reg) return;
-  if (reducedMotion()) return;
-
-  // Começa desalinhado e "acerta o registro".
-  reg.style.setProperty('--rx', '18px');
-  reg.style.setProperty('--ry', '10px');
-  reg.classList.add('is-ink');
-  setTimeout(() => {
-    reg.style.setProperty('--rx', '0px');
-    reg.style.setProperty('--ry', '0px');
-  }, 550);
-
-  setTimeout(() => reg.classList.remove('is-ink'), 2300);
 }
 
 // ---------- Prensa ----------

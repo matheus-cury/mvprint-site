@@ -33,7 +33,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
 
         <h1 id="hero-title" class="display t-hero hero-title">
           <span class="line" style="--d:.08s"><span class="line-in">Você imagina.</span></span>
-          <span class="line" style="--d:.2s"><span class="line-in">A gente <em class="reg" data-reg data-text="imprime.">imprime.</em></span></span>
+          <span class="line" style="--d:.2s"><span class="line-in">A gente <em>imprime.</em></span></span>
         </h1>
 
         <p class="lede hero-lede">
@@ -140,12 +140,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   .hero-title { margin-left: .01em; }
   .hero-title .line { display: block; overflow: hidden; padding: .02em .12em .16em .04em; margin: -.02em -.12em -.16em -.04em; }
   .hero-title .line-in { display: block; }
-  /* "imprime.": na entrada, ciano, magenta e amarelo se sobrepõem como numa impressão
-     (preto); depois as chapas somem e fica o roxo-magenta dos outros títulos. */
-  .hero-title .reg { color: var(--title-accent); transition: color .9s ease; }
-  .hero-title .reg::before, .hero-title .reg::after { opacity: 0; transition: opacity .9s ease; }
-  .hero-title .reg.is-ink { color: var(--color-yellow); }
-  .hero-title .reg.is-ink::before, .hero-title .reg.is-ink::after { opacity: 1; }
+
   :global(.js) .hero-title .line-in { transform: translate3d(0, 108%, 0); transition: transform 1.5s var(--ease-expo) var(--d, 0s); }
   :global(.js) .hero-title .line.is-in .line-in { transform: none; }
   .hero-title .line.is-done { overflow: visible; }
