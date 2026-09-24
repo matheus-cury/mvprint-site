@@ -195,8 +195,6 @@ html.menu-open { overflow: hidden; }
 }
 .t-h2.grotesk { font-size: clamp(2rem, 3.25vw, 3.25rem); }
 .display.grotesk em { font-style: normal; letter-spacing: inherit; color: var(--title-accent); }
-/* Todos os títulos de seção destacam o fim da frase na mesma cor (o hero fica como está). */
-.t-h2 em { color: var(--title-accent); }
 
 .eyebrow {
   font-family: var(--font-mono);
