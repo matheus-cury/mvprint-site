@@ -68,7 +68,7 @@ const services = [
     <p class="rule"><span><b>Serviços</b></span><Icon name="reg" class="reg-mark" /></p>
 
     <div class="services-head">
-      <SplitText id="services-title" class="display t-h2" text="Tudo que a sua marca precisa para *ser vista.*" />
+      <SplitText id="services-title" class="display t-h2 grotesk" text="Tudo que a sua marca precisa para *ser vista.*" />
       <div class="services-aside" data-reveal style="--d:.2s">
         <p class="lede">Do cartão de visita ao envelopamento de frotas inteiras. A gente produz, instala em BH e região e envia para todo o Brasil.</p>
         <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" variant="line" external />
@@ -80,7 +80,7 @@ const services = [
         <li class="svc" data-index={index} data-reveal style={`--d:${(index % 3) * 0.06}s`}>
           <span class="svc-num mono">{String(index + 1).padStart(2, '0')}</span>
           <div class="svc-main">
-            <h3 class="svc-title display">{service.title}</h3>
+            <h3 class="svc-title">{service.title}</h3>
             <p class="svc-desc">{service.description}</p>
             <ul class="svc-tags" aria-label={`Exemplos de ${service.title.toLowerCase()}`}>
               {service.tags.map(tag => <li class="tag">{tag}</li>)}
@@ -128,7 +128,8 @@ const services = [
   }
   .svc-num { font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--color-magenta-deep); transition: color .4s; }
   .svc-title {
-    font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -0.015em;
+    font-family: var(--font-sans); font-weight: 600;
+    font-size: clamp(1.4rem, 2.1vw, 1.9rem); line-height: 1.15; letter-spacing: -0.02em;
     transition: transform .8s var(--ease-expo);
   }
   .svc-desc { margin-top: .6rem; max-width: 34rem; color: var(--color-ink-2); }
