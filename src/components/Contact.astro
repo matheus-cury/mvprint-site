@@ -109,7 +109,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
           <div class="place-info">
             <p class="place-row"><Icon name="pin" /><span><strong>{ADDRESS.street}</strong><br />{ADDRESS.neighborhood}, {ADDRESS.city}/{ADDRESS.state} · CEP {ADDRESS.zip}</span></p>
             <p class="place-row"><Icon name="clock" /><span>{HOURS.display}</span></p>
-            <a href={mapsLink} target="_blank" rel="noopener noreferrer" class="u-link is-static place-link">Abrir no Google Maps</a>
+            <a href={mapsLink} target="_blank" rel="noopener noreferrer" class="u-link is-static place-link tap">Abrir no Google Maps</a>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
 <style>
   .contact-grid {
     display: grid; gap: 3rem clamp(3rem, 6vw, 6rem);
-    margin-top: clamp(2.2rem, 4vw, 3.5rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
     align-items: start;
   }
   @media (min-width: 1024px) { .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
@@ -203,7 +203,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     border-bottom: 1px solid var(--line-strong);
     transition: color .3s;
   }
-  .channel-label { display: inline-flex; align-items: center; gap: .5rem; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
+  .channel-label { display: inline-flex; align-items: center; gap: .5rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
   .channel-value { font-size: clamp(1.6rem, 2.6vw, 2.4rem); line-height: 1.05; letter-spacing: -0.01em; transition: transform .6s var(--ease-expo); overflow-wrap: anywhere; }
   .channel-email { font-size: clamp(1.25rem, 2.1vw, 2rem); }
   .channel :global(.channel-arrow) { width: 1.4rem; height: 1.4rem; opacity: .35; transition: transform .6s var(--ease-expo), opacity .3s; }

@@ -131,7 +131,6 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
     position: relative; display: inline-flex; align-items: flex-start; gap: .2rem;
     font-weight: 500; font-size: .95rem; letter-spacing: -0.005em;
   }
-  .nav-link sup { font-family: var(--font-mono); font-size: .55rem; color: var(--color-muted); top: 0; line-height: 1.6; }
   .nav-link::after {
     content: ""; position: absolute; left: 0; bottom: -6px; width: 5px; height: 5px; border-radius: 50%;
     background: var(--color-magenta); transform: scale(0); transition: transform .4s var(--ease-back);
@@ -146,7 +145,8 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   .btn-sm .btn-icon { width: 36px; height: 36px; }
   @media (max-width: 420px) {
     .btn-sm .roll { display: none; }
-    .btn-sm { padding: .3rem; }
+    .btn-sm { padding: 0; width: 46px; }
+    .btn-sm .btn-icon { width: 100%; height: 100%; background: var(--color-ink); color: var(--color-paper); }
   }
 
   .burger {
@@ -195,7 +195,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
     transition: opacity .6s var(--ease-expo), transform .9s var(--ease-expo), color .3s;
   }
   .menu.is-open .menu-link { opacity: 1; transform: none; transition-delay: calc(.18s + var(--i) * .06s); }
-  .menu-num { font-size: .7rem; letter-spacing: .1em; color: var(--color-muted); align-self: flex-start; margin-top: .6rem; }
+  .menu-num { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); align-self: flex-start; margin-top: .6rem; }
   .menu-label { flex: 1; }
   .menu-link :global(.menu-arrow) { width: 1.6rem; height: 1.6rem; opacity: .35; transition: transform .5s var(--ease-expo), opacity .3s; }
   .menu-link:hover { color: var(--color-magenta-deep); }

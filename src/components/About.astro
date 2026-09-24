@@ -11,9 +11,9 @@ const years = Math.floor((Date.now() - founded.getTime()) / (365.25 * 24 * 3600 
 
 const prints: { image: string; alt: string; caption: string; crop?: string }[] = [
   { image: 'ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b', alt: 'Parede adesivada com desenho geométrico rosa e dourado', caption: 'Adesivo de parede' },
-  { image: 'recortes-ae08b933-cb37-402e-a407-17a1e22a32e4', alt: 'Logo do Studio GS Fit em recorte preto sobre pastilhas', caption: 'Recorte · Studio GS Fit' },
+  { image: 'recortes-ae08b933-cb37-402e-a407-17a1e22a32e4', alt: 'Logo do Studio GS Fit em recorte preto sobre pastilhas', caption: 'Recorte · Studio GS Fit', crop: '--z:1.3;--o:60% 0%' },
   // Zoom com origem no alto esconde a marca d'água da câmera (canto inferior esquerdo).
-  { image: 'recortes-e374e2ba-e03a-4805-be0d-eb0c95701c28', alt: 'Instalador da MV Print aplicando letreiro de recorte numa parede verde', caption: 'Instalação · Centro de Dança', crop: '--z:1.25;--o:60% 30%' },
+  { image: 'recortes-e374e2ba-e03a-4805-be0d-eb0c95701c28', alt: 'Instalador da MV Print aplicando letreiro de recorte numa parede verde', caption: 'Instalação', crop: '--z:1.25;--o:60% 30%' },
 ];
 
 const stats = [
@@ -34,12 +34,10 @@ const format = (value: number) => value.toLocaleString('pt-BR');
 
 <section id="sobre" class="sec about" aria-labelledby="about-title">
   <div class="wrap">
-    <p class="rule"><span><b>Sobre</b></span><Icon name="reg" class="reg-mark" /></p>
-
     <div class="about-grid">
       <div class="about-prints" aria-label="Alguns trabalhos da MV Print" role="group">
         {prints.map((print, index) => (
-          <figure class={`print print-${index + 1}`} data-parallax={[0.06, 0.12, 0.03][index]}>
+          <figure class={`print print-${index + 1}`} data-parallax={index === 1 ? 0.08 : undefined}>
             <span class="tape" aria-hidden="true"></span>
             <span class="print-media" style={print.crop}><img src={optimized(print.image, 480)} alt={print.alt} width="480" height="360" loading="lazy" decoding="async" /></span>
             <figcaption class="mono">{print.caption}</figcaption>
@@ -48,7 +46,10 @@ const format = (value: number) => value.toLocaleString('pt-BR');
       </div>
 
       <div class="about-copy">
-        <SplitText id="about-title" class="display t-h2" text="Uma gráfica de BH *com a mão na tinta.*" />
+        <div>
+          <p class="rule"><span><b>Sobre</b></span><Icon name="reg" class="reg-mark" /></p>
+          <SplitText id="about-title" class="display t-h2" text="Uma gráfica de BH *com a mão na tinta.*" />
+        </div>
         <div class="about-text" data-reveal style="--d:.15s">
           <p>Desde 2019, a <strong>MV Print</strong> transforma ideias em comunicação visual de qualidade. Nascemos em Belo Horizonte para oferecer soluções completas em impressão e comunicação visual para empresas de todos os portes.</p>
           <p>Do cartão de visita ao envelopamento completo de frotas, nossa equipe dá vida ao seu projeto com qualidade, agilidade e preço justo.</p>
@@ -79,16 +80,17 @@ const format = (value: number) => value.toLocaleString('pt-BR');
 
 <style>
   .about-grid {
-    display: grid; gap: clamp(3rem, 6vw, 5.5rem);
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    display: grid; gap: clamp(2.5rem, 6vw, 5.5rem);
     align-items: center;
   }
   @media (min-width: 1024px) { .about-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } }
 
-  .about-prints { position: relative; aspect-ratio: 1 / 1; max-width: 640px; width: 100%; justify-self: center; }
+  /* Colagem em grade de 12 colunas: cada foto ocupa 7. A 2ª desce e cobre só a
+     borda da 1ª; a 3ª começa logo abaixo da 1ª, então nenhuma legenda fica tampada. */
+  .about-prints { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); max-width: 620px; width: 100%; justify-self: center; padding: 14px 6px 0; }
   .print {
-    position: absolute; margin: 0;
-    width: 62%;
+    position: relative; margin: 0;
+    align-self: start;
     padding: 3.2% 3.2% 0;
     background: #FCFAF6;
     box-shadow: 0 1px 1px rgb(22 18 14 / 8%), 0 28px 45px -26px rgb(22 18 14 / 50%);
@@ -97,10 +99,10 @@ const format = (value: number) => value.toLocaleString('pt-BR');
   }
   .print-media { display: block; overflow: hidden; aspect-ratio: 4 / 3; }
   .print img { width: 100%; height: 100%; object-fit: cover; transform: scale(var(--z, 1)); transform-origin: var(--o, 50% 50%); }
-  .print figcaption { padding: .7rem 0 .8rem; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
-  .print-1 { --r: -5deg; left: 0; top: 4%; }
-  .print-2 { --r: 4deg; right: 0; top: 30%; z-index: 2; }
-  .print-3 { --r: -2deg; left: 12%; bottom: 0; z-index: 1; }
+  .print figcaption { padding: .7rem 0 .8rem; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--color-muted); }
+  .print-1 { --r: -4deg; grid-column: 1 / 8; grid-row: 1; z-index: 1; }
+  .print-2 { --r: 3deg; grid-column: 6 / 13; grid-row: 1; margin-top: 30%; z-index: 3; }
+  .print-3 { --r: -2deg; grid-column: 1 / 8; grid-row: 2; margin-top: -26%; z-index: 2; }
   .about-prints:hover .print { --r: 0deg; }
   .tape {
     position: absolute; top: -12px; left: 50%; width: 88px; height: 26px; margin-left: -44px;
@@ -113,6 +115,7 @@ const format = (value: number) => value.toLocaleString('pt-BR');
   .print-3 .tape { transform: rotate(-6deg); background: rgb(245 170 205 / 50%); }
 
   .about-copy { display: grid; gap: 1.8rem; }
+  @media (max-width: 1023px) { .about-copy { order: -1; } }
   .about-text { display: grid; gap: 1rem; max-width: 38rem; color: var(--color-ink-2); font-size: 1.1rem; line-height: 1.65; }
   .about-text strong { color: var(--color-ink); font-weight: 600; }
 
@@ -137,7 +140,10 @@ const format = (value: number) => value.toLocaleString('pt-BR');
   @media (min-width: 900px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   .stat { padding: 1.4rem 1rem 0 0; display: flex; flex-direction: column-reverse; gap: .6rem; }
   .stat + .stat { padding-left: 1rem; border-left: 1px solid var(--line); }
-  @media (max-width: 899px) { .stat:nth-child(3) { border-left: 0; padding-left: 0; } }
+  @media (max-width: 899px) {
+    .stats .stat:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .stats .stat:nth-child(n+3) { margin-top: 1.4rem; }
+  }
   .stat-label { font-size: .85rem; color: var(--color-muted); }
   .stat-value { margin: 0; font-family: var(--font-sans); font-weight: 600; font-size: clamp(2.2rem, 3.6vw, 3.2rem); line-height: 1; letter-spacing: -0.03em; }
 </style>

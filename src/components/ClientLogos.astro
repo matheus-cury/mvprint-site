@@ -69,11 +69,13 @@ const clients = [
     position: relative;
     display: grid; place-items: center;
     aspect-ratio: 3 / 2;
+    align-self: stretch; /* todas as células da linha com a mesma altura: linhas contínuas */
     padding: 1.25rem;
     border-right: 1px solid var(--line-strong);
     border-bottom: 1px solid var(--line-strong);
     transition: background-color .4s;
   }
+  @media (max-width: 599px) { .logo-cell { padding: .75rem; } }
   .logo-cell::after {
     content: ""; position: absolute; left: 8px; top: 8px; width: 7px; height: 7px;
     border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong);

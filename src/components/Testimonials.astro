@@ -66,6 +66,10 @@ const avatarColors = ['var(--color-cyan)', 'var(--color-magenta)', 'var(--color-
   .rating-info { display: grid; gap: .3rem; }
   .rating-count { font-size: .9rem; color: var(--color-ink-2); }
   .rating :global(.rating-arrow) { width: 1.1rem; height: 1.1rem; opacity: .5; }
+  @media (max-width: 719px) {
+    .rating { justify-self: stretch; }
+    .rating :global(.rating-arrow) { margin-left: auto; }
+  }
 
   .stars { display: inline-flex; gap: .15rem; color: #E9A800; }
   .stars :global(svg) { width: 1.1rem; height: 1.1rem; }

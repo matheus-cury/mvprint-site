@@ -93,7 +93,10 @@ const nav = [
     font-size: .75rem; font-weight: 600; line-height: 1; letter-spacing: .14em; text-transform: uppercase;
     color: rgb(244 239 231 / 55%);
   }
-  .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  /* Área de toque maior sem afastar o sublinhado. */
+  .footer-col ul a { position: relative; }
+  .footer-col ul a::before { content: ""; position: absolute; inset: -8px -4px; }
   @media (max-width: 639px) { .footer-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .footer-col a { color: rgb(244 239 231 / 88%); overflow-wrap: anywhere; }
   .footer-col a:hover { color: var(--color-paper); }

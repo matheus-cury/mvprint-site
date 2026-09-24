@@ -28,7 +28,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
       <div class="hero-main">
         <p class="hero-kicker eyebrow" data-hero-in style="--d:0s">
           <span class="hero-inks" aria-hidden="true"><i class="dot dot-c"></i><i class="dot dot-m"></i><i class="dot dot-y"></i><i class="dot dot-k"></i></span>
-          Gráfica &amp; comunicação visual · Belo Horizonte
+          <span>Gráfica &amp; comunicação visual<span class="kicker-sep"> · </span><span class="kicker-city">Belo Horizonte</span></span>
         </p>
 
         <h1 id="hero-title" class="display t-hero hero-title">
@@ -42,7 +42,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
 
         <div class="hero-actions" data-hero-in style="--d:.55s">
           <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" size="lg" external />
-          <a href="#portfolio" class="hero-more u-link">Ver trabalhos <Icon name="arrow-down" class="hero-more-icon" /></a>
+          <a href="#portfolio" class="hero-more u-link tap">Ver trabalhos <Icon name="arrow-down" class="hero-more-icon" /></a>
         </div>
       </div>
 
@@ -162,7 +162,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     border-top: 1px solid var(--line);
   }
   .hero-facts dt { font-family: var(--font-display); font-size: clamp(1.35rem, 2.2vw, 1.85rem); line-height: 1.05; letter-spacing: -0.01em; }
-  .hero-facts dd { margin-top: .35rem; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--color-muted); }
+  .hero-facts dd { margin-top: .35rem; font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
 
   /* ---------- Prensa ---------- */
 
@@ -227,11 +227,11 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     padding-top: 1rem;
     border-top: 1px solid var(--line);
   }
-  .press-count { font-size: .72rem; letter-spacing: .1em; color: var(--color-muted); }
+  .press-count { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); }
   .press-count b { color: var(--color-ink); font-weight: 500; }
   .press-label { display: flex; flex-direction: column; min-width: 0; flex: 1; }
   .press-client { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.05; }
-  .press-service { font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--color-muted); margin-top: .25rem; }
+  .press-service { font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); margin-top: .25rem; }
   .press-controls { display: flex; gap: .4rem; }
   .press-btn {
     position: relative; display: grid; place-items: center;
@@ -260,13 +260,21 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     display: flex; align-items: center; justify-content: space-between; gap: 2rem;
     margin-top: clamp(2.5rem, 5vw, 4rem);
   }
-  .hero-scroll { display: inline-flex; align-items: center; gap: .8rem; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--color-muted); }
+  .hero-scroll { display: inline-flex; align-items: center; gap: .8rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
   /* Mousezinho: a rodinha desce e some, convidando a rolar. */
   .mouse { position: relative; width: 24px; height: 38px; border: 1.5px solid var(--color-ink); border-radius: 12px; }
   .mouse-wheel { position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--color-ink); animation: mouse-wheel 1.8s var(--ease-quart) infinite; }
   @keyframes mouse-wheel { 0% { opacity: 0; transform: translateY(-3px); } 25% { opacity: 1; } 70% { opacity: 1; transform: translateY(9px); } 100% { opacity: 0; transform: translateY(11px); } }
   .hero-scroll:hover { color: var(--color-ink); }
   @media (max-width: 1023px) { .hero-foot { display: none; } }
+
+  /* Celular: a cidade desce de linha em vez de deixar o "·" pendurado. */
+  @media (max-width: 520px) {
+    .hero-kicker { align-items: flex-start; }
+    .hero-inks { margin-top: calc((1.4em - .5rem) / 2); }
+    .kicker-sep { display: none; }
+    .kicker-city { display: block; }
+  }
 
   /* No celular a foto sobe para logo depois do título (no fim para vencer as margens acima). */
   @media (max-width: 1023px) {
