@@ -1,7 +1,12 @@
-import { mkdir, readdir, stat, unlink } from 'node:fs/promises';
+import { mkdir, readdir, rename, stat, unlink } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+
+// Bound native memory use even on machines with little free RAM.
+sharp.cache(false);
+sharp.concurrency(1);
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'public/images/portfolio');
@@ -22,7 +27,17 @@ for (const file of files) {
   for (const width of [480, 960]) {
     const target = path.join(output, `${path.parse(file).name}-${width}.webp`);
     if ((await stat(target).catch(() => null))?.mtimeMs >= Math.max(modified, recipeModified)) continue;
-    await sharp(input).rotate().resize({ width }).webp({ quality: 78 }).toFile(target);
+    // Publish only a complete variant, so a failed encoder cannot leave a
+    // partial target that a later build mistakes for an up-to-date image.
+    const temporary = `${target}.${process.pid}-${randomUUID()}.tmp`;
+    try {
+      await sharp(input).rotate().resize({ width }).webp({ quality: 78 }).toFile(temporary);
+      await rename(temporary, target);
+    } finally {
+      await unlink(temporary).catch(error => {
+        if (error.code !== 'ENOENT') throw error;
+      });
+    }
     generated++;
   }
 }

@@ -52,6 +52,20 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
           </button>
         ))}
       </div>
+      <div class="pf-service-filter wrap">
+        <label for="portfolio-service">Filtrar por serviço</label>
+        <select id="portfolio-service" aria-controls="portfolio-gallery">
+          <option value="all">Todos os serviços ({totalPhotos} fotos)</option>
+          {chips.map(group => (
+            <optgroup label={group.name}>
+              <option value={group.id}>Todos de {group.name.toLowerCase()} ({group.count})</option>
+              {group.categories.map(category => (
+                <option value={category.slug}>{category.name} ({category.images.length})</option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </div>
     </div>
 
     <div class="wrap">
@@ -174,10 +188,23 @@ const chips = groups.map(group => ({ ...group, count: group.categories.reduce((s
   .pf-chip[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); box-shadow: none; }
   .pf-chip[aria-pressed="true"] .mono { color: rgb(244 239 231 / 65%); }
 
+  .pf-service-filter { display: flex; align-items: center; gap: .75rem; padding-top: .75rem; }
+  .pf-service-filter label { font-size: .9rem; color: var(--color-muted); }
+  .pf-service-filter select {
+    min-height: 44px; min-width: 0; max-width: 100%; width: 22rem;
+    padding: .5rem .8rem; border: 1px solid var(--line-strong); border-radius: .7rem;
+    background: var(--color-paper); color: var(--color-ink); font: inherit; font-size: .92rem;
+  }
+  .pf-service-filter select:focus-visible { outline: 3px solid var(--color-magenta); outline-offset: 3px; }
+  @media (max-width: 639px) {
+    .pf-service-filter { flex-wrap: wrap; gap: .3rem; }
+    .pf-service-filter select { width: 100%; }
+  }
+
   .pf-status { margin: 1.6rem 0 0; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
 
   /* Categorias */
-  .pf-cat { padding-top: clamp(2.5rem, 5vw, 4rem); scroll-margin-top: 160px; }
+  .pf-cat { padding-top: clamp(2.5rem, 5vw, 4rem); scroll-margin-top: 260px; }
   .pf-cat[hidden] { display: none !important; }
   .pf-cat-head {
     display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .4rem 2rem;

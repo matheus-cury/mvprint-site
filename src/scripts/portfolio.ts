@@ -6,6 +6,7 @@ export function initPortfolio() {
   if (!gallery) return;
 
   const filterButtons = $$<HTMLButtonElement>('.filter-btn');
+  const serviceFilter = $<HTMLSelectElement>('#portfolio-service');
   const sections = $$('.category-section');
   const status = $('#portfolio-status');
   const items = $$<HTMLAnchorElement>('.portfolio-item');
@@ -45,6 +46,7 @@ export function initPortfolio() {
     const group = groupButton(requested);
     const category = group ? undefined : categorySection(requested);
     const active = group?.dataset.filter ?? category?.dataset.group ?? 'all';
+    if (serviceFilter) serviceFilter.value = group?.dataset.filter ?? category?.dataset.category ?? 'all';
     if (lightbox?.open) lightbox.close();
     filterButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === active)));
     sections.forEach(section => {
@@ -68,10 +70,12 @@ export function initPortfolio() {
     history.replaceState(null, '', url);
     // Se o visitante já desceu na galeria, volta ao começo da seleção.
     const top = gallery.getBoundingClientRect().top;
-    if (top < 0) scrollTo({ top: scrollY + top - 170, behavior: reducedMotion() ? 'auto' : 'smooth' });
+    const offset = 112 + ($('#portfolio-filters')?.offsetHeight ?? 58);
+    if (top < offset) scrollTo({ top: scrollY + top - offset, behavior: reducedMotion() ? 'auto' : 'smooth' });
   };
 
   filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button.dataset.filter ?? 'all')));
+  serviceFilter?.addEventListener('change', () => selectFilter(serviceFilter.value));
   // Só reage a #grupo, #categoria (ou # vazio): o link "Pular para o conteúdo" e outras
   // âncoras da página não mexem no filtro. Hash malformado não quebra nada.
   const hashFilter = () => {
