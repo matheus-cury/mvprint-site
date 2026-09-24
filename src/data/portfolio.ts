@@ -433,8 +433,8 @@ export const totalPhotos = categories.reduce((sum, category) => sum + category.i
 export const heroPrints = [
   { image: 'tapumes-0bdea117-6d17-4f14-a941-d86f00e78106', client: 'Eudora', service: 'Tapume de loja', slug: 'tapumes', focus: [1, 0.3], zoom: 1.3 },
   { image: 'veiculos-81cee948-1b99-4414-beba-0f71f45d20e9', client: 'CSN Mineração', service: 'Plotagem veicular', slug: 'veiculos', focus: [0.5, 0.3], zoom: 1.05 },
-  { image: 'carros-personalizados-ec4ebc07-2073-479a-8319-9c1c13ef69aa', client: 'Fusca verde e amarelo', service: 'Envelopamento personalizado', slug: 'carros-personalizados', focus: [0.85, 0.4], zoom: 1.1 },
-  { image: 'cbf-dd3fd591-da0a-46e0-ac79-6b2dd408062b', client: 'CBF', service: 'Letreiro e brasão gigantes', slug: 'cbf', focus: [0.5, 0.42], zoom: 1.3 },
+  { image: 'etiquetas-e9746b73-82b7-4c40-a31a-e58a5c49dab6', client: 'Trattoria Massas', service: 'Etiquetas personalizadas', slug: 'etiquetas', focus: [0.75, 0.2], zoom: 1.15 },
+  { image: 'cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae', client: 'CBF', service: 'Brasão e letreiro gigantes', slug: 'cbf', focus: [0.4, 0.3], zoom: 1.12 },
 ] as const;
 
 /** Galeria horizontal da home. Rótulos conferidos foto a foto. */
