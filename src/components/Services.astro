@@ -126,7 +126,7 @@ const services = [
     clip-path: inset(100% 0 0 0);
     transition: clip-path .7s var(--ease-expo);
   }
-  .svc-num { font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--color-magenta-deep); transition: color .4s; }
+  .svc-num { font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--title-accent); transition: color .4s; }
   .svc-title {
     font-family: var(--font-sans); font-weight: 600;
     font-size: clamp(1.4rem, 2.1vw, 1.9rem); line-height: 1.15; letter-spacing: -0.02em;
@@ -166,6 +166,6 @@ const services = [
   @media (hover: hover) and (min-width: 1024px) {
     .svc:hover::before { clip-path: inset(0 0 0 0); }
     .svc:hover .svc-title { transform: translate3d(1.25rem, 0, 0); }
-    .svc:hover .svc-num { color: var(--color-magenta-deep); }
+    .svc:hover .svc-num { color: var(--title-accent); }
   }
 </style>

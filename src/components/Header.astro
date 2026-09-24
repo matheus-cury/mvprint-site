@@ -133,7 +133,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   }
   .nav-link::after {
     content: ""; position: absolute; left: 0; bottom: -6px; width: 5px; height: 5px; border-radius: 50%;
-    background: var(--color-magenta); transform: scale(0); transition: transform .4s var(--ease-back);
+    background: var(--title-accent); transform: scale(0); transition: transform .4s var(--ease-back);
   }
   .nav-link.is-active::after { transform: scale(1); }
 
@@ -198,7 +198,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   .menu-num { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); align-self: flex-start; margin-top: .6rem; }
   .menu-label { flex: 1; }
   .menu-link :global(.menu-arrow) { width: 1.6rem; height: 1.6rem; opacity: .35; transition: transform .5s var(--ease-expo), opacity .3s; }
-  .menu-link:hover { color: var(--color-magenta-deep); }
+  .menu-link:hover { color: var(--title-accent); }
   .menu-link:hover :global(.menu-arrow) { opacity: 1; transform: rotate(45deg); }
 
   .menu-foot {

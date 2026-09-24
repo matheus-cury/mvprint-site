@@ -105,7 +105,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     </figure>
   </div>
 
-  <div class="wrap hero-foot" data-reveal="fade" style="--d:.9s">
+  <div class="wrap hero-foot" data-hero-in style="--d:.8s">
     <a href="#clientes" class="hero-scroll mono"><span class="mouse" aria-hidden="true"><span class="mouse-wheel"></span></span>Role para ver</a>
   </div>
 </section>
@@ -129,7 +129,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   }
 
   .hero-kicker {
-    display: inline-flex; align-items: center; gap: .9rem;
+    display: flex; width: fit-content; align-items: center; gap: .9rem;
     color: var(--color-ink-2);
     margin-bottom: clamp(1.4rem, 2.5vw, 2.2rem);
   }
@@ -290,18 +290,38 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   }
 
   /* Desktop: duas linhas compartilhadas (subgrid). A foto começa na altura do
-     rótulo e a linha da legenda fica na mesma altura da linha dos números. */
+     rótulo e a linha da legenda fica na mesma altura da linha dos números.
+     Tudo (título, texto, botões, números, foto, legenda e o mousezinho) cabe na
+     primeira tela: a altura da foto é a sobra da tela e os tamanhos acompanham
+     a altura da janela, então funciona em notebook e em monitor grande. */
   @media (min-width: 1024px) {
+    .hero {
+      --top: clamp(6rem, 14vh, 9rem);
+      --row-gap: clamp(1rem, 3vh, 2rem);
+      --row2: 4.75rem;
+      --foot-gap: clamp(.75rem, 2.2vh, 1.5rem);
+      --mouse: 38px;
+      --bottom: clamp(.75rem, 2vh, 1.25rem);
+      --stage-h: clamp(18rem, calc(100vh - var(--top) - var(--row-gap) - var(--row2) - var(--foot-gap) - var(--mouse) - var(--bottom)), 44rem);
+      padding-top: var(--top);
+      padding-bottom: var(--bottom);
+    }
     .hero-grid {
       grid-template-columns: minmax(0, 1.28fr) minmax(0, .92fr);
       grid-template-rows: auto auto;
-      row-gap: clamp(2.25rem, 3.5vw, 3rem);
+      row-gap: var(--row-gap);
       align-items: stretch;
     }
     .hero-copy, .press { grid-row: 1 / span 2; display: grid; grid-template-rows: subgrid; }
     .hero-main { align-self: start; }
-    .press-sheet { display: flex; flex-direction: column; }
-    .press-stage { flex: 1 1 auto; }
+    .hero-kicker { margin-bottom: clamp(.9rem, 2.4vh, 1.8rem); }
+    .hero-title { font-size: clamp(3.2rem, min(8.6vw, 13.5vh), 9rem); }
+    .hero-lede { margin-top: clamp(1rem, 2.8vh, 2rem); }
+    .hero-actions { margin-top: clamp(1rem, 3vh, 2.2rem); }
+    .press { width: min(100%, calc(var(--stage-h) * 1.1)); justify-self: end; }
+    .press-sheet { display: flex; flex-direction: column; height: var(--stage-h); }
+    .press-stage { flex: 1 1 auto; aspect-ratio: auto; }
     .hero-facts, .press-caption { align-self: start; margin-top: 0; padding-top: 1.25rem; }
+    .hero-foot { margin-top: var(--foot-gap); }
   }
 </style>

@@ -136,7 +136,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     background: linear-gradient(90deg, var(--color-cyan) 0 25%, var(--color-magenta) 25% 50%, var(--color-yellow) 50% 75%, var(--color-ink) 75%);
   }
   .form-head { display: grid; gap: .4rem; margin-bottom: 1.8rem; }
-  .form-head .eyebrow { color: var(--color-magenta-deep); }
+  .form-head .eyebrow { color: var(--title-accent); }
   .form-sub { color: var(--color-muted); }
 
   .form { display: grid; gap: 1.3rem; }
@@ -208,7 +208,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
   .channel-email { font-size: clamp(1.1rem, 1.6vw, 1.5rem); }
   .channel :global(.channel-arrow) { width: 1.4rem; height: 1.4rem; opacity: .35; transition: transform .6s var(--ease-expo), opacity .3s; }
   @media (hover: hover) {
-    .channel:hover { color: var(--color-magenta-deep); }
+    .channel:hover { color: var(--title-accent); }
     .channel:hover .channel-value { transform: translateX(.5rem); }
     .channel:hover :global(.channel-arrow) { opacity: 1; transform: rotate(45deg); }
   }
@@ -228,7 +228,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
   .map:hover iframe { filter: none; mix-blend-mode: normal; }
   .place-info { display: grid; gap: .7rem; }
   .place-row { display: flex; gap: .7rem; color: var(--color-ink-2); }
-  .place-row :global(svg) { width: 1.2rem; height: 1.2rem; flex: none; margin-top: .2rem; color: var(--color-magenta-deep); }
+  .place-row :global(svg) { width: 1.2rem; height: 1.2rem; flex: none; margin-top: .2rem; color: var(--title-accent); }
   .place-row strong { font-weight: 600; color: var(--color-ink); }
   .place-link { justify-self: start; font-weight: 600; }
 </style>
