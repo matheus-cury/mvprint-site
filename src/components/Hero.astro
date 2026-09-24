@@ -104,7 +104,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   </div>
 
   <div class="wrap hero-foot" data-reveal="fade" style="--d:.9s">
-    <span class="hero-scroll mono"><span class="hero-scroll-line" aria-hidden="true"></span>Role para ver</span>
+    <a href="#servicos" class="hero-scroll mono"><span class="mouse" aria-hidden="true"><span class="mouse-wheel"></span></span>Role para ver</a>
     <div class="hero-strip" aria-hidden="true">
       <span class="mono">Barra de controle</span>
       <span class="strip">
@@ -288,9 +288,11 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     margin-top: clamp(3rem, 6vw, 5rem);
   }
   .hero-scroll { display: inline-flex; align-items: center; gap: .8rem; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--color-muted); }
-  .hero-scroll-line { position: relative; width: 1px; height: 38px; background: var(--line); overflow: hidden; }
-  .hero-scroll-line::after { content: ""; position: absolute; inset: 0; background: var(--color-ink); animation: scroll-line 2.2s var(--ease-quart) infinite; }
-  @keyframes scroll-line { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+  /* Mousezinho: a rodinha desce e some, convidando a rolar. */
+  .mouse { position: relative; width: 24px; height: 38px; border: 1.5px solid var(--color-ink); border-radius: 12px; }
+  .mouse-wheel { position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--color-ink); animation: mouse-wheel 1.8s var(--ease-quart) infinite; }
+  @keyframes mouse-wheel { 0% { opacity: 0; transform: translateY(-3px); } 25% { opacity: 1; } 70% { opacity: 1; transform: translateY(9px); } 100% { opacity: 0; transform: translateY(11px); } }
+  .hero-scroll:hover { color: var(--color-ink); }
 
   .hero-strip { display: flex; align-items: center; gap: 1rem; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
   .strip { display: flex; }

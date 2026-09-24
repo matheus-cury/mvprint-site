@@ -1,37 +1,45 @@
 ---
-// Antes e depois com fotos reais da mesma parede: instalação × resultado.
+// Antes e depois. Se existir public/images/antes-depois/van-antes.jpg (mesmo
+// enquadramento da foto da van da Infinit), o par da van entra sozinho no build.
+import fs from 'node:fs';
+import path from 'node:path';
 import Icon from './Icon.astro';
 import SplitText from './SplitText.astro';
 
-const during = 'recortes-e374e2ba-e03a-4805-be0d-eb0c95701c28';
-const after = 'recortes-bf3f9971-82a7-4e40-9a66-98d44b9248f5';
+const vanBefore = '/images/antes-depois/van-antes.jpg';
+const hasVan = fs.existsSync(path.resolve(process.cwd(), 'public' + vanBefore));
+const van = 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e';
 const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
-// A foto final aparece ampliada (132,5%), então pede uma versão maior.
-const afterSizes = '(min-width: 1100px) 1380px, calc(133vw - 3.3rem)';
+const pair = {
+  title: 'Do branco *à marca na rua.*',
+  text: 'Arraste e compare a van da Infinit Telecom antes e depois da plotagem completa.',
+  caption: 'Infinit Telecom · Plotagem veicular',
+  beforeAlt: 'Antes: van branca sem plotagem',
+  afterAlt: 'Depois: van da Infinit Telecom plotada pela MV Print',
+};
 ---
 
-<section id="antes-depois" class="sec ba-sec" aria-labelledby="ba-title">
+{hasVan && (<section id="antes-depois" class="sec ba-sec" aria-labelledby="ba-title">
   <div class="wrap">
-    <p class="rule"><span>(03) — <b>Antes &amp; depois</b></span><Icon name="reg" class="reg-mark" /></p>
+    <p class="rule"><span><b>Antes &amp; depois</b></span><Icon name="reg" class="reg-mark" /></p>
 
     <div class="ba-head">
-      <SplitText id="ba-title" class="display t-h2" text="Do papel *à parede.*" />
-      <p class="lede" data-reveal style="--d:.15s">
-        Arraste e compare a instalação e o resultado do letreiro do Centro de Danças e Artes Luana Campos: recorte eletrônico em vinil, aplicado letra por letra.
-      </p>
+      <SplitText id="ba-title" class="display t-h2" text={pair.title} />
+      <p class="lede" data-reveal style="--d:.15s">{pair.text}</p>
     </div>
 
     <div class="ba" data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip" style="--pos:50%">
-      <picture class="ba-img ba-after">
-        <source type="image/webp" srcset={`/images/optimized/${after}-960.webp 960w, /images/portfolio/${after}.webp 1600w`} sizes={afterSizes} />
-        <img src={`/images/portfolio/${after}.jpg`} alt="Depois: letreiro Luana Campos aplicado na parede verde" width="1600" height="1200" loading="lazy" decoding="async" />
-      </picture>
-      <picture class="ba-img ba-before">
-        <source type="image/webp" srcset={`/images/optimized/${during}-960.webp 960w, /images/portfolio/${during}.webp 1600w`} sizes={sizes} />
-        <img src={`/images/portfolio/${during}.jpg`} alt="Durante: instalador da MV Print aplicando o letreiro com máscara de transferência" width="1600" height="1200" loading="lazy" decoding="async" />
-      </picture>
-      <span class="ba-tag ba-tag-l mono" aria-hidden="true">Instalando</span>
-      <span class="ba-tag ba-tag-r mono" aria-hidden="true">Pronto</span>
+      <div class="ba-canvas">
+        <picture class="ba-img">
+          <source type="image/webp" srcset={`/images/optimized/${van}-960.webp 960w, /images/portfolio/${van}.webp 1600w`} sizes={sizes} />
+          <img src={`/images/portfolio/${van}.jpg`} alt={pair.afterAlt} width="1600" height="1200" loading="lazy" decoding="async" />
+        </picture>
+        <picture class="ba-img ba-before">
+          <img src={vanBefore} alt={pair.beforeAlt} width="1600" height="1200" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <span class="ba-tag ba-tag-l mono" aria-hidden="true">Antes</span>
+      <span class="ba-tag ba-tag-r mono" aria-hidden="true">Depois</span>
       <div class="ba-handle" aria-hidden="true">
         <span class="ba-knob"><Icon name="drag" /></span>
       </div>
@@ -39,11 +47,11 @@ const afterSizes = '(min-width: 1100px) 1380px, calc(133vw - 3.3rem)';
     </div>
 
     <div class="ba-foot" data-reveal style="--d:.1s">
-      <p class="mono">Centro de Danças e Artes Luana Campos</p>
+      <p class="mono">{pair.caption}</p>
       <p class="mono ba-hint"><Icon name="drag" /> Arraste para comparar</p>
     </div>
   </div>
-</section>
+</section>)}
 
 <style>
   .ba-head {
@@ -69,8 +77,8 @@ const afterSizes = '(min-width: 1100px) 1380px, calc(133vw - 3.3rem)';
   .ba-img, .ba-img img { position: absolute; inset: 0; width: 100%; height: 100%; }
   .ba-img img { object-fit: cover; pointer-events: none; }
   /* A foto final foi tirada mais de longe: amplia e desloca para o letreiro coincidir. */
-  .ba-after img { width: 132.5%; height: 132.5%; left: -23.2%; top: -19.6%; max-width: none; object-fit: fill; }
-  .ba-before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .ba-canvas { --s: 1; --ox: 50%; position: absolute; inset: 0; transform: scale(var(--s)); transform-origin: var(--ox) 10%; }
+  .ba-before { clip-path: inset(0 calc(100% - (var(--ox) + (var(--pos) - var(--ox)) / var(--s))) 0 0); }
 
   .ba-handle {
     position: absolute; top: 0; bottom: 0; left: var(--pos);

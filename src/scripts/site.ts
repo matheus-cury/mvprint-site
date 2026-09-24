@@ -6,7 +6,6 @@ import { initMenu } from './menu';
 import { initPortfolio } from './portfolio';
 import {
   initBeforeAfter, initCounters, initFloatingWhatsApp,
-  initQuotes,
 } from './sections';
 
 declare global {
@@ -18,7 +17,7 @@ window.__mv = true;
 // Cada módulo roda isolado: um erro inesperado num deles não desliga os outros.
 const modules = [
   initHero, initReveals, initImageFades, initHeader, initMenu,
-  initParallax, initMarquees, initBeforeAfter, initQuotes,
+  initParallax, initMarquees, initBeforeAfter,
   initCounters, initContact, initPortfolio, initFloatingWhatsApp,
 ];
 for (const init of modules) {

@@ -1,135 +1,96 @@
 ---
-// Avaliações reais do Google, uma por vez em destaque.
+// Avaliações reais do Google em cartões.
 import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
 
 const googleReviewsUrl = 'https://www.google.com/search?kgmid=/g/11h_6s5l59';
 
-const testimonials = [
+const reviews = [
   { name: 'Joana Darc T. Fernandes', source: 'Google', text: 'Meu adesivo ficou ótimo e entregue dentro do prazo! Preço justo e qualidade. Vou continuar cliente e indico!' },
   { name: 'Edmara', source: 'Google · Local Guide', text: 'Vi num anúncio, não conhecia o trabalho e me surpreendi. Plotaram meu carro de trabalho e ficou muito bom.' },
-  { name: 'Jorge Diniz', source: 'Google', text: 'Tudo certinho. Pessoal da empresa foi nota 10. O serviço ficou muito bom.' },
   { name: 'Wagner Silva', source: 'Google', text: 'Ótimo atendimento domiciliar, rapidez, excelente profissional em plotagem e envelopamento.' },
+  { name: 'Jorge Diniz', source: 'Google', text: 'Tudo certinho. Pessoal da empresa foi nota 10. O serviço ficou muito bom.' },
   { name: 'Paulino Gregório', source: 'Google', text: 'Eu e minha esposa gostamos bastante, ficamos satisfeitos. Vocês estão de parabéns, ficou top!' },
   { name: 'Ricardo Mendes', source: 'Google', text: 'Serviço excelente, ótimo atendimento e cumpre com o prazo prometido.' },
-  { name: 'Rodrigo Quintino', source: 'Google · Local Guide', text: 'Ótimo atendimento. Serviço impecável e dentro do prazo.' },
-  { name: 'Lucas Cury', source: 'Google', text: 'Serviços de qualidade e ótimos preços. Recomendo.' },
-  { name: 'Claudia', source: 'Google', text: 'Atendimento rápido e de qualidade.' },
 ];
-const pad = (value: number) => String(value).padStart(2, '0');
+const avatarColors = ['var(--color-cyan)', 'var(--color-magenta)', 'var(--color-ink)'];
 ---
 
 <section id="depoimentos" class="sec reviews" aria-labelledby="reviews-title">
   <div class="wrap">
-    <p class="rule"><span>(06) — <b>Avaliações</b></span><Icon name="reg" class="reg-mark" /></p>
+    <p class="rule"><span><b>Avaliações</b></span><Icon name="reg" class="reg-mark" /></p>
 
-    <div class="reviews-grid">
-      <aside class="score" data-reveal>
-        <h2 id="reviews-title" class="score-title eyebrow">O que dizem no Google</h2>
-        <p class="score-value display">4,4</p>
-        <div class="score-stars" aria-hidden="true">
-          {[0, 1, 2, 3].map(() => <Icon name="star" />)}
-          <span class="score-part"></span>
-        </div>
-        <p class="score-note">Nota média em <strong>28 avaliações</strong> no Google.</p>
-        <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" class="score-link u-link">
-          <Icon name="google" class="score-g" /> Ver todas as avaliações <Icon name="arrow-up-right" class="score-arrow" />
-        </a>
-      </aside>
-
-      <div class="quotes" data-quotes role="region" aria-roledescription="carrossel" aria-label="Avaliações de clientes" data-reveal style="--d:.1s">
-        <div class="quotes-stage" aria-live="off">
-          {testimonials.map((review, index) => (
-            <figure class="quote" data-quote aria-roledescription="slide" aria-label={`${index + 1} de ${testimonials.length}`} class:list={{ 'is-active': index === 0 }}>
-              <blockquote class="quote-text display">
-                <p>“{review.text}”</p>
-              </blockquote>
-              <figcaption class="quote-by">
-                <span class="quote-avatar" aria-hidden="true">{review.name.charAt(0)}</span>
-                <span>
-                  <span class="quote-name">{review.name}</span>
-                  <span class="quote-source mono">{review.source} · 5 estrelas</span>
-                </span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-        <div class="quotes-nav">
-          <span class="quotes-count mono" aria-hidden="true"><b data-quote-index>01</b> / {pad(testimonials.length)}</span>
-          <span class="quotes-bar" aria-hidden="true"><span data-quote-bar></span></span>
-          <button type="button" class="quotes-btn" data-quote-prev aria-label="Avaliação anterior"><Icon name="arrow-left" /></button>
-          <button type="button" class="quotes-btn" data-quote-pause aria-label="Pausar troca automática" aria-pressed="false"><Icon name="pause" class="icon-pause" /><Icon name="play" class="icon-play" /></button>
-          <button type="button" class="quotes-btn" data-quote-next aria-label="Próxima avaliação"><Icon name="arrow-right" /></button>
-        </div>
-        <p class="sr-only" aria-live="polite" data-quote-status></p>
-      </div>
+    <div class="reviews-head">
+      <SplitText id="reviews-title" class="display t-h2" text="Quem imprime com a gente, *recomenda.*" />
+      <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" class="rating" data-reveal style="--d:.15s">
+        <Icon name="google" class="rating-g" />
+        <span class="rating-score display">4,4</span>
+        <span class="rating-info">
+          <span class="stars" aria-hidden="true">{[0, 1, 2, 3].map(() => <Icon name="star" />)}<span class="star-part"></span></span>
+          <span class="rating-count">28 avaliações no Google</span>
+        </span>
+        <Icon name="arrow-up-right" class="rating-arrow" />
+      </a>
     </div>
+
+    <ul class="review-grid" role="list">
+      {reviews.map((review, index) => (
+        <li class="review" data-reveal style={`--d:${(index % 3) * 0.08}s`}>
+          <span class="stars" aria-label="5 estrelas" role="img">{[0, 1, 2, 3, 4].map(() => <Icon name="star" />)}</span>
+          <blockquote class="review-text"><p>“{review.text}”</p></blockquote>
+          <p class="review-by">
+            <span class="review-avatar" style={`background:${avatarColors[index % 3]}`} aria-hidden="true">{review.name.charAt(0)}</span>
+            <span><b>{review.name}</b><small>{review.source}</small></span>
+          </p>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
 <style>
-  .reviews-grid {
-    display: grid; gap: 3rem clamp(3rem, 7vw, 7rem);
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  .reviews-head {
+    display: grid; gap: 2rem 4rem; align-items: end;
+    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4rem);
   }
-  @media (min-width: 1024px) { .reviews-grid { grid-template-columns: minmax(0, .55fr) minmax(0, 1.45fr); align-items: start; } }
+  @media (min-width: 1024px) { .reviews-head { grid-template-columns: minmax(0, 1.3fr) auto; } }
 
-  .score { display: grid; gap: .9rem; justify-items: start; }
-  .score-title { color: var(--color-muted); }
-  .score-value { font-size: clamp(4.5rem, 8vw, 7rem); line-height: .8; letter-spacing: -0.04em; }
-  .score-stars { display: flex; gap: .2rem; color: var(--color-ink); }
-  .score-stars :global(svg) { width: 1.6rem; height: 1.6rem; }
-  /* Quinta estrela preenchida em 40% (nota 4,4) */
-  .score-part {
-    display: inline-block; width: 1.6rem; height: 1.6rem;
-    background: linear-gradient(90deg, var(--color-ink) 40%, var(--color-paper-3) 40%);
+  .rating {
+    display: inline-flex; align-items: center; gap: 1rem; justify-self: start;
+    padding: 1rem 1.4rem; border-radius: 18px;
+    background: #FBF9F4; box-shadow: inset 0 0 0 1px var(--line);
+    transition: box-shadow .3s, transform .5s var(--ease-expo);
+  }
+  .rating:hover { box-shadow: inset 0 0 0 1px var(--line-strong); transform: translateY(-2px); }
+  .rating :global(.rating-g) { width: 2rem; height: 2rem; }
+  .rating-score { font-size: 3rem; line-height: 1; }
+  .rating-info { display: grid; gap: .3rem; }
+  .rating-count { font-size: .9rem; color: var(--color-ink-2); }
+  .rating :global(.rating-arrow) { width: 1.1rem; height: 1.1rem; opacity: .5; }
+
+  .stars { display: inline-flex; gap: .15rem; color: #E9A800; }
+  .stars :global(svg) { width: 1.1rem; height: 1.1rem; }
+  .star-part {
+    display: inline-block; width: 1.1rem; height: 1.1rem;
+    background: linear-gradient(90deg, #E9A800 40%, var(--color-paper-3) 40%);
     -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M9.05 2.93c.3-.92 1.6-.92 1.9 0l1.07 3.29a1 1 0 0 0 .95.69h3.46c.97 0 1.37 1.24.59 1.81l-2.8 2.03a1 1 0 0 0-.36 1.12l1.07 3.29c.3.92-.76 1.69-1.54 1.12l-2.8-2.03a1 1 0 0 0-1.18 0l-2.8 2.03c-.78.57-1.84-.2-1.54-1.12l1.07-3.29a1 1 0 0 0-.36-1.12L2.98 8.72c-.78-.57-.38-1.81.59-1.81h3.46a1 1 0 0 0 .95-.69l1.07-3.29Z'/></svg>") center / contain no-repeat;
     mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M9.05 2.93c.3-.92 1.6-.92 1.9 0l1.07 3.29a1 1 0 0 0 .95.69h3.46c.97 0 1.37 1.24.59 1.81l-2.8 2.03a1 1 0 0 0-.36 1.12l1.07 3.29c.3.92-.76 1.69-1.54 1.12l-2.8-2.03a1 1 0 0 0-1.18 0l-2.8 2.03c-.78.57-1.84-.2-1.54-1.12l1.07-3.29a1 1 0 0 0-.36-1.12L2.98 8.72c-.78-.57-.38-1.81.59-1.81h3.46a1 1 0 0 0 .95-.69l1.07-3.29Z'/></svg>") center / contain no-repeat;
   }
-  .score-note { color: var(--color-ink-2); }
-  .score-note strong { font-weight: 600; }
-  .score-link { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; margin-top: .6rem; }
-  .score-link :global(.score-g) { width: 1.1rem; height: 1.1rem; }
-  .score-link :global(.score-arrow) { width: 1rem; height: 1rem; }
 
-  .quotes { position: relative; }
-  /* Sem JavaScript as avaliações aparecem em lista; com JS, uma por vez no mesmo lugar. */
-  .quotes-stage { display: grid; gap: 3rem; touch-action: pan-y; }
-  :global(.js) .quotes-stage { gap: 0; min-height: clamp(18rem, 30vw, 24rem); }
-  :global(html:not(.js)) .quotes-nav { display: none; }
-  .quote { margin: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; }
-  :global(.js) .quote { grid-area: 1 / 1; }
-  :global(.js) .quote:not(.is-active) { visibility: hidden; transition: visibility 0s linear .7s; }
-  .quote-text { margin: 0; font-size: clamp(1.6rem, 2.6vw, 2.5rem); line-height: 1.2; letter-spacing: -0.02em; font-style: italic; hanging-punctuation: first; }
-  .quote-text p { text-wrap: balance; }
-  .quote-by { display: flex; align-items: center; gap: .9rem; }
-  .quote-avatar {
-    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
-    background: var(--color-ink); color: var(--color-paper);
-    font-family: var(--font-display); font-size: 1.5rem;
+  .review-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+  @media (min-width: 720px) { .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .review-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .review {
+    display: flex; flex-direction: column; gap: 1.1rem;
+    padding: clamp(1.5rem, 2.5vw, 2rem); border-radius: 20px;
+    background: #FBF9F4; box-shadow: inset 0 0 0 1px var(--line);
   }
-  .quote-name { display: block; font-weight: 600; }
-  .quote-source { display: block; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); margin-top: .15rem; }
-
-  :global(.js) .quote .quote-text p, :global(.js) .quote .quote-by { transition: opacity .7s var(--ease-expo), transform .9s var(--ease-expo), filter .7s; }
-  :global(.js) .quote:not(.is-active) .quote-text p { opacity: 0; transform: translate3d(0, 1.2rem, 0); filter: blur(6px); }
-  :global(.js) .quote:not(.is-active) .quote-by { opacity: 0; transform: translate3d(0, .6rem, 0); }
-  :global(.js) .quote.is-active .quote-by { transition-delay: .15s; }
-
-  .quotes-nav { display: flex; align-items: center; gap: .6rem; margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
-  .quotes-count { font-size: .72rem; letter-spacing: .1em; color: var(--color-muted); margin-right: .6rem; }
-  .quotes-count b { color: var(--color-ink); font-weight: 500; }
-  .quotes-bar { position: relative; flex: 1; height: 1px; background: var(--line); margin-right: .8rem; overflow: hidden; }
-  .quotes-bar span { position: absolute; inset: 0; background: var(--color-magenta); transform-origin: left; transform: scaleX(0); }
-  .quotes-bar span.is-running { animation: quote-bar var(--t, 7s) linear forwards; }
-  @keyframes quote-bar { to { transform: scaleX(1); } }
-  .quotes-btn {
-    display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
-    box-shadow: inset 0 0 0 1px var(--line-strong);
-    transition: background-color .3s, color .3s;
+  .review-text { margin: 0; flex: 1; font-size: 1.08rem; line-height: 1.55; color: var(--color-ink); }
+  .review-by { display: flex; align-items: center; gap: .8rem; }
+  .review-avatar {
+    display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 50%;
+    color: #fff; font-weight: 600;
   }
-  .quotes-btn :global(svg) { width: 1.05rem; height: 1.05rem; }
-  .quotes-btn:hover { background: var(--color-ink); color: var(--color-paper); }
-  .quotes-btn :global(.icon-play) { display: none; }
-  .quotes-btn[aria-pressed="true"] :global(.icon-play) { display: block; }
-  .quotes-btn[aria-pressed="true"] :global(.icon-pause) { display: none; }
+  .review-by b { display: block; font-weight: 600; font-size: .95rem; }
+  .review-by small { display: block; font-size: .8rem; color: var(--color-muted); }
 </style>
