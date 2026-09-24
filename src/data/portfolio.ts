@@ -1,0 +1,472 @@
+// Conteúdo do portfólio e dos destaques da home.
+// As fotos ficam em public/images/portfolio/<nome>.jpg (originais preservados);
+// o prebuild gera /images/optimized/<nome>-480|960.webp.
+
+export interface Category {
+  name: string;
+  slug: string;
+  blurb: string;
+  images: string[];
+}
+
+const BLURBS: Record<string, string> = {
+  cbf: 'Letreiro e brasão em grande formato para a CBF.',
+  ambientes: 'Paredes, escritórios e espaços corporativos adesivados.',
+  veiculos: 'Frotas e utilitários com a identidade da marca.',
+  carros: 'Carros e vans que viram mídia pela cidade.',
+  'carros-personalizados': 'Personalização com faixas, logos e cores.',
+  envelopamento: 'Envelopamento total ou parcial de veículos.',
+  plotagens: 'Fachadas, totens e superfícies plotadas.',
+  vitrines: 'Vitrines com campanhas e promoções.',
+  tapumes: 'Tapumes de obra e de lojas em shopping.',
+  'placas-pvc': 'Placas em PVC, avisos e sinalização.',
+  'placas-lonas': 'Placas e lonas para fachadas e eventos.',
+  lonas: 'Lonas e faixas em grande formato.',
+  backdrop: 'Backdrops, faixas e painéis para eventos.',
+  banners: 'Banners com acabamento em bastão.',
+  'comunicacao-visual': 'Comunicação visual para lojas e marcas.',
+  parabrisas: 'Adesivos de para-brisa para concessionárias.',
+  piso: 'Adesivos de piso e demarcação.',
+  imobiliarios: 'Placas de aluga e vende para imobiliárias.',
+  campanhas: 'Peças de campanha para o ponto de venda.',
+  promocionais: 'Displays e peças promocionais.',
+  etiquetas: 'Etiquetas e adesivos personalizados.',
+  blocos: 'Blocos personalizados e impressos.',
+  recortes: 'Recorte eletrônico em vinil para vidros e paredes.',
+  remocao: 'Remoção de adesivos antigos e limpeza.',
+};
+
+const RAW: Omit<Category, 'blurb'>[] = [
+  {
+    name: "Projeto CBF",
+    slug: "cbf",
+    images: [
+      "cbf-a12901df-096c-463a-a874-f648c684dd2a",
+      "cbf-ac56cb6e-93e2-4073-9e09-6038fe0324ae",
+      "cbf-25013018-690f-4c02-92ce-555cd6099c28",
+      "cbf-59f4ab6b-5297-42e5-b6df-2b062b85c6d9",
+      "cbf-6ba607eb-88c2-4116-a38f-9d507722c269",
+      "cbf-dd3fd591-da0a-46e0-ac79-6b2dd408062b",
+      "cbf-eba8c297-949b-47db-8caa-3b042f45e3a0",
+    ],
+  },
+  {
+    name: "Ambientes",
+    slug: "ambientes",
+    images: [
+      "ambientes-098fba31-0bf4-48f6-88ab-24d1e2723481",
+      "ambientes-1455ca4e-9473-4a3e-a925-dc708ddd95ca",
+      "ambientes-1a9e665e-db4a-4544-ae9f-0503bd5cc9f5",
+      "ambientes-1bf4c11c-28df-468a-9497-d93623e8cbb2",
+      "ambientes-216d4db5-4e7b-4ecc-88da-ad93558501f5",
+      "ambientes-21f8527a-4975-4e21-9fad-983d515d6904",
+      "ambientes-2ad3879f-3337-433b-92b3-8b7457ccd431",
+      "ambientes-3227b9c0-1a1b-41b1-b732-aa140a9a640b",
+      "ambientes-33602cde-814b-402e-8ede-aa86c5b5321c",
+      "ambientes-3867415a-52eb-41a5-aafe-3a2deab6646d",
+      "ambientes-463c6042-2bfa-4dbf-924d-4b39bb021a5f",
+      "ambientes-4a57bcfe-690c-49b6-bfeb-100e6f9dff32",
+      "ambientes-52d794b7-5776-46d6-8e1e-d4311de13d8b",
+      "ambientes-62665077-c6ca-4ba1-aba0-baafada89651",
+      "ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4",
+      "ambientes-7e5f5955-35aa-4945-8141-652b11a622c4",
+      "ambientes-876562e4-f6a9-4c6e-b33c-a7a0be8a32c4",
+      "ambientes-90d0efb1-1c4f-4728-b80d-a3825234799b",
+      "ambientes-95106e4f-8de7-42c1-9acf-7da8d0df2e69",
+      "ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7",
+      "ambientes-afffecbd-bbd5-4479-bef6-c4da112e09f0",
+      "ambientes-b1282a74-c8a3-4451-ac7a-416015d90179",
+      "ambientes-b1f8275b-f055-4222-b7f2-b390e86c4d32",
+      "ambientes-b62e80a2-546e-41a7-8d62-4d251234efdc",
+      "ambientes-b9ceb576-da17-4e17-938a-ffe1212a10d3",
+      "ambientes-c72e0846-3d01-4916-9d87-ed7866d02893",
+      "ambientes-ed9131de-8371-4d6b-9d26-3b7f82455dd5",
+      "ambientes-f09d79d5-8ae5-4ca8-ae66-2f7c7c2d8dfb",
+    ],
+  },
+  {
+    name: "Veículos",
+    slug: "veiculos",
+    images: [
+      "veiculos-08fb2026-b534-49f6-9ad6-00be78ba9381",
+      "veiculos-1ee57cf0-0c62-4085-aa5f-f9be7f8ee61e",
+      "veiculos-3781e3f1-647f-4ce5-819f-f1eec7c6a75f",
+      "veiculos-3f75f29e-5e72-427c-b629-93efbfa96f70",
+      "veiculos-6e3ef7a9-b829-4f29-8c2c-73f2d5c3d3e2",
+      "veiculos-81cee948-1b99-4414-beba-0f71f45d20e9",
+      "veiculos-8982d6d7-b525-4103-8dad-a33e1b6342d8",
+      "veiculos-a5fdcb18-1032-411d-ae69-de02f9b5e53c",
+      "veiculos-af1377cd-3ca5-43fd-8dbe-c3e155855102",
+      "veiculos-cb066c5b-2bed-43a0-bb88-3eee425e71c9",
+    ],
+  },
+  {
+    name: "Carros",
+    slug: "carros",
+    images: [
+      "carros-0055617c-595e-4058-9de3-e781d1fad51b",
+      "carros-15b2496a-8050-4689-8684-b4ef0858a374",
+      "carros-225cc5a4-81cd-472c-bd4a-4c146fa9d1c2",
+      "carros-75173eac-c3f7-40e7-b586-217b9e38cd64",
+      "carros-9b07a16b-67a5-4b60-bb80-b8bfaadadfc3",
+      "carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e",
+      "carros-cd28d3fe-e788-4059-868b-7c582fc3460c",
+    ],
+  },
+  {
+    name: "Carros Personalizados",
+    slug: "carros-personalizados",
+    images: [
+      "carros-personalizados-01df7129-3b61-4787-99b6-8dc88abb3ec5",
+      "carros-personalizados-17c37f17-5fed-4856-969b-6b81d94be6b1",
+      "carros-personalizados-48bd4402-8762-41fe-bf6e-8a7523d97c6b",
+      "carros-personalizados-6ea65966-0cad-4db8-8f11-e820be021ca9",
+      "carros-personalizados-731fbdff-dcb0-4419-99c2-ab3b98fa74c5",
+      "carros-personalizados-9e7b10de-f8f5-48e3-a553-346825eac874",
+      "carros-personalizados-b26ba7ec-f1a1-4854-8b65-3a7be5f2de8e",
+      "carros-personalizados-e3527c16-042b-47dd-8c8a-20f3b8ac1e07",
+      "carros-personalizados-e7185a6f-00e9-4cf3-ad7c-76f8beae38b6",
+      "carros-personalizados-ec4ebc07-2073-479a-8319-9c1c13ef69aa",
+    ],
+  },
+  {
+    name: "Envelopamento",
+    slug: "envelopamento",
+    images: [
+      "envelopamento-239ccad8-f849-4028-b0ef-4fefaefd2015",
+      "envelopamento-2f226a02-12f3-4e79-8cb1-c72623813be0",
+      "envelopamento-47acc995-9728-44f5-b40f-acac5bd74084",
+      "envelopamento-68cc354a-a461-4d3e-b7e1-4c7b75a87cab",
+      "envelopamento-b3b3276f-413b-40f4-8cee-6d92ed10f816",
+      "envelopamento-c4ef26a5-6b66-4234-946b-5762a38bef14",
+      "envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e",
+      "envelopamento-dae4f2b3-8eb9-41be-99a7-c60f3e8a831e",
+      "envelopamento-daf519f4-de70-4fc6-81c3-95c34ff30066",
+      "envelopamento-fab7e97c-83cb-484a-9cac-6d51c1773d75",
+    ],
+  },
+  {
+    name: "Plotagens",
+    slug: "plotagens",
+    images: [
+      "plotagens-18aded0c-8c68-4bfa-9528-eb5e7f12edd2",
+      "plotagens-1a9659da-2bf0-4c4a-a288-da8d17329c58",
+      "plotagens-22170b20-7963-4860-9d8a-e012420de22d",
+      "plotagens-34383d76-e84f-45e0-84ec-ddd467702b8a",
+      "plotagens-34c20969-415e-47d3-973c-fc908b162a8e",
+      "plotagens-64c1bb69-bea5-47d2-816a-82c7ad5c6186",
+      "plotagens-bd28182f-2abc-4992-94fd-bdb6e7ecc5c0",
+      "plotagens-cbbb1bd8-2f56-4d7e-aad0-4a050150fa53",
+      "plotagens-d392c49a-f89f-4b4c-ad96-49142b6fc9de",
+      "plotagens-fd33317b-b659-4c59-b8a3-3c5040eaaecc",
+    ],
+  },
+  {
+    name: "Vitrines",
+    slug: "vitrines",
+    images: [
+      "vitrines-005b7af3-22c3-48a3-9920-d1b127e63283",
+      "vitrines-0b500547-abbe-47a8-b0ca-a4b937666a79",
+      "vitrines-29fa897e-40d2-4fed-bdb6-0b65dd97312b",
+      "vitrines-45eabe5d-09fc-458e-8195-af10b1bfd9cf",
+      "vitrines-4988c946-b1fa-447e-b7a0-13931d6940db",
+      "vitrines-5b1bd852-5b61-4a1e-bb57-262c0a68fe4e",
+      "vitrines-5ce56ef0-95a3-4b07-b8b3-fd3fed995fa6",
+      "vitrines-61372292-5ca2-4c96-ad90-8cf41e594220",
+      "vitrines-7215370c-a703-429e-b6b4-abe6eb08cc77",
+      "vitrines-785f70cd-3422-46e3-8600-b3293cee7268",
+      "vitrines-99c7b295-09df-4cb6-b23d-4db1122355d1",
+      "vitrines-a2a302af-873f-4f37-82b3-9f881beaa2b9",
+      "vitrines-d7c789e4-7047-42e2-bd64-de7e69f9eeaf",
+      "vitrines-e3dcfb9f-ba56-401a-a71c-4c69bc315fd5",
+      "vitrines-e597e5fd-0801-4d50-8d03-ebe789eef416",
+      "vitrines-e603eaf5-55f2-44d6-84e2-2b31e292a3e3",
+      "vitrines-ebe64b2d-4621-4421-9018-432e0b9f2d28",
+      "vitrines-f582a52d-1d72-47ce-8bbe-a63af5848923",
+    ],
+  },
+  {
+    name: "Tapumes",
+    slug: "tapumes",
+    images: [
+      "tapumes-036fd989-71f7-40de-9cb0-9a72467d561e",
+      "tapumes-0bdea117-6d17-4f14-a941-d86f00e78106",
+      "tapumes-0ea1d50c-d56a-48fe-8db5-764a116271d0",
+      "tapumes-11e2f421-a874-4c97-b166-2dac2c960d24",
+      "tapumes-19ea0657-8e8a-41b5-a9e0-30a64660ebe6",
+      "tapumes-1d45c884-4a00-4823-998f-901fa22de28c",
+      "tapumes-3ebc811e-5197-4b10-84bc-aaf8098fd69d",
+      "tapumes-51bf389d-f62a-491e-b8b8-836813e67447",
+      "tapumes-588c6368-46b9-4abe-be89-ac5593ca041b",
+      "tapumes-620b0862-af97-452a-bba9-bcc0fe5afa8b",
+      "tapumes-67f309a1-b0e7-4982-babe-48823dc41be7",
+      "tapumes-74b8b727-b427-4d0c-87f8-e05c7415c815",
+      "tapumes-a7fd0234-ecc1-4d89-b2fc-b3918b106595",
+      "tapumes-b0e7aaa7-c85a-4c1f-9551-4eac1f096151",
+      "tapumes-cdf90ef0-bc09-4604-b007-e1b0e1446ca1",
+      "tapumes-d082978c-2da2-4615-a6cd-04b3aac01491",
+      "tapumes-d54c3317-4b06-42ad-a7b4-3f8928f734d1",
+    ],
+  },
+  {
+    name: "Placas PVC",
+    slug: "placas-pvc",
+    images: [
+      "placas-pvc-045a2b37-b455-45a5-9d82-95c09b8ca278",
+      "placas-pvc-04a53069-d484-4a74-87f4-e24e60a1872e",
+      "placas-pvc-1c2d4baf-30cd-4759-adbb-b4deb504f7d2",
+      "placas-pvc-1d33370c-672c-4863-afbb-809f4d596a8b",
+      "placas-pvc-1da2b19a-ce63-4825-b948-4ff3c7de3200",
+      "placas-pvc-2c94342d-59f1-45a2-ac18-707b2b4601c7",
+      "placas-pvc-3821ced2-c243-40d4-a78b-0eaef0b50aa9",
+      "placas-pvc-4257ec45-13e7-4460-9a2e-2abdf89c0361",
+      "placas-pvc-4bb1a5e5-db75-4d5b-82f8-004cc755fc81",
+      "placas-pvc-5a1485e4-91ac-4055-bd3b-9f97fe00836c",
+      "placas-pvc-642e2af0-cf62-4c36-b2ec-0a749d801dc2",
+      "placas-pvc-77f1d6ea-cdc7-4cdd-b9cf-6e942b1a2259",
+      "placas-pvc-7a8a983c-5840-4efb-9626-f31db024d32e",
+      "placas-pvc-909c2399-07d2-47aa-a92e-80b35ff572b4",
+      "placas-pvc-91fc8838-dcd6-4bd8-9d35-b415ccc62def",
+      "placas-pvc-b6146ddb-254c-4409-8bea-47b6822c4726",
+      "placas-pvc-c03df412-815b-463a-8934-ab5c0fbd6dd8",
+      "placas-pvc-c378933f-b47c-48c6-9b2b-945255c15def",
+      "placas-pvc-ef3c575f-26dd-4f15-9995-5ce9c5cdecd9",
+      "placas-pvc-f5cd3c55-4709-4b43-aeb2-ff3fa0d9d85b",
+    ],
+  },
+  {
+    name: "Placas e Lonas",
+    slug: "placas-lonas",
+    images: [
+      "placas-lonas-2199e6e7-1847-49a5-be55-2628e0a14b3f",
+      "placas-lonas-3a3d1018-b83b-41ad-bd5b-4716b8a53736",
+      "placas-lonas-4f0e7cdc-775e-49fb-91c3-5785dcd707fd",
+      "placas-lonas-6cb65465-3429-41e8-808a-f615c550af00",
+      "placas-lonas-7499441b-ec51-4dd5-83ca-b78f7eb0573c",
+      "placas-lonas-81114010-4ab1-48ec-a96c-8af2eec87f98",
+      "placas-lonas-a9059caa-62f1-4c90-9961-646472e90264",
+      "placas-lonas-ac6bc99d-de66-450c-90b5-41540acfd813",
+      "placas-lonas-bc8d473d-5864-482b-9767-9548a5babcf1",
+      "placas-lonas-c29b6410-49eb-4bd6-9199-1928092741b1",
+    ],
+  },
+  {
+    name: "Lonas",
+    slug: "lonas",
+    images: [
+      "lonas-1dc9c8bf-515c-44db-a391-bb6cd0a5feb4",
+      "lonas-37b392ec-a5d0-4f7e-8fa6-b692f8dfaf6d",
+      "lonas-58ba694a-0e02-41dc-b28d-4e6b45097823",
+      "lonas-5a02bd34-fbac-4d44-b1fb-82721715a6ca",
+      "lonas-66a006e4-376a-48ba-912d-dc3add4c09d4",
+      "lonas-c4c7d03e-80fc-4d58-852a-063fc940d660",
+      "lonas-dd248a50-67d4-4eab-b34b-ff823c9aea2e",
+    ],
+  },
+  {
+    name: "Backdrop e Faixas",
+    slug: "backdrop",
+    images: [
+      "backdrop-136ffe27-4ddf-4240-a572-83fbb4ac151e",
+      "backdrop-15a7ec44-c2c5-442a-a911-2b8a741f3a5b",
+      "backdrop-6727a4c2-8690-41df-b355-e785417f741d",
+      "backdrop-8c4ae504-b11a-4852-b62d-5274b128dfce",
+      "backdrop-8f3ae180-d48c-45ae-9258-1bf627eccdba",
+      "backdrop-90365640-d2fd-4205-8bd4-3176f81bd9f9",
+      "backdrop-93d4a717-98fb-4fca-b436-9410b8f131a2",
+      "backdrop-9678c395-4166-4473-a00d-b60da24f318a",
+      "backdrop-ae0699b9-41ec-4e2a-913d-fdebdff3bc7c",
+    ],
+  },
+  {
+    name: "Banners",
+    slug: "banners",
+    images: [
+      "banners-1057fc2a-6202-43ef-b7ea-75bf5fc9baed",
+      "banners-96a14952-18cc-46c8-8855-f00e28bad5e0",
+      "banners-9d84f22f-2085-4052-9ca8-0eceb866237d",
+      "banners-c57c2807-9fd9-467d-b9e8-18e5bef52edc",
+    ],
+  },
+  {
+    name: "Comunicação Visual",
+    slug: "comunicacao-visual",
+    images: [
+      "comunicacao-visual-315696ad-92de-4d37-8809-e569aec6137b",
+      "comunicacao-visual-3865fc4f-f479-4464-b174-e368fb0ebded",
+      "comunicacao-visual-60ceca1d-f274-490b-953e-07f357723def",
+      "comunicacao-visual-a750be68-77d4-4be9-819f-3461a91106bb",
+      "comunicacao-visual-bf93e8b0-2e5f-4267-a2a8-abde0251911c",
+      "comunicacao-visual-c583eb4c-8dc7-4fc6-b177-c016af820570",
+      "comunicacao-visual-da9bcbae-5608-4c0b-9d5b-e09ceacc799b",
+      "comunicacao-visual-e6fdf7b2-dbc3-4de3-a1d5-d79239c2cc23",
+      "comunicacao-visual-e719a3a2-5996-4d9f-86e3-253399fde87d",
+      "comunicacao-visual-f54635cc-7189-4a8d-a0f1-df746cbfa531",
+    ],
+  },
+  {
+    name: "Parabrisas",
+    slug: "parabrisas",
+    images: [
+      "parabrisas-1996efaf-34a6-4c62-bf92-f861e8ce1474",
+      "parabrisas-236fc7b1-d22d-4231-ac0a-f50e1c780c00",
+      "parabrisas-5d98edd3-98ef-4fe8-be70-462bee193804",
+      "parabrisas-67a5eacb-349d-4238-b70b-1b32ff62a863",
+      "parabrisas-8d412a7c-2d5b-4974-853a-c1e5e7aa4981",
+      "parabrisas-98108735-43f8-481e-ac31-6e01af7ee752",
+      "parabrisas-bfe05ce8-dc03-41a6-9ebf-ddb1b7c6c413",
+      "parabrisas-c6100b3a-e81d-4f5b-a137-694200ae6fa4",
+      "parabrisas-e98bd550-0228-4646-89a8-e000bc93a38f",
+      "parabrisas-fff3c009-7c13-4677-9778-3346202989e4",
+    ],
+  },
+  {
+    name: "Piso",
+    slug: "piso",
+    images: [
+      "piso-588632dc-fa07-47cd-bdb2-babf2c89d073",
+      "piso-83123c3f-cd8d-449c-8f68-427571fe7e37",
+      "piso-950f981d-42c7-4d62-8c00-dc2ddf6c3f5b",
+      "piso-ab975b8e-30e3-4af4-a702-0957d204a671",
+      "piso-ad1ca11b-775c-458b-8dfb-b86db9a88a4f",
+      "piso-c333d0f1-2a0b-4411-9a8b-e9735caf580e",
+    ],
+  },
+  {
+    name: "Imobiliários",
+    slug: "imobiliarios",
+    images: [
+      "imobiliarios-084b9cc6-cc4c-4de9-907a-dc7cf7806879",
+      "imobiliarios-4ef7031e-0d59-4a93-b11b-0f00a668f15f",
+      "imobiliarios-5fcf8013-f183-4600-b4d4-9026739e83db",
+      "imobiliarios-a4aca69a-a9d1-4339-bf87-fecd505e3dd1",
+      "imobiliarios-a6b64351-d645-435e-820a-e361ad55a1b3",
+    ],
+  },
+  {
+    name: "Campanhas",
+    slug: "campanhas",
+    images: [
+      "campanhas-17adf46a-b7a9-4f6c-8d3e-7d58b0280920",
+      "campanhas-a4ce2792-7c8d-465d-bbec-63e8c321150b",
+      "campanhas-ff74df1d-1277-4254-a1f3-aad563313c56",
+      "campanhas-ffae419b-b709-4fa3-9c7c-fd46b6798cb7",
+    ],
+  },
+  {
+    name: "Promocionais",
+    slug: "promocionais",
+    images: [
+      "promocionais-192c504a-2503-423a-8d48-db92731897dc",
+      "promocionais-2b04682d-6a55-458d-b25a-f1fd0da7ce3f",
+      "promocionais-341db449-caa7-49d0-9fd8-13a3b768f1c4",
+      "promocionais-3d57f120-6a04-4d4d-9de9-0293d0744467",
+      "promocionais-80254cd1-8878-469e-bc32-69aeff97cd00",
+      "promocionais-92bbc25e-580e-4809-b02b-2822199bf64f",
+      "promocionais-a5192632-3583-42a5-a7b5-d9704ef9b4e5",
+      "promocionais-ace66fc3-9e3a-435f-b3c4-5e71796657ab",
+      "promocionais-e1ce5351-4a74-4134-b9e1-ca0058ddba3a",
+    ],
+  },
+  {
+    name: "Etiquetas",
+    slug: "etiquetas",
+    images: [
+      "etiquetas-2eeb6173-3507-4290-9eb3-1c6ab7741abd",
+      "etiquetas-3a8967eb-e3a9-4d6f-a7a7-77f2d93430f1",
+      "etiquetas-aba239b3-29dd-4860-a363-8d7367f09cee",
+      "etiquetas-b0a727df-de23-486f-99fe-0898b5db5ed7",
+      "etiquetas-c747904f-46fa-43b1-9888-5068ea53d687",
+      "etiquetas-cb8d7103-84f9-43a1-a99c-ab77af361841",
+      "etiquetas-e874257a-2bab-4c83-9571-6114d97e167d",
+      "etiquetas-e9746b73-82b7-4c40-a31a-e58a5c49dab6",
+      "etiquetas-ff9a9cd7-e854-44bd-9efb-e576b1189b16",
+      "etiquetas-fff70010-e9b8-42a8-8db0-2938f93c19e1",
+    ],
+  },
+  {
+    name: "Blocos Personalizados",
+    slug: "blocos",
+    images: [
+      "blocos-446d5a03-dbde-463f-9cb0-909077d3be96",
+      "blocos-492db9a9-de35-44c5-8bfb-e9b14d04a10b",
+      "blocos-89e0dd82-5cce-4ea3-adc5-51fab7f5e27a",
+      "blocos-b08b2b5d-a075-4197-bbd2-cef6338de4b0",
+    ],
+  },
+  {
+    name: "Recortes Digitais",
+    slug: "recortes",
+    images: [
+      "recortes-5947ef34-2e53-4e7b-bc76-8cd359eef32f",
+      "recortes-6c8a25d8-c430-4eb0-b966-ce8207436fb3",
+      "recortes-a7d7b4fc-b1c2-46d0-8e36-d665dd41d24d",
+      "recortes-ae08b933-cb37-402e-a407-17a1e22a32e4",
+      "recortes-bf3f9971-82a7-4e40-9a66-98d44b9248f5",
+      "recortes-cb66d20e-e006-4cb7-b956-b3b0859fed6c",
+      "recortes-ce453b6c-6fff-44ac-9baa-1b8e96e26bb2",
+      "recortes-d121425b-9cb6-4ba8-9815-441f6b1e1337",
+      "recortes-e374e2ba-e03a-4805-be0d-eb0c95701c28",
+      "recortes-f112b818-a298-403b-9c82-a395ec0cd4ca",
+    ],
+  },
+  {
+    name: "Remoção e Limpeza",
+    slug: "remocao",
+    images: [
+      "remocao-12a3ba4e-e80e-4078-aa84-bf83805e9ac6",
+      "remocao-17aaf6dd-730c-4423-b7d4-d4be6d681dbb",
+      "remocao-4796cc28-1a6b-4b30-880d-6b8d4657057b",
+      "remocao-5a9124a2-b704-44f7-a025-c2c33cea7087",
+      "remocao-8a7ee8ca-a5cd-486f-9525-97984e817f29",
+      "remocao-f0ed2b4b-d2e2-430e-ba27-e1ab6727cc7e",
+      "remocao-fd0df902-5db7-4f73-81e3-3bcc58d60e02",
+    ],
+  },
+];
+
+export const categories: Category[] = RAW.map(category => ({ ...category, blurb: BLURBS[category.slug] ?? '' }));
+
+export const totalPhotos = categories.reduce((sum, category) => sum + category.images.length, 0);
+
+/** Filtros do portfólio: categorias parecidas ficam juntas num grupo só. */
+const GROUPS = [
+  { id: 'grandes-formatos', name: 'Grandes formatos', slugs: ['cbf', 'tapumes', 'lonas', 'backdrop', 'banners'] },
+  { id: 'veiculos-e-frotas', name: 'Veículos e frotas', slugs: ['veiculos', 'carros', 'carros-personalizados', 'envelopamento', 'parabrisas'] },
+  { id: 'fachadas-e-placas', name: 'Fachadas e placas', slugs: ['plotagens', 'comunicacao-visual', 'placas-pvc', 'placas-lonas', 'imobiliarios'] },
+  { id: 'ambientes-e-vitrines', name: 'Ambientes e vitrines', slugs: ['ambientes', 'vitrines', 'piso', 'recortes', 'remocao'] },
+  { id: 'pdv-e-impressos', name: 'PDV e impressos', slugs: ['campanhas', 'promocionais', 'etiquetas', 'blocos'] },
+];
+
+export interface Group { id: string; name: string; categories: Category[] }
+
+export const groups: Group[] = GROUPS.map(group => ({
+  id: group.id,
+  name: group.name,
+  categories: group.slugs.map(slug => {
+    const category = categories.find(item => item.slug === slug);
+    if (!category) throw new Error(`Categoria desconhecida no grupo ${group.id}: ${slug}`);
+    return category;
+  }),
+}));
+
+const ungrouped = categories.filter(category => !GROUPS.some(group => group.slugs.includes(category.slug)));
+if (ungrouped.length) throw new Error(`Categorias sem grupo: ${ungrouped.map(category => category.slug).join(', ')}`);
+
+/** Fotos do hero. focus/zoom enquadram o trabalho e cortam marcas d'água da câmera. */
+export const heroPrints = [
+  { image: 'tapumes-0bdea117-6d17-4f14-a941-d86f00e78106', client: 'Eudora', service: 'Tapume de loja', slug: 'tapumes', focus: [1, 0.3], zoom: 1.3 },
+  { image: 'veiculos-81cee948-1b99-4414-beba-0f71f45d20e9', client: 'CSN Mineração', service: 'Plotagem veicular', slug: 'veiculos', focus: [0.5, 0.3], zoom: 1.05 },
+  { image: 'etiquetas-e9746b73-82b7-4c40-a31a-e58a5c49dab6', client: 'Trattoria Massas', service: 'Etiquetas personalizadas', slug: 'etiquetas', focus: [0.75, 0.2], zoom: 1.15 },
+] as const;
+
+/** Trabalhos em destaque na home: seis cartões do mesmo tamanho (4:5).
+ *  focus/zoom enquadram cada foto e cortam marcas d'água da câmera. */
+export const featured = [
+  { image: 'tapumes-cdf90ef0-bc09-4604-b007-e1b0e1446ca1', client: 'LEGO', service: 'Tapume em shopping', slug: 'tapumes', focus: [0.66, 0.62], zoom: 1.25 },
+  { image: 'carros-9b9d5fa5-82cb-4dbc-858f-436c88bbba5e', client: 'Mit Car · Mitsubishi', service: 'Plotagem veicular', slug: 'carros', focus: [0.5, 0.3], zoom: 1.05 },
+  { image: 'comunicacao-visual-da9bcbae-5608-4c0b-9d5b-e09ceacc799b', client: 'Habitus', service: 'Comunicação visual', slug: 'comunicacao-visual', focus: [0.5, 0.35], zoom: 1.05 },
+  { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', client: 'Ecad', service: 'Adesivação de parede', slug: 'ambientes', focus: [0.72, 0.4], zoom: 1 },
+  { image: 'etiquetas-e874257a-2bab-4c83-9571-6114d97e167d', client: 'Beef Store', service: 'Etiquetas personalizadas', slug: 'etiquetas', focus: [0.7, 0.2], zoom: 1.1 },
+  { image: 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e', client: 'Infinit Telecom', service: 'Envelopamento de frota', slug: 'envelopamento', focus: [0.75, 0.25], zoom: 1.12 },
+] as const;

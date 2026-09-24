@@ -2,18 +2,54 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
 import { getWhatsAppLink } from '../config/site';
 ---
 <Layout title="Página não encontrada | MV Print" description="Encontre os serviços, trabalhos e contato da MV Print.">
   <Header />
-  <main id="main-content" class="max-w-3xl mx-auto px-6 pt-40 pb-24 text-center">
-    <p class="text-[#b81269] font-semibold mb-4">ERRO 404</p>
-    <h1 class="text-4xl font-bold mb-5">Essa página não foi encontrada.</h1>
-    <p class="text-slate-600 text-lg mb-8">Você pode voltar ao início para conhecer nossos serviços ou falar com a gente sobre seu projeto.</p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="/" class="rounded-full bg-[#1D3557] text-white px-6 py-4 font-semibold">Voltar ao início</a>
-      <a href={getWhatsAppLink('default')} class="rounded-full bg-[#137a3d] text-white px-6 py-4 font-semibold">Falar no WhatsApp</a>
+  <main id="main-content" class="nf wrap">
+    <p class="rule"><span>Erro <b>404</b></span></p>
+    <div class="nf-grid">
+      <p class="nf-code display" aria-hidden="true">
+        <span class="reg nf-reg" data-text="404">404</span>
+      </p>
+      <div class="nf-copy">
+        <h1 class="display nf-title">Atolou o <em>papel.</em></h1>
+        <p class="lede">A página que você procurou não saiu da impressora. Mas o resto do site está funcionando: volte ao início, veja os trabalhos ou fale com a gente.</p>
+        <div class="nf-actions">
+          <Button href="/" label="Voltar ao início" icon="arrow-left" />
+          <Button href="/portfolio" label="Ver portfólio" variant="line" />
+          <Button href={getWhatsAppLink('default')} label="Falar no WhatsApp" icon="whatsapp" variant="line" external />
+        </div>
+      </div>
     </div>
+    <div class="nf-sheet" aria-hidden="true"></div>
   </main>
   <Footer />
 </Layout>
+
+<style>
+  .nf { position: relative; padding-top: clamp(8rem, 14vw, 11rem); padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .nf-grid { display: grid; gap: 2rem 4rem; align-items: center; margin-top: clamp(2rem, 4vw, 3rem); }
+  @media (min-width: 1024px) { .nf-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+  .nf-code { margin: 0; font-size: clamp(8rem, 26vw, 22rem); line-height: .85; letter-spacing: -0.06em; }
+  .nf-reg { --rx: 16px; --ry: 7px; animation: nf-jam 3.6s var(--ease-quart) infinite; }
+  .nf-reg::before { animation: nf-jam 3.6s var(--ease-quart) .08s infinite; }
+  .nf-reg::after { animation: nf-jam 3.6s var(--ease-quart) .16s infinite; }
+  @keyframes nf-jam {
+    0%, 70%, 100% { translate: 0 0; }
+    74% { translate: -6px 3px; }
+    78% { translate: 5px -2px; }
+    82% { translate: -2px 1px; }
+  }
+  .nf-copy { display: grid; gap: 1.5rem; justify-items: start; }
+  .nf-title { font-size: clamp(2.4rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -0.04em; }
+  .nf-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .6rem; }
+  .nf-sheet {
+    position: absolute; right: var(--gutter); bottom: 0; width: min(34vw, 380px); height: 28px;
+    background:
+      linear-gradient(90deg, var(--color-paper), rgb(244 239 231 / 0%) 30%),
+      repeating-linear-gradient(90deg, var(--color-paper-3) 0 2px, transparent 2px 9px);
+    opacity: .6;
+  }
+</style>

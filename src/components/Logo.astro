@@ -1,0 +1,15 @@
+---
+// Logo MV Print inline. Ver src/lib/logo.ts.
+import { logoSvg, type LogoTone, type LogoVariant } from '../lib/logo';
+
+interface Props {
+  variant?: LogoVariant;
+  tone?: LogoTone;
+  class?: string;
+  /** Se informado, a logo é anunciada como imagem; senão fica decorativa. */
+  label?: string;
+}
+
+const { variant, tone, class: className, label } = Astro.props;
+---
+<Fragment set:html={logoSvg({ variant, tone, className, label })} />

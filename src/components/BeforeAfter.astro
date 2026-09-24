@@ -1,0 +1,134 @@
+---
+// Antes e depois. O "antes" é uma imagem feita a partir da foto real do trabalho
+// (mesmo enquadramento). Basta salvar em public/images/antes-depois/antes-<chave>.jpg
+// com uma das chaves abaixo: a seção aparece sozinha no próximo build.
+import fs from 'node:fs';
+import path from 'node:path';
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+import { imageSize } from '../lib/images';
+
+const PRESETS = {
+  ecad: { image: 'ambientes-99d64249-05b6-4a92-8123-86aa5aae81f7', title: 'Da parede branca *ao palco.*', text: 'Arraste e veja o escritório do Ecad antes e depois da adesivação da parede.', caption: 'Ecad · Adesivação de ambiente' },
+  sala: { image: 'ambientes-7e5f5955-35aa-4945-8141-652b11a622c4', title: 'A sala ganhou *uma cidade.*', text: 'Arraste e veja a sala antes e depois do painel fotográfico na parede.', caption: 'Painel fotográfico · Decoração' },
+  musica: { image: 'ambientes-1a9e665e-db4a-4544-ae9f-0503bd5cc9f5', title: 'O escritório *ganhou ritmo.*', text: 'Arraste e veja o escritório antes e depois da adesivação da parede.', caption: 'Adesivação de ambiente' },
+  van: { image: 'envelopamento-d7ef4c16-a4ef-4383-b3a7-36a7de20549e', title: 'Do branco *à marca na rua.*', text: 'Arraste e compare a van da Infinit Telecom antes e depois da plotagem completa.', caption: 'Infinit Telecom · Plotagem veicular' },
+} as const;
+
+const folder = path.resolve(process.cwd(), 'public/images/antes-depois');
+const key = (Object.keys(PRESETS) as (keyof typeof PRESETS)[]).find(name => fs.existsSync(path.join(folder, `antes-${name}.jpg`)));
+const preset = key ? PRESETS[key] : null;
+const before = key ? `/images/antes-depois/antes-${key}.jpg` : '';
+const size = preset ? await imageSize(preset.image) : { width: 4, height: 3 };
+const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
+---
+
+{preset && (<section id="antes-depois" class="sec ba-sec" aria-labelledby="ba-title">
+  <div class="wrap">
+    <p class="rule"><span><b>Antes &amp; depois</b></span><Icon name="reg" class="reg-mark" /></p>
+
+    <div class="ba-head">
+      <SplitText id="ba-title" class="display t-h2" text={preset.title} />
+      <p class="lede" data-reveal style="--d:.15s">{preset.text}</p>
+    </div>
+
+    <div class="ba" style={`--ratio:${size.width} / ${size.height};--ar:${(size.width / size.height).toFixed(4)};--pos:50%`} data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip">
+      <div class="ba-canvas">
+        <picture class="ba-img">
+          <source type="image/webp" srcset={`/images/optimized/${preset.image}-960.webp 960w, /images/portfolio/${preset.image}.webp ${size.width}w`} sizes={sizes} />
+          <img src={`/images/portfolio/${preset.image}.jpg`} alt={`Depois: ${preset.caption}, trabalho da MV Print`} width={size.width} height={size.height} loading="lazy" decoding="async" />
+        </picture>
+        <picture class="ba-img ba-before">
+          <img src={before} alt="Antes: o mesmo lugar sem a aplicação" width={size.width} height={size.height} loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <span class="ba-tag ba-tag-l mono" aria-hidden="true">Antes</span>
+      <span class="ba-tag ba-tag-r mono" aria-hidden="true">Depois</span>
+      <div class="ba-handle" aria-hidden="true">
+        <span class="ba-knob"><Icon name="drag" /></span>
+      </div>
+      <input class="ba-range" type="range" min="0" max="100" step="1" value="50" aria-label="Comparar instalação e resultado" />
+    </div>
+
+    <div class="ba-foot" data-reveal style="--d:.1s">
+      <p class="mono">{preset.caption}</p>
+      <p class="mono ba-hint"><Icon name="drag" /> Arraste para comparar</p>
+    </div>
+  </div>
+</section>)}
+
+<style>
+  .ba-head {
+    display: grid; gap: 1.25rem; justify-items: start; max-width: 52rem;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .ba {
+    position: relative;
+    aspect-ratio: var(--ratio, 4 / 3);
+    width: min(100%, calc(84vh * 4 / 3));
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #2d6b3c;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: ew-resize;
+  }
+
+  .ba-img, .ba-img img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ba-img img { object-fit: cover; pointer-events: none; }
+  /* A foto final foi tirada mais de longe: amplia e desloca para o letreiro coincidir. */
+  .ba-canvas { --s: 1; --ox: 50%; position: absolute; inset: 0; transform: scale(var(--s)); transform-origin: var(--ox) 10%; }
+  .ba-before { clip-path: inset(0 calc(100% - (var(--ox) + (var(--pos) - var(--ox)) / var(--s))) 0 0); }
+
+  .ba-handle {
+    position: absolute; top: 0; bottom: 0; left: var(--pos);
+    width: 2px; margin-left: -1px;
+    background: var(--color-paper);
+    box-shadow: 0 0 0 1px rgb(22 18 14 / 15%);
+    pointer-events: none;
+  }
+  .ba-knob {
+    position: absolute; top: 50%; left: 50%;
+    display: grid; place-items: center;
+    width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+    background: var(--color-paper); color: var(--color-ink);
+    box-shadow: 0 12px 30px -10px rgb(22 18 14 / 55%);
+    transition: transform .5s var(--ease-expo), background-color .3s, color .3s;
+  }
+  .ba-knob :global(svg) { width: 26px; height: 26px; }
+  .ba:hover .ba-knob, .ba.is-dragging .ba-knob { transform: scale(1.12); background: var(--color-magenta); color: #fff; }
+
+  .ba-tag {
+    position: absolute; top: 1rem;
+    padding: .45rem .8rem; border-radius: 999px;
+    background: rgb(22 18 14 / 72%); color: var(--color-paper);
+    backdrop-filter: blur(6px);
+    font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
+  .ba-tag-l { left: 1rem; }
+  .ba-tag-r { right: 1rem; }
+
+  .ba-range {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 44px; margin: 0;
+    opacity: 0; pointer-events: none;
+  }
+  .ba:has(.ba-range:focus-visible) { outline: 2px solid var(--color-magenta); outline-offset: 4px; }
+
+  .ba-foot { display: flex; justify-content: space-between; gap: 1rem; width: min(100%, calc(84vh * 4 / 3)); margin: 1rem auto 0; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
+  .ba-hint { display: inline-flex; align-items: center; gap: .4rem; }
+  .ba-hint :global(svg) { width: 1rem; height: 1rem; }
+  /* No celular a bolinha do meio já diz "arraste"; a legenda cabe numa linha. */
+  @media (max-width: 520px) { .ba-hint { display: none; } }
+
+  /* Computador: título e texto lado a lado; a foto usa a altura que sobra da tela. */
+  @media (min-width: 1024px) {
+    .ba-head { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: end; column-gap: clamp(2.5rem, 6vw, 6rem); max-width: none; margin-bottom: clamp(1.5rem, 4.5vh, 3rem); }
+    .ba { width: min(100%, calc((var(--frame) - 11.25rem) * var(--ar, 1.3333))); }
+  }
+</style>

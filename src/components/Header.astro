@@ -1,114 +1,217 @@
 ---
-// Header com menu responsivo
-import { getWhatsAppLink } from '../config/site';
+// Cabeçalho flutuante + menu em tela cheia (celular e tablet)
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { CONTACT, SOCIAL, getWhatsAppLink } from '../config/site';
 
 const whatsappLink = getWhatsAppLink('default');
+const links = [
+  { href: '/#servicos', label: 'Serviços' },
+  { href: '/#portfolio', label: 'Trabalhos' },
+  { href: '/#sobre', label: 'Sobre' },
+  { href: '/#contato', label: 'Contato' },
+];
+const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' }];
 ---
 
-<header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
-      <!-- Logo -->
-      <a href="/" class="flex items-center">
-        <img
-          src="/images/logo-mvprint.png"
-          alt="MV Print"
-          width="400" height="265" class="h-14 w-auto"
-        />
+<header id="header" class="site-header">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="MV Print, página inicial">
+      <Logo class="brand-logo" />
+    </a>
+
+    <nav class="nav" aria-label="Menu principal">
+      {links.map(link => (
+        <a href={link.href} class="nav-link">
+          <span class="roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <a href="/portfolio" class="nav-link nav-portfolio">
+        <span class="roll"><span>Portfólio</span><span aria-hidden="true">Portfólio</span></span>
       </a>
-
-      <!-- Menu Desktop -->
-      <nav aria-label="Menu principal" class="hidden md:flex items-center space-x-8">
-        <a href="/#servicos" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Serviços
-        </a>
-        <a href="/#portfolio" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Portfólio
-        </a>
-        <a href="/#sobre" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Sobre
-        </a>
-        <a href="/#contato" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Contato
-        </a>
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-[#137a3d] hover:bg-[#106632] text-white px-6 py-2 rounded-full font-semibold transition-smooth flex items-center gap-2"
-        >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          WhatsApp
-        </a>
-      </nav>
-
-      <!-- Menu Mobile Button -->
-      <button
-        id="mobile-menu-btn"
-        type="button"
-        class="md:hidden text-[#1D3557] p-3"
-        aria-label="Abrir menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
+      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="btn btn-sm" data-magnetic="0.2">
+        <span class="roll"><span>Orçamento</span><span aria-hidden="true">Orçamento</span></span>
+        <span class="btn-icon" data-icon="whatsapp"><Icon name="whatsapp" /></span>
+      </a>
+      <button type="button" class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-menu" data-menu-open>
+        <span></span><span></span>
       </button>
-    </div>
-
-    <!-- Menu Mobile -->
-    <div id="mobile-menu" class="hidden md:hidden pb-4">
-      <nav aria-label="Menu móvel" class="flex flex-col gap-1 [&>a]:py-3">
-        <a href="/#servicos" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Serviços
-        </a>
-        <a href="/#portfolio" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Portfólio
-        </a>
-        <a href="/#sobre" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Sobre
-        </a>
-        <a href="/#contato" class="text-[#1D3557] hover:text-[#b81269] transition-smooth font-medium">
-          Contato
-        </a>
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-[#137a3d] text-white px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
-        >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          WhatsApp
-        </a>
-      </nav>
     </div>
   </div>
 </header>
 
-<script>
-  const header = document.getElementById('header');
-  const toggle = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  function setOpen(open: boolean, restoreFocus = false) {
-    menu?.classList.toggle('hidden', !open);
-    toggle?.setAttribute('aria-expanded', String(open));
-    toggle?.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-    if (restoreFocus) toggle?.focus();
+<dialog id="site-menu" class="menu" aria-label="Menu">
+  <div class="menu-top">
+    <a href="/" class="brand" aria-label="MV Print, página inicial">
+      <Logo class="brand-logo" />
+    </a>
+    <button type="button" class="menu-close" aria-label="Fechar menu" data-menu-close>
+      <Icon name="close" />
+    </button>
+  </div>
+  <nav class="menu-nav" aria-label="Menu">
+    {menuLinks.map((link, index) => (
+      <a href={link.href} class="menu-link" style={`--i:${index}`}>
+        <span class="menu-num mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <span class="menu-label">{link.label}</span>
+        <Icon name="arrow-up-right" class="menu-arrow" />
+      </a>
+    ))}
+  </nav>
+  <div class="menu-foot">
+    <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="btn btn-wa menu-cta">
+      <span class="roll"><span>Pedir orçamento no WhatsApp</span><span aria-hidden="true">Pedir orçamento no WhatsApp</span></span>
+      <span class="btn-icon" data-icon="whatsapp"><Icon name="whatsapp" /></span>
+    </a>
+    <div class="menu-contacts mono">
+      <a href={`tel:${CONTACT.phone.number}`}>{CONTACT.phone.display}</a>
+      <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+      <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+    </div>
+    <div class="colorbar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </div>
+</dialog>
+
+<style>
+  .site-header {
+    --hp: clamp(.75rem, 2vw, 1.25rem);
+    position: fixed; inset: 0 0 auto 0; z-index: 80;
+    padding: 12px var(--hp);
+    pointer-events: none;
+    transition: transform .7s var(--ease-expo);
+    view-transition-name: site-header;
   }
-  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
-  menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
-  header?.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') setOpen(false, true);
-  });
-  document.addEventListener('click', event => {
-    if (event.target instanceof Node && !header?.contains(event.target)) setOpen(false);
-  });
-  window.matchMedia('(min-width: 768px)').addEventListener('change', event => {
-    if (event.matches) setOpen(false);
-  });
-</script>
+  .site-header.is-hidden { transform: translate3d(0, -130%, 0); }
+
+  .bar {
+    pointer-events: auto;
+    /* Três colunas: logo e botões nas bordas do conteúdo, menu no centro exato. */
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 1.5rem;
+    max-width: calc(var(--maxw) - 2 * var(--hp));
+    height: 64px;
+    margin-inline: auto;
+    padding: 0 calc(var(--gutter) - var(--hp));
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: background-color .5s, border-color .5s, box-shadow .5s, max-width .8s var(--ease-expo), padding .8s var(--ease-expo);
+  }
+  .site-header.is-scrolled .bar {
+    max-width: 1120px;
+    padding: 0 8px 0 22px;
+    background: rgb(244 239 231 / 95%);
+    border-color: var(--line);
+    box-shadow: 0 18px 40px -28px rgb(22 18 14 / 45%);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  }
+
+  .brand { grid-column: 1; justify-self: start; display: inline-flex; flex: none; }
+  .brand :global(.brand-logo) { display: block; width: auto; height: 38px; overflow: visible; transition: filter .45s var(--ease-expo); }
+  /* No hover, a logo "sai de registro" como numa impressão desalinhada. */
+  .brand:hover :global(.brand-logo) { opacity: .8; }
+
+  /* Entrada da logo, uma vez por sessão: o "MV" é impresso da esquerda para a
+     direita e as letras de "Print" sobem uma a uma. */
+  :global(html.intro) .site-header :global(.logo-mv) { animation: logo-wipe 1.3s var(--ease-expo) .1s both; }
+  :global(html.intro) .site-header :global(.logo-print path) {
+    transform-box: fill-box;
+    animation: logo-letter 1s var(--ease-expo) both;
+    animation-delay: calc(.5s + var(--i, 0) * .07s);
+  }
+  @keyframes logo-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes logo-letter { from { opacity: 0; transform: translateY(55%); } }
+
+  .nav { grid-column: 2; display: none; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.4rem); }
+  @media (min-width: 1024px) { .nav { display: flex; } }
+
+  .nav-link {
+    position: relative; display: inline-flex; align-items: flex-start; gap: .2rem;
+    font-weight: 500; font-size: .95rem; letter-spacing: -0.005em;
+  }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; bottom: -6px; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--title-accent); transform: scale(0); transition: transform .4s var(--ease-back);
+  }
+  .nav-link.is-active::after { transform: scale(1); }
+
+  .header-actions { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .6rem; }
+  .nav-portfolio { display: none; margin-right: .8rem; }
+  @media (min-width: 1180px) { .nav-portfolio { display: inline-flex; } }
+
+  .btn-sm { min-height: 46px; padding: .3rem .35rem .3rem 1.15rem; font-size: .9rem; }
+  .btn-sm .btn-icon { width: 36px; height: 36px; }
+  @media (max-width: 420px) {
+    .btn-sm .roll { display: none; }
+    .btn-sm { padding: 0; width: 46px; }
+    .btn-sm .btn-icon { width: 100%; height: 100%; background: var(--color-ink); color: var(--color-paper); }
+  }
+
+  .burger {
+    display: grid; place-content: center; gap: 6px;
+    width: 46px; height: 46px; border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    background: var(--color-paper);
+  }
+  .burger span { display: block; width: 18px; height: 1.5px; background: var(--color-ink); transition: transform .4s var(--ease-expo); }
+  .burger:hover span:first-child { transform: translateX(3px); }
+  .burger:hover span:last-child { transform: translateX(-3px); }
+  @media (min-width: 1024px) { .burger { display: none; } }
+  :global(html:not(.js)) .burger { display: none; }
+
+  /* ---------- Menu em tela cheia ---------- */
+
+  .menu {
+    position: fixed; inset: 0;
+    width: 100%; height: 100dvh; max-width: none; max-height: none;
+    margin: 0; padding: 12px clamp(.75rem, 2vw, 1.25rem) max(1.25rem, env(safe-area-inset-bottom));
+    border: 0;
+    background: var(--color-paper); color: var(--color-ink);
+    clip-path: circle(0% at calc(100% - 44px) 44px);
+    transition: clip-path .75s var(--ease-quart);
+    overflow-y: auto;
+  }
+  .menu[open] { display: flex; flex-direction: column; }
+  .menu.is-open { clip-path: circle(150% at calc(100% - 44px) 44px); }
+  .menu::backdrop { background: transparent; }
+
+  .menu-top { display: flex; align-items: center; justify-content: space-between; height: 66px; padding-left: calc(var(--gutter) - clamp(.75rem, 2vw, 1.25rem)); padding-right: 9px; }
+  .menu-close {
+    display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+    background: var(--color-ink); color: var(--color-paper);
+  }
+  .menu-close :global(svg) { width: 20px; height: 20px; }
+
+  .menu-nav { display: flex; flex-direction: column; margin-top: clamp(1.5rem, 6vh, 3rem); padding-inline: calc(var(--gutter) - clamp(.75rem, 2vw, 1.25rem)); }
+  .menu-link {
+    display: flex; align-items: center; gap: 1rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display); font-weight: 600; font-size: clamp(2rem, 8vw, 3.4rem); line-height: 1.05; letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
+    opacity: 0; transform: translate3d(0, 40%, 0);
+    transition: opacity .6s var(--ease-expo), transform .9s var(--ease-expo), color .3s;
+  }
+  .menu.is-open .menu-link { opacity: 1; transform: none; transition-delay: calc(.18s + var(--i) * .06s); }
+  .menu-num { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); align-self: flex-start; margin-top: .6rem; }
+  .menu-label { flex: 1; }
+  .menu-link :global(.menu-arrow) { width: 1.6rem; height: 1.6rem; opacity: .35; transition: transform .5s var(--ease-expo), opacity .3s; }
+  .menu-link:hover { color: var(--title-accent); }
+  .menu-link:hover :global(.menu-arrow) { opacity: 1; transform: rotate(45deg); }
+
+  .menu-foot {
+    margin-top: auto; padding: 2rem calc(var(--gutter) - clamp(.75rem, 2vw, 1.25rem)) 0;
+    display: grid; gap: 1.5rem;
+    opacity: 0; transition: opacity .6s .45s;
+  }
+  .menu.is-open .menu-foot { opacity: 1; }
+  .menu-cta { justify-self: start; }
+  .menu-contacts { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-size: .78rem; letter-spacing: .04em; color: var(--color-ink-2); }
+  .menu-contacts a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu, .menu.is-open { clip-path: none; }
+  }
+</style>

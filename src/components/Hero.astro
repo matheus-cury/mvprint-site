@@ -1,48 +1,332 @@
 ---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
 import { getWhatsAppLink } from '../config/site';
-import ResponsiveImage from './ResponsiveImage.astro';
+import { heroPrints } from '../data/portfolio';
+import { fullWebp, imageSize, optimized, photoSrc } from '../lib/images';
+
+// Fotos em alta: 480/960 px do prebuild + o WebP inteiro para telas grandes e retina.
+const prints = await Promise.all(heroPrints.map(async (print, index) => {
+  const { width, height } = await imageSize(print.image);
+  return {
+    ...print,
+    index,
+    width,
+    height,
+    srcset: `${optimized(print.image, 480)} 480w, ${optimized(print.image, 960)} 960w, ${fullWebp(print.image)} ${width}w`,
+    fallback: photoSrc(print.image),
+  };
+}));
+const first = prints[0];
+const pad = (value: number) => String(value).padStart(2, '0');
+const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560px)';
 ---
 
-<section class="hero relative overflow-hidden bg-[#1D3557] text-white" aria-labelledby="hero-title">
-  <div class="relative max-w-7xl mx-auto px-5 sm:px-8 pt-28 pb-12 lg:pt-40 lg:pb-24">
-    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div>
-        <p class="inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 mb-5">
-          <span class="w-2 h-2 rounded-full bg-[#E91E8C]" aria-hidden="true"></span>
-          Gráfica e comunicação visual em BH
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="wrap hero-grid">
+    <div class="hero-copy" data-reveal-manual>
+      <div class="hero-main">
+        <p class="hero-kicker eyebrow" data-hero-in style="--d:0s">
+          <span class="hero-inks" aria-hidden="true"><i class="dot dot-c"></i><i class="dot dot-m"></i><i class="dot dot-y"></i><i class="dot dot-k"></i></span>
+          <span>Gráfica &amp; comunicação visual<span class="kicker-sep"> · </span><span class="kicker-city">Belo Horizonte</span></span>
         </p>
-        <h1 id="hero-title" class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.12] mb-5">
-          Você imagina.<br /><span class="text-[#ff83c5]">A gente imprime!</span>
+
+        <h1 id="hero-title" class="display t-hero hero-title">
+          <span class="line" style="--d:.08s"><span class="line-in">Você imagina.</span></span>
+          <span class="line" style="--d:.2s"><span class="line-in">A gente <em>imprime.</em></span></span>
         </h1>
-        <p class="text-base sm:text-lg text-slate-200 leading-relaxed max-w-xl mb-7">
-          Adesivos, fachadas, impressos e envelopamento de veículos.
-          Dê vida à sua marca com a MV Print.
+
+        <p class="lede hero-lede">
+          Adesivos, fachadas, plotagem de veículos, tapumes e impressos. Da arte à instalação, com o cuidado de quem vive de tinta e papel.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a href={getWhatsAppLink('default')} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-full bg-[#137a3d] hover:bg-[#106632] px-6 py-4 font-semibold transition-colors">
-            Pedir orçamento no WhatsApp <span aria-hidden="true">↗</span>
-          </a>
-          <a href="#portfolio" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/35 hover:bg-white/10 px-6 py-4 font-semibold transition-colors">
-            Conhecer os trabalhos <span aria-hidden="true">↓</span>
-          </a>
-        </div>
-        <p class="text-sm text-slate-300 mt-3">Conte sua ideia. O orçamento é sem compromisso.</p>
-        <div class="grid grid-cols-3 gap-4 border-t border-white/15 mt-8 pt-6 max-w-lg">
-          <div><p class="text-lg sm:text-2xl font-bold">Desde 2019</p><p class="text-xs sm:text-sm text-slate-300 mt-1">em Belo Horizonte</p></div>
-          <div><p class="text-lg sm:text-2xl font-bold">Sua marca</p><p class="text-xs sm:text-sm text-slate-300 mt-1">em cada detalhe</p></div>
-          <div><p class="text-lg sm:text-2xl font-bold">Todo o Brasil</p><p class="text-xs sm:text-sm text-slate-300 mt-1">envio de materiais</p></div>
+
+        <div class="hero-actions" data-hero-in style="--d:.55s">
+          <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" size="lg" external />
+          <a href="#portfolio" class="hero-more u-link tap">Ver trabalhos <Icon name="arrow-down" class="hero-more-icon" /></a>
         </div>
       </div>
-      <figure class="relative rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-slate-800">
-        <ResponsiveImage src="/images/portfolio/ambientes-689498ae-10a6-4a37-95fb-307ec35bf8b4.jpg" alt="Adesivação do ambiente corporativo da AeC realizada pela MV Print" width={960} height={720} loading="eager" fetchpriority="high" sizes="(min-width: 1280px) 576px, (min-width: 1024px) 45vw, calc(100vw - 40px)" class="w-full aspect-[4/3] object-cover" />
-        <figcaption class="px-5 py-4 flex items-center justify-between gap-3 text-sm bg-[#142943]">
-          <div><span class="block text-cyan-200 text-xs mb-1">UM DOS NOSSOS PROJETOS</span><span class="font-semibold">Comunicação visual · AeC</span></div>
-          <a href="/portfolio#ambientes" class="shrink-0 underline underline-offset-4 hover:text-cyan-200">Ver mais <span aria-hidden="true">↗</span></a>
-        </figcaption>
-      </figure>
+
+      <dl class="hero-facts" data-hero-in style="--d:.65s">
+        <div><dt>Desde 2019</dt><dd>em Belo Horizonte</dd></div>
+        <div><dt>+1.000</dt><dd>projetos entregues</dd></div>
+        <div><dt>Todo o Brasil</dt><dd>envio de materiais</dd></div>
+      </dl>
     </div>
+
+    <figure class="press" data-press data-reveal-manual>
+      <div class="press-sheet">
+        <div class="press-stage">
+          {prints.map(print => (
+            <a
+              href={`/portfolio#${print.slug}`}
+              class:list={['press-photo', { 'is-current': print.index === 0 }]}
+              style={`--fx:${print.focus[0] * 100}%;--fy:${print.focus[1] * 100}%;--z:${print.zoom}`}
+              data-cursor="view"
+              data-cursor-label="Ver trabalhos"
+              data-client={print.client}
+              data-service={print.service}
+              aria-label={`${print.service} para ${print.client}: ver trabalhos no portfólio`}
+              {...(print.index === 0 ? {} : { inert: true, 'aria-hidden': 'true' })}
+            >
+              <picture>
+                <source type="image/webp" srcset={print.srcset} sizes={sizes} />
+                <img
+                  src={print.fallback}
+                  alt={`${print.service} para ${print.client}, feito pela MV Print`}
+                  width={print.width}
+                  height={print.height}
+                  loading={print.index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={print.index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                />
+              </picture>
+            </a>
+          ))}
+          <div class="press-head" aria-hidden="true"><span class="press-carriage"><i></i><i></i><i></i><i></i></span></div>
+        </div>
+      </div>
+
+      <figcaption class="press-caption">
+        <span class="press-count mono"><b data-press-index>01</b> / {pad(prints.length)}</span>
+        <span class="press-label">
+          <span class="press-client" data-press-client>{first.client}</span>
+          <span class="press-service mono" data-press-service>{first.service}</span>
+        </span>
+        <span class="press-controls">
+          <button type="button" class="press-btn" data-press-prev aria-label="Projeto anterior"><Icon name="arrow-left" /></button>
+          <button type="button" class="press-btn" data-press-pause aria-label="Pausar troca automática" aria-pressed="false">
+            <span class="press-timer" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16.5" /></svg></span>
+            <Icon name="pause" class="icon-pause" /><Icon name="play" class="icon-play" />
+          </button>
+          <button type="button" class="press-btn" data-press-next aria-label="Próximo projeto"><Icon name="arrow-right" /></button>
+        </span>
+      </figcaption>
+      <p class="sr-only" aria-live="polite" data-press-status></p>
+    </figure>
+  </div>
+
+  <div class="wrap hero-foot" data-hero-in style="--d:.8s">
+    <a href="#clientes" class="hero-scroll mono"><span class="mouse" aria-hidden="true"><span class="mouse-wheel"></span></span>Role para ver</a>
   </div>
 </section>
+
 <style>
-  .hero { background-image: radial-gradient(ellipse at 80% 20%, #007f9b33, transparent 60%), radial-gradient(ellipse at 0% 90%, #e91e8c18, transparent 50%); }
+  .hero {
+    position: relative;
+    isolation: isolate;
+    padding-top: clamp(6.5rem, min(13vw, 17vh), 10.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    overflow: clip;
+  }
+
+  /* Retícula de fundo: um véu cor de papel esmaece os pontos (sem mask-image,
+     que em conjunto com as animações gerava camadas fantasmas no Chrome). */
+  .hero-grid {
+    position: relative;
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .hero-kicker {
+    display: flex; width: fit-content; align-items: center; gap: .9rem;
+    color: var(--color-ink-2);
+    margin-bottom: clamp(1.4rem, 2.5vw, 2.2rem);
+  }
+  .hero-inks { display: inline-flex; gap: .3rem; }
+
+  .hero-title { letter-spacing: -0.04em; }
+  /* Compensa o recuo natural do V/A para a tinta alinhar com o resto do texto. */
+  .hero-title { margin-left: .01em; }
+  .hero-title .line { display: block; overflow: hidden; padding: .02em .12em .16em .04em; margin: -.02em -.12em -.16em -.04em; }
+  .hero-title .line-in { display: block; }
+
+  :global(.js) .hero-title .line-in { transform: translate3d(0, 108%, 0); transition: transform 1.5s var(--ease-expo) var(--d, 0s); }
+  :global(.js) .hero-title .line.is-in .line-in { transform: none; }
+  .hero-title .line.is-done { overflow: visible; }
+
+  :global(.js) [data-hero-in] { opacity: 0; transform: translate3d(0, 1.5rem, 0); transition: opacity 1s var(--ease-expo) var(--d, 0s), transform 1.3s var(--ease-expo) var(--d, 0s); }
+  :global(.js) [data-hero-in].is-in { opacity: 1; transform: none; }
+
+  .hero-lede { max-width: 34rem; margin-top: clamp(1.6rem, 3vw, 2.4rem); }
+
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 2.2rem; }
+  .hero-more { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; }
+  .hero-more :global(.hero-more-icon) { width: 1rem; height: 1rem; transition: transform .5s var(--ease-expo); }
+  .hero-more:hover :global(.hero-more-icon) { transform: translateY(3px); }
+
+  .hero-facts {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem; max-width: 36rem;
+    margin-top: clamp(2.5rem, 5vw, 3.75rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .hero-facts dt { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.6vw, 1.45rem); line-height: 1.1; letter-spacing: -0.02em; }
+  .hero-facts dd { margin-top: .35rem; font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
+
+  /* ---------- Prensa ---------- */
+
+  .press { position: relative; margin: 0; width: 100%; max-width: 560px; justify-self: center; }
+  @media (min-width: 1024px) { .press { justify-self: end; } }
+
+  .press-sheet {
+    position: relative;
+    padding: 0;
+    background: #FBF9F4;
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 1px 0 rgb(22 18 14 / 6%), 0 40px 70px -40px rgb(22 18 14 / 45%), 0 18px 30px -24px rgb(22 18 14 / 30%);
+  }
+  :global(.js) .press .press-sheet { opacity: 0; transform: translate3d(0, 2rem, 0) rotate(1.5deg); transition: opacity 1.1s var(--ease-expo) .3s, transform 1.6s var(--ease-expo) .3s; }
+  :global(.js) .press.is-in .press-sheet { opacity: 1; transform: none; }
+
+  .press-stage { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--color-paper-3); }
+  .press-photo { position: absolute; inset: 0; display: block; overflow: hidden; visibility: hidden; }
+  .press-photo.is-current, .press-photo.is-next { visibility: visible; }
+  .press-photo.is-next { z-index: 2; }
+  .press-photo :global(picture), .press-photo :global(img) { display: block; width: 100%; height: 100%; }
+  .press-photo :global(img) {
+    object-fit: cover;
+    object-position: var(--fx) var(--fy);
+    transform-origin: var(--fx) var(--fy);
+    transform: scale(var(--z));
+  }
+  /* Foto em cartaz se aproxima devagar enquanto espera a próxima. */
+  .press-photo.is-current :global(img) { animation: press-drift 12s cubic-bezier(.25, .1, .25, 1) both; }
+  @keyframes press-drift { to { transform: scale(calc(var(--z) * 1.06)); } }
+  @media (prefers-reduced-motion: reduce) { .press-photo.is-current :global(img) { animation: none; } }
+
+  .press-head {
+    position: absolute; left: -3%; right: -3%; top: 0; height: 0; z-index: 3;
+    pointer-events: none; opacity: 0;
+    transition: opacity .3s;
+  }
+  .press-head.is-on { opacity: 1; }
+  .press-head::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-ink) 12% 88%, transparent);
+    box-shadow: 0 0 18px 4px rgb(251 249 244 / 90%);
+  }
+  .press-carriage {
+    position: absolute; top: -13px; left: 0;
+    display: flex; gap: 3px; padding: 5px 7px;
+    border-radius: 6px; background: var(--color-ink);
+    box-shadow: 0 8px 18px -6px rgb(22 18 14 / 60%);
+    animation: carriage 0.9s var(--ease-quart) infinite alternate;
+  }
+  .press-carriage i { width: 9px; height: 16px; border-radius: 2px; }
+  .press-carriage i:nth-child(1) { background: var(--color-cyan); }
+  .press-carriage i:nth-child(2) { background: var(--color-magenta); }
+  .press-carriage i:nth-child(3) { background: var(--color-yellow); }
+  .press-carriage i:nth-child(4) { background: #4a423a; }
+  @keyframes carriage { from { left: 3%; } to { left: calc(97% - 52px); } }
+
+
+  .press-caption {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: 2.6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .press-count { font-size: var(--fs-micro); letter-spacing: .1em; color: var(--color-muted); }
+  .press-count b { color: var(--color-ink); font-weight: 500; }
+  .press-label { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .press-client { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1.1; letter-spacing: -0.02em; }
+  .press-service { font-size: var(--fs-micro); font-weight: 500; letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); margin-top: .25rem; }
+  .press-controls { display: flex; gap: .4rem; }
+  .press-btn {
+    position: relative; display: grid; place-items: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    color: var(--color-ink);
+    transition: background .3s, color .3s;
+  }
+  .press-btn :global(svg) { width: 1.05rem; height: 1.05rem; }
+  .press-btn:hover { background: var(--color-ink); color: var(--color-paper); }
+  .press-btn :global(.icon-play) { display: none; }
+  .press-btn[aria-pressed="true"] :global(.icon-play) { display: block; }
+  .press-btn[aria-pressed="true"] :global(.icon-pause) { display: none; }
+  .press-timer { position: absolute; inset: 0; }
+  .press-timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .press-timer circle {
+    fill: none; stroke: var(--color-magenta); stroke-width: 1.5;
+    stroke-dasharray: 103.7; stroke-dashoffset: 103.7;
+  }
+  .press-timer.is-running circle { animation: press-timer var(--t, 5s) linear forwards; }
+  @keyframes press-timer { to { stroke-dashoffset: 0; } }
+
+  /* ---------- Rodapé do hero ---------- */
+
+  .hero-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .hero-scroll { display: inline-flex; align-items: center; gap: .8rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
+  /* Mousezinho: a rodinha desce e some, convidando a rolar. */
+  .mouse { position: relative; width: 24px; height: 38px; border: 1.5px solid var(--color-ink); border-radius: 12px; }
+  .mouse-wheel { position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--color-ink); animation: mouse-wheel 1.8s var(--ease-quart) infinite; }
+  @keyframes mouse-wheel { 0% { opacity: 0; transform: translateY(-3px); } 25% { opacity: 1; } 70% { opacity: 1; transform: translateY(9px); } 100% { opacity: 0; transform: translateY(11px); } }
+  .hero-scroll:hover { color: var(--color-ink); }
+  @media (max-width: 1023px) { .hero-foot { display: none; } }
+
+  /* Celular: a cidade desce de linha em vez de deixar o "·" pendurado. */
+  @media (max-width: 520px) {
+    .hero-kicker { align-items: flex-start; }
+    .hero-inks { margin-top: calc((1.4em - .5rem) / 2); }
+    .kicker-sep { display: none; }
+    .kicker-city { display: block; }
+  }
+
+  /* No celular a foto sobe para logo depois do título (no fim para vencer as margens acima). */
+  @media (max-width: 1023px) {
+    .hero-grid { gap: 0; }
+    .hero-copy, .hero-main { display: contents; }
+    .hero-kicker { order: 1; justify-self: start; }
+    .hero-title { order: 2; }
+    .press { order: 3; margin-top: 1.8rem; }
+    .hero-lede { order: 4; margin-top: 1.8rem; }
+    .hero-actions { order: 5; margin-top: 1.6rem; }
+    .hero-facts { order: 6; margin-top: 2.2rem; }
+    .press-caption { margin-top: 1.2rem; }
+  }
+
+  /* Desktop: duas linhas compartilhadas (subgrid). A foto começa na altura do
+     rótulo e a linha da legenda fica na mesma altura da linha dos números.
+     Tudo (título, texto, botões, números, foto, legenda e o mousezinho) cabe na
+     primeira tela: a altura da foto é a sobra da tela e os tamanhos acompanham
+     a altura da janela, então funciona em notebook e em monitor grande. */
+  @media (min-width: 1024px) {
+    .hero {
+      --top: clamp(6rem, 14vh, 9rem);
+      --row-gap: clamp(1rem, 3vh, 2rem);
+      --row2: 4.75rem;
+      --foot-gap: clamp(.75rem, 2.2vh, 1.5rem);
+      --mouse: 38px;
+      --bottom: clamp(.75rem, 2vh, 1.25rem);
+      --stage-h: clamp(18rem, calc(100vh - var(--top) - var(--row-gap) - var(--row2) - var(--foot-gap) - var(--mouse) - var(--bottom)), 44rem);
+      padding-top: var(--top);
+      padding-bottom: var(--bottom);
+    }
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.28fr) minmax(0, .92fr);
+      grid-template-rows: auto auto;
+      row-gap: var(--row-gap);
+      align-items: stretch;
+    }
+    .hero-copy, .press { grid-row: 1 / span 2; display: grid; grid-template-rows: subgrid; }
+    .hero-main { align-self: start; }
+    .hero-kicker { margin-bottom: clamp(.9rem, 2.4vh, 1.8rem); }
+    .hero-title { font-size: clamp(2.8rem, min(8.4vw, 13.4vh), 8.6rem); }
+    .hero-lede { margin-top: clamp(1rem, 2.8vh, 2rem); }
+    .hero-actions { margin-top: clamp(1rem, 3vh, 2.2rem); }
+    .press { width: min(100%, calc(var(--stage-h) * 1.1)); justify-self: end; }
+    .press-sheet { display: flex; flex-direction: column; height: var(--stage-h); }
+    .press-stage { flex: 1 1 auto; aspect-ratio: auto; }
+    .hero-facts, .press-caption { align-self: start; margin-top: 0; padding-top: 1.25rem; }
+    .hero-foot { margin-top: var(--foot-gap); }
+  }
+  /* Desktop estreito (1024–1180px): o título fica em duas linhas para caber. */
+  @media (min-width: 1024px) and (max-width: 1180px) {
+    .hero-title { font-size: clamp(2.8rem, min(7vw, 12vh), 8.6rem); }
+  }
 </style>

@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+
+type IconName = Parameters<typeof Icon>[0]['name'];
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'ink' | 'line' | 'paper' | 'wa';
+  icon?: IconName | null;
+  size?: 'md' | 'lg';
+  external?: boolean;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const { href, label, variant = 'ink', icon = 'arrow-up-right', size = 'md', external = false, class: className = '', ariaLabel, ...rest } = Astro.props;
+const classes = ['btn', variant !== 'ink' && `btn-${variant}`, size === 'lg' && 'btn-lg', !icon && 'no-icon', className].filter(Boolean).join(' ');
+---
+<a
+  href={href}
+  class={classes}
+  data-magnetic="0.25"
+  aria-label={ariaLabel}
+  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+  {...rest}
+>
+  <span class="roll"><span>{label}</span><span aria-hidden="true">{label}</span></span>
+  {icon && <span class="btn-icon" data-icon={icon}><Icon name={icon} /></span>}
+</a>
