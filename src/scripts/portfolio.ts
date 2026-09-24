@@ -6,7 +6,8 @@ export function initPortfolio() {
   if (!gallery) return;
 
   const filterButtons = $$<HTMLButtonElement>('.filter-btn');
-  const serviceFilter = $<HTMLSelectElement>('#portfolio-service');
+  const filters = $('#portfolio-filters');
+  const filterStrip = $('.pf-filters-inner');
   const sections = $$('.category-section');
   const status = $('#portfolio-status');
   const items = $$<HTMLAnchorElement>('.portfolio-item');
@@ -39,14 +40,20 @@ export function initPortfolio() {
   };
 
   // Filtro aceita um grupo (chip) ou uma categoria (links da home, ex.: #tapumes).
-  const groupButton = (id: string) => filterButtons.find(button => id !== 'all' && button.dataset.filter === id);
+  const groupButton = (id: string) => filterButtons.find(button => button.dataset.kind === 'group' && button.dataset.filter === id);
   const categorySection = (slug: string) => sections.find(section => section.dataset.category === slug);
+
+  const revealActiveFilter = (smooth = false) => {
+    const activeButton = filterButtons.find(button => button.getAttribute('aria-pressed') === 'true');
+    if (!filterStrip || !activeButton || filterStrip.scrollWidth <= filterStrip.clientWidth) return;
+    const left = filterStrip.scrollLeft + activeButton.getBoundingClientRect().left - filterStrip.getBoundingClientRect().left;
+    filterStrip.scrollTo({ left: left - (filterStrip.clientWidth - activeButton.offsetWidth) / 2, behavior: smooth && !reducedMotion() ? 'smooth' : 'auto' });
+  };
 
   const applyFilter = (requested: string, animate = false) => {
     const group = groupButton(requested);
     const category = group ? undefined : categorySection(requested);
-    const active = group?.dataset.filter ?? category?.dataset.group ?? 'all';
-    if (serviceFilter) serviceFilter.value = group?.dataset.filter ?? category?.dataset.category ?? 'all';
+    const active = group?.dataset.filter ?? category?.dataset.category ?? 'all';
     if (lightbox?.open) lightbox.close();
     filterButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === active)));
     sections.forEach(section => {
@@ -58,8 +65,8 @@ export function initPortfolio() {
       const label = group?.dataset.label ?? category?.dataset.label ?? 'Todas as categorias';
       status.textContent = `${label} · ${visible.length} fotos · Selecione uma imagem para ampliar.`;
     }
-    // Mantém o chip ativo visível na faixa rolável.
-    filterButtons.find(button => button.dataset.filter === active)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+    // No celular, revela apenas a coluna do filtro, sem deslocar a página.
+    revealActiveFilter(animate);
     if (animate) requestAnimationFrame(() => animateIn(visible));
   };
 
@@ -70,12 +77,11 @@ export function initPortfolio() {
     history.replaceState(null, '', url);
     // Se o visitante já desceu na galeria, volta ao começo da seleção.
     const top = gallery.getBoundingClientRect().top;
-    const offset = 112 + ($('#portfolio-filters')?.offsetHeight ?? 58);
+    const offset = 112 + (filters?.offsetHeight ?? 58);
     if (top < offset) scrollTo({ top: scrollY + top - offset, behavior: reducedMotion() ? 'auto' : 'smooth' });
   };
 
   filterButtons.forEach(button => button.addEventListener('click', () => selectFilter(button.dataset.filter ?? 'all')));
-  serviceFilter?.addEventListener('change', () => selectFilter(serviceFilter.value));
   // Só reage a #grupo, #categoria (ou # vazio): o link "Pular para o conteúdo" e outras
   // âncoras da página não mexem no filtro. Hash malformado não quebra nada.
   const hashFilter = () => {
@@ -88,8 +94,14 @@ export function initPortfolio() {
     const filter = hashFilter();
     if (filter) applyFilter(filter, true);
   });
-  // Mostra os filtros antes de aplicar, para o chip ativo poder rolar até a vista.
-  $('#portfolio-filters')?.removeAttribute('hidden');
+  // A altura acompanha a quebra de linhas e mantém âncoras livres da faixa fixa.
+  filters?.removeAttribute('hidden');
+  const updateFilterOffset = () => {
+    $('.pf')?.style.setProperty('--pf-scroll-offset', `${112 + (filters?.offsetHeight ?? 58)}px`);
+    revealActiveFilter();
+  };
+  updateFilterOffset();
+  if (filters && typeof ResizeObserver !== 'undefined') new ResizeObserver(updateFilterOffset).observe(filters);
   applyFilter(hashFilter() ?? 'all');
 
   // ---------- Ampliação ----------
