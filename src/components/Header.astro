@@ -77,8 +77,9 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
 
 <style>
   .site-header {
+    --hp: clamp(.75rem, 2vw, 1.25rem);
     position: fixed; inset: 0 0 auto 0; z-index: 80;
-    padding: 12px clamp(.75rem, 2vw, 1.25rem);
+    padding: 12px var(--hp);
     pointer-events: none;
     transition: transform .7s var(--ease-expo);
     view-transition-name: site-header;
@@ -87,18 +88,19 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
 
   .bar {
     pointer-events: auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-    max-width: var(--maxw);
+    /* Três colunas: logo e botões nas bordas do conteúdo, menu no centro exato. */
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 1.5rem;
+    max-width: calc(var(--maxw) - 2 * var(--hp));
     height: 64px;
     margin-inline: auto;
-    padding: 0 8px 0 calc(var(--gutter) - clamp(.75rem, 2vw, 1.25rem));
+    padding: 0 calc(var(--gutter) - var(--hp));
     border-radius: 999px;
     border: 1px solid transparent;
     transition: background-color .5s, border-color .5s, box-shadow .5s, max-width .8s var(--ease-expo), padding .8s var(--ease-expo);
   }
   .site-header.is-scrolled .bar {
     max-width: 1120px;
-    padding-left: 22px;
+    padding: 0 8px 0 22px;
     background: rgb(244 239 231 / 95%);
     border-color: var(--line);
     box-shadow: 0 18px 40px -28px rgb(22 18 14 / 45%);
@@ -106,7 +108,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
     -webkit-backdrop-filter: blur(16px) saturate(1.5);
   }
 
-  .brand { display: inline-flex; flex: none; }
+  .brand { grid-column: 1; justify-self: start; display: inline-flex; flex: none; }
   .brand :global(.brand-logo) { display: block; width: auto; height: 38px; overflow: visible; transition: filter .45s var(--ease-expo); }
   /* No hover, a logo "sai de registro" como numa impressão desalinhada. */
   .brand:hover :global(.brand-logo) { opacity: .8; }
@@ -122,7 +124,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   @keyframes logo-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
   @keyframes logo-letter { from { opacity: 0; transform: translateY(55%); } }
 
-  .nav { display: none; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.4rem); }
+  .nav { grid-column: 2; display: none; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.4rem); }
   @media (min-width: 1024px) { .nav { display: flex; } }
 
   .nav-link {
@@ -136,7 +138,7 @@ const menuLinks = [...links, { href: '/portfolio', label: 'Portfólio completo' 
   }
   .nav-link.is-active::after { transform: scale(1); }
 
-  .header-actions { display: flex; align-items: center; gap: .6rem; }
+  .header-actions { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .6rem; }
   .nav-portfolio { display: none; margin-right: .8rem; }
   @media (min-width: 1180px) { .nav-portfolio { display: inline-flex; } }
 

@@ -1,5 +1,5 @@
 // Interações das seções da home.
-import { $, $$, clamp, easeInOutCubic, easeOutExpo, finePointer, lerp, onScroll, reducedMotion, tween, watchVisibility } from './lib';
+import { $, $$, clamp, easeInOutCubic, easeOutExpo, finePointer, onScroll, reducedMotion, tween, watchVisibility } from './lib';
 
 // ---------- Antes e depois ----------
 
@@ -196,38 +196,4 @@ export function initFloatingWhatsApp() {
     update(scrollY);
   }, '0px 0px -35% 0px'));
   onScroll(({ y }) => update(y));
-}
-
-// ---------- Marca do rodapé: registro CMYK que segue o mouse ----------
-
-export function initFooterWordmark() {
-  const footer = $('[data-footer]');
-  const reg = $('[data-reg-footer]');
-  if (!footer || !reg || reducedMotion()) return;
-  let tx = 0, ty = 0, x = 0, y = 0, frame = 0;
-  const loop = () => {
-    x = lerp(x, tx, 0.1);
-    y = lerp(y, ty, 0.1);
-    reg.style.setProperty('--rx', `${x.toFixed(2)}px`);
-    reg.style.setProperty('--ry', `${y.toFixed(2)}px`);
-    frame = Math.abs(x - tx) + Math.abs(y - ty) > 0.05 ? requestAnimationFrame(loop) : 0;
-  };
-  const kick = () => { if (!frame) frame = requestAnimationFrame(loop); };
-  footer.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse') return;
-    const rect = footer.getBoundingClientRect();
-    tx = ((event.clientX - rect.left) / rect.width - 0.5) * 34;
-    ty = ((event.clientY - rect.top) / rect.height - 0.5) * 18;
-    kick();
-  });
-  footer.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
-  // Sem mouse: a marca "acerta o registro" quando aparece.
-  if (!finePointer()) {
-    const stop = watchVisibility(reg, visible => {
-      if (!visible) return;
-      stop();
-      x = 22; y = 10; tx = 0; ty = 0;
-      kick();
-    }, '0px 0px -20% 0px');
-  }
 }

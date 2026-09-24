@@ -25,23 +25,25 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
 <section class="hero" aria-labelledby="hero-title" data-hero>
   <div class="wrap hero-grid">
     <div class="hero-copy" data-reveal-manual>
-      <p class="hero-kicker eyebrow" data-hero-in style="--d:0s">
-        <span class="hero-inks" aria-hidden="true"><i class="dot dot-c"></i><i class="dot dot-m"></i><i class="dot dot-y"></i><i class="dot dot-k"></i></span>
-        Gráfica &amp; comunicação visual · Belo Horizonte
-      </p>
+      <div class="hero-main">
+        <p class="hero-kicker eyebrow" data-hero-in style="--d:0s">
+          <span class="hero-inks" aria-hidden="true"><i class="dot dot-c"></i><i class="dot dot-m"></i><i class="dot dot-y"></i><i class="dot dot-k"></i></span>
+          Gráfica &amp; comunicação visual · Belo Horizonte
+        </p>
 
-      <h1 id="hero-title" class="display t-hero hero-title">
-        <span class="line" style="--d:.08s"><span class="line-in">Você imagina.</span></span>
-        <span class="line" style="--d:.2s"><span class="line-in">A gente <em class="reg" data-reg data-text="imprime.">imprime.</em></span></span>
-      </h1>
+        <h1 id="hero-title" class="display t-hero hero-title">
+          <span class="line" style="--d:.08s"><span class="line-in">Você imagina.</span></span>
+          <span class="line" style="--d:.2s"><span class="line-in">A gente <em class="reg" data-reg data-text="imprime.">imprime.</em></span></span>
+        </h1>
 
-      <p class="lede hero-lede">
-        Adesivos, fachadas, plotagem de veículos, tapumes e impressos. Da arte à instalação, com o cuidado de quem vive de tinta e papel.
-      </p>
+        <p class="lede hero-lede">
+          Adesivos, fachadas, plotagem de veículos, tapumes e impressos. Da arte à instalação, com o cuidado de quem vive de tinta e papel.
+        </p>
 
-      <div class="hero-actions" data-hero-in style="--d:.55s">
-        <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" size="lg" external />
-        <a href="#portfolio" class="hero-more u-link">Ver trabalhos <Icon name="arrow-down" class="hero-more-icon" /></a>
+        <div class="hero-actions" data-hero-in style="--d:.55s">
+          <Button href={getWhatsAppLink('default')} label="Pedir orçamento" icon="whatsapp" size="lg" external />
+          <a href="#portfolio" class="hero-more u-link">Ver trabalhos <Icon name="arrow-down" class="hero-more-icon" /></a>
+        </div>
       </div>
 
       <dl class="hero-facts" data-hero-in style="--d:.65s">
@@ -125,9 +127,6 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     gap: clamp(3rem, 6vw, 5rem);
     align-items: center;
   }
-  @media (min-width: 1024px) {
-    .hero-grid { grid-template-columns: minmax(0, 1.28fr) minmax(0, .92fr); }
-  }
 
   .hero-kicker {
     display: inline-flex; align-items: center; gap: .9rem;
@@ -136,7 +135,8 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   }
   .hero-inks { display: inline-flex; gap: .3rem; }
 
-  .hero-title { margin-left: -.04em; }
+  /* Compensa o recuo natural do V/A para a tinta alinhar com o resto do texto. */
+  .hero-title { margin-left: .02em; }
   .hero-title .line { display: block; overflow: hidden; padding: .02em .12em .16em .04em; margin: -.02em -.12em -.16em -.04em; }
   .hero-title .line-in { display: block; }
   .hero-title .reg { font-style: italic; margin-right: -.04em; }
@@ -271,7 +271,7 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
   /* No celular a foto sobe para logo depois do título (no fim para vencer as margens acima). */
   @media (max-width: 1023px) {
     .hero-grid { gap: 0; }
-    .hero-copy { display: contents; }
+    .hero-copy, .hero-main { display: contents; }
     .hero-kicker { order: 1; justify-self: start; }
     .hero-title { order: 2; }
     .press { order: 3; margin-top: 1.8rem; }
@@ -279,5 +279,21 @@ const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560
     .hero-actions { order: 5; margin-top: 1.6rem; }
     .hero-facts { order: 6; margin-top: 2.2rem; }
     .press-caption { margin-top: 1.2rem; }
+  }
+
+  /* Desktop: duas linhas compartilhadas (subgrid). A foto começa na altura do
+     rótulo e a linha da legenda fica na mesma altura da linha dos números. */
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.28fr) minmax(0, .92fr);
+      grid-template-rows: auto auto;
+      row-gap: clamp(2.25rem, 3.5vw, 3rem);
+      align-items: stretch;
+    }
+    .hero-copy, .press { grid-row: 1 / span 2; display: grid; grid-template-rows: subgrid; }
+    .hero-main { align-self: start; }
+    .press-sheet { display: flex; flex-direction: column; }
+    .press-stage { flex: 1 1 auto; }
+    .hero-facts, .press-caption { align-self: start; margin-top: 0; padding-top: 1.25rem; }
   }
 </style>
