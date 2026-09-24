@@ -1,6 +1,5 @@
 ---
-// Trabalhos em destaque: faixa horizontal que desliza com a rolagem (desktop)
-// e carrossel com arraste nativo (celular).
+// Trabalhos em destaque: parede editorial em colunas desencontradas (rolagem normal).
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import SplitText from './SplitText.astro';
@@ -10,155 +9,141 @@ import { imageSize, photoSrc } from '../lib/images';
 
 const works = await Promise.all(featured.map(async (item, index) => {
   const size = await imageSize(item.image);
-  return { ...item, index, ...size, tall: size.height > size.width };
+  return { ...item, index, ...size };
 }));
 const pad = (value: number) => String(value).padStart(2, '0');
+
+// Distribuição feita à mão para as três colunas terminarem quase juntas
+// (retratos e paisagens alternados). A terceira coluna fecha com o selo.
+const columns = [
+  [works[0], works[3], works[7]],
+  [works[1], works[4], works[6]],
+  [works[2], works[5]],
+];
 ---
 
-<section id="portfolio" class="featured sec-ink" aria-labelledby="featured-title" data-hscroll>
-  <div class="featured-pin">
-    <div class="featured-track" data-hscroll-track>
-      <header class="featured-intro">
-        <p class="rule"><span>(02) — <b>Trabalhos</b></span><Icon name="reg" class="reg-mark" /></p>
-        <SplitText id="featured-title" class="display t-h2" text="Trabalhos que *viram paisagem.*" />
-        <p class="lede" data-reveal style="--d:.15s">
-          Uma seleção de projetos para marcas de BH e do Brasil. No portfólio completo são {totalPhotos} fotos em {categories.length} categorias.
-        </p>
-        <div data-reveal style="--d:.25s">
-          <Button href="/portfolio" label="Ver portfólio completo" variant="paper" />
-        </div>
-        <p class="featured-hint mono" aria-hidden="true"><span></span>Role para ver a coleção</p>
-      </header>
+<section id="portfolio" class="sec sec-ink featured" aria-labelledby="featured-title">
+  <div class="wrap">
+    <p class="rule"><span>(02) — <b>Trabalhos</b></span><Icon name="reg" class="reg-mark" /></p>
 
-      <ol class="featured-cards">
-        {works.map(work => (
-          <li class:list={['work', work.tall ? 'is-tall' : 'is-wide']}>
-            <a href={`/portfolio#${work.slug}`} class="work-link" data-cursor="view" data-cursor-label="Ver projeto">
-              <figure class="work-media media">
+    <div class="featured-head">
+      <SplitText id="featured-title" class="display t-h2" text="Trabalhos que *viram paisagem.*" />
+      <div class="featured-aside" data-reveal style="--d:.15s">
+        <p class="lede">Uma seleção de projetos para marcas de BH e do Brasil. No portfólio completo são {totalPhotos} fotos em {categories.length} categorias.</p>
+        <Button href="/portfolio" label="Ver portfólio completo" variant="paper" />
+      </div>
+    </div>
+
+    <div class="wall">
+      {columns.map((column, columnIndex) => (
+        <div class={`wall-col wall-col-${columnIndex + 1}`}>
+          {column.map(work => (
+            <a href={`/portfolio#${work.slug}`} class="work" data-cursor="view" data-cursor-label="Ver projeto" data-reveal style={`--d:${columnIndex * 0.08}s`}>
+              <figure class="work-media" style={`aspect-ratio:${work.width} / ${work.height}`}>
                 <ResponsiveImage
                   src={photoSrc(work.image)}
                   alt={`${work.service} para ${work.client}, feito pela MV Print`}
                   width={work.width}
                   height={work.height}
-                  sizes={work.tall ? '(min-width: 900px) 30vw, 78vw' : '(min-width: 900px) 44vw, 86vw'}
+                  sizes="(min-width: 900px) 30vw, 46vw"
                   class="work-img"
                 />
               </figure>
-              <div class="work-meta">
+              <span class="work-meta">
                 <span class="work-num mono">{pad(work.index + 1)}</span>
                 <span class="work-text">
                   <span class="work-client display">{work.client}</span>
                   <span class="work-service mono">{work.service}</span>
                 </span>
                 <Icon name="arrow-up-right" class="work-arrow" />
-              </div>
+              </span>
             </a>
-          </li>
-        ))}
-        <li class="work-end">
-          <a href="/portfolio" class="seal" data-magnetic="0.3" data-cursor="view" data-cursor-label="Abrir">
-            <svg class="seal-text" viewBox="0 0 200 200" aria-hidden="true">
-              <defs><path id="seal-path" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
-              <text><textPath href="#seal-path" startOffset="0">PORTFÓLIO COMPLETO · {totalPhotos} FOTOS · MV PRINT · </textPath></text>
-            </svg>
-            <span class="seal-core"><Icon name="arrow-up-right" /></span>
-            <span class="sr-only">Ver o portfólio completo com {totalPhotos} fotos</span>
-          </a>
-        </li>
-      </ol>
+          ))}
+          {columnIndex === 2 && (
+            <a href="/portfolio" class="wall-end" data-reveal style="--d:.2s" data-cursor="view" data-cursor-label="Abrir">
+              <span class="seal" data-magnetic="0.3" aria-hidden="true">
+                <svg class="seal-text" viewBox="0 0 200 200">
+                  <defs><path id="seal-path" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
+                  <text><textPath href="#seal-path" startOffset="0">PORTFÓLIO COMPLETO · {totalPhotos} FOTOS · MV PRINT · </textPath></text>
+                </svg>
+                <span class="seal-core"><Icon name="arrow-up-right" /></span>
+              </span>
+              <span class="wall-end-text">
+                <span class="display">Ver os {totalPhotos} trabalhos</span>
+                <span class="mono">{categories.length} categorias</span>
+              </span>
+            </a>
+          )}
+        </div>
+      ))}
     </div>
-    <div class="featured-progress" aria-hidden="true"><span data-hscroll-progress></span></div>
   </div>
 </section>
 
 <style>
-  .featured { position: relative; padding-block: clamp(5rem, 9vw, 8rem); }
-  .featured-intro { display: grid; gap: 1.6rem; align-content: center; padding-inline: var(--gutter); max-width: 44rem; }
-  .featured-intro :global(.t-h2) { margin-top: .4rem; }
-  .featured-hint { display: none; align-items: center; gap: .8rem; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: rgb(244 239 231 / 55%); }
-  .featured-hint span { width: 42px; height: 1px; background: currentColor; position: relative; overflow: hidden; }
-
-  .featured-cards {
-    list-style: none; margin: 3rem 0 0; padding: 0 var(--gutter);
-    display: flex; gap: 1.1rem;
-    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  .featured-head {
+    display: grid; gap: 2rem 4rem; align-items: end;
+    margin: clamp(2rem, 4vw, 3.5rem) 0 clamp(3rem, 6vw, 5.5rem);
   }
-  .featured-cards::-webkit-scrollbar { display: none; }
+  @media (min-width: 1024px) { .featured-head { grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr); } }
+  .featured-aside { display: grid; gap: 1.6rem; justify-items: start; }
 
-  .work { flex: none; scroll-snap-align: start; width: 78vw; }
-  .work.is-wide { width: 86vw; }
-  .work-link { display: block; }
-  .work-media { border-radius: 3px; aspect-ratio: 4 / 5; background: #231d18; }
-  .work.is-wide .work-media { aspect-ratio: 4 / 3; }
-  .work-media :global(picture) { display: block; width: 100%; height: 100%; }
-  .work-media :global(.work-img) {
-    width: 100%; height: 100%; object-fit: cover;
-    transform: translate3d(var(--px, 0), 0, 0) scale(1.18);
-    transition: filter .6s;
-    will-change: transform;
+  /* Celular e tablet: duas colunas que se equilibram sozinhas. */
+  .wall { columns: 2; column-gap: clamp(.75rem, 2.5vw, 1.5rem); }
+  .wall-col { display: contents; }
+  .work, .wall-end { break-inside: avoid; margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+
+  /* Computador: três colunas desencontradas, como uma parede de provas. */
+  @media (min-width: 900px) {
+    .wall { columns: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
+    .wall-col { display: grid; gap: clamp(2.5rem, 4.5vw, 4.5rem); }
+    .wall-col-2 { margin-top: clamp(4rem, 12vw, 11rem); }
+    .wall-col-3 { margin-top: clamp(2rem, 5vw, 4.5rem); }
+    .work, .wall-end { margin-bottom: 0; }
   }
-  .work-meta { display: flex; align-items: flex-start; gap: .9rem; margin-top: 1rem; }
-  .work-num { font-size: .7rem; letter-spacing: .1em; color: rgb(244 239 231 / 55%); padding-top: .45rem; }
+
+  .work { display: block; }
+  .work-media { margin: 0; overflow: hidden; border-radius: 3px; background: #231d18; }
+  .work-media :global(picture), .work-media :global(img) { display: block; width: 100%; height: 100%; }
+  .work-media :global(.work-img) { object-fit: cover; transition: transform 1.2s var(--ease-expo), opacity .9s var(--ease-expo); }
+  .work-meta { display: flex; align-items: flex-start; gap: .8rem; margin-top: 1rem; }
+  .work-num { font-size: .68rem; letter-spacing: .1em; color: rgb(244 239 231 / 50%); padding-top: .45rem; }
   .work-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-  .work-client { font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1.05; }
-  .work-service { margin-top: .3rem; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
-  .work-link :global(.work-arrow) { width: 1.4rem; height: 1.4rem; margin-top: .4rem; opacity: .4; transition: transform .6s var(--ease-expo), opacity .3s; }
-  .work-link:hover :global(.work-arrow) { opacity: 1; transform: rotate(45deg); }
+  .work-client { font-size: clamp(1.35rem, 2.2vw, 2.1rem); line-height: 1.05; }
+  .work-service { margin-top: .3rem; font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
+  .work :global(.work-arrow) { width: 1.3rem; height: 1.3rem; margin-top: .35rem; flex: none; opacity: .4; transition: transform .6s var(--ease-expo), opacity .3s; }
+  @media (hover: hover) {
+    .work:hover .work-media :global(.work-img) { transform: scale(1.045); }
+    .work:hover :global(.work-arrow) { opacity: 1; transform: rotate(45deg); }
+  }
+  @media (max-width: 599px) {
+    .work-num, .work :global(.work-arrow) { display: none; }
+    .work-meta { margin-top: .6rem; }
+    .work-client { font-size: 1.15rem; }
+    .work-service { font-size: .58rem; letter-spacing: .08em; }
+  }
 
-  .work-end { flex: none; display: grid; place-items: center; width: 70vw; scroll-snap-align: center; }
-  .seal { position: relative; display: grid; place-items: center; width: clamp(11rem, 18vw, 15rem); aspect-ratio: 1; translate: var(--mx, 0) var(--my, 0); transition: translate .6s var(--ease-expo); }
+  /* Selo que fecha a parede */
+  .wall-end {
+    display: grid; justify-items: center; gap: 1.2rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
+    border: 1px solid var(--line-dark); border-radius: 3px;
+    text-align: center;
+    transition: background-color .4s, border-color .4s;
+  }
+  .wall-end:hover { background: rgb(244 239 231 / 5%); border-color: rgb(244 239 231 / 30%); }
+  .seal { position: relative; display: grid; place-items: center; width: clamp(8.5rem, 14vw, 12rem); aspect-ratio: 1; translate: var(--mx, 0) var(--my, 0); transition: translate .6s var(--ease-expo); }
   .seal-text { position: absolute; inset: 0; width: 100%; height: 100%; animation: seal-spin 22s linear infinite; }
   .seal-text text { font-family: var(--font-mono); font-size: 13.5px; letter-spacing: 3.2px; fill: var(--color-paper); }
   .seal-core {
     display: grid; place-items: center; width: 44%; aspect-ratio: 1; border-radius: 50%;
     background: var(--color-magenta); color: #fff;
-    transition: transform .6s var(--ease-expo), background-color .3s;
+    transition: transform .6s var(--ease-expo), background-color .3s, color .3s;
   }
   .seal-core :global(svg) { width: 36%; height: 36%; }
-  .seal:hover .seal-core { transform: scale(1.12) rotate(45deg); background: var(--color-yellow); color: var(--color-ink); }
+  .wall-end:hover .seal-core { transform: scale(1.12) rotate(45deg); background: var(--color-yellow); color: var(--color-ink); }
   @keyframes seal-spin { to { transform: rotate(360deg); } }
-
-  .featured-progress { display: none; }
-  @media (min-width: 900px) {
-    .featured:not(.is-pinned) .featured-cards {
-      padding-bottom: 1.25rem;
-      scrollbar-width: thin;
-      scrollbar-color: rgb(244 239 231 / 40%) transparent;
-    }
-    .featured:not(.is-pinned) .featured-cards::-webkit-scrollbar { display: block; height: 8px; }
-    .featured:not(.is-pinned) .featured-cards::-webkit-scrollbar-thumb { background: rgb(244 239 231 / 40%); border-radius: 8px; }
-  }
-
-  /* ---------- Desktop: faixa fixa que anda na horizontal ---------- */
-  @media (min-width: 900px) {
-    .work, .work.is-wide { width: auto; }
-    .work.is-tall .work-media { height: min(58vh, 560px); aspect-ratio: 4 / 5; }
-    .work.is-wide .work-media { height: min(46vh, 440px); aspect-ratio: 4 / 3; }
-    .work:nth-child(4n + 2) { align-self: flex-end; }
-    .work:nth-child(4n + 3) { align-self: center; }
-    .work-end { width: 36vw; }
-  }
-
-  .featured.is-pinned { padding-block: 0; }
-  .featured.is-pinned .featured-pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; align-items: center; }
-  .featured.is-pinned .featured-track { display: flex; align-items: center; width: max-content; will-change: transform; }
-  .featured.is-pinned .featured-intro { width: min(44rem, 46vw); flex: none; padding-right: 5vw; }
-  .featured.is-pinned .featured-hint { display: inline-flex; }
-  .featured.is-pinned .featured-hint span::after { content: ""; position: absolute; inset: 0; background: var(--color-paper); animation: hint 2s var(--ease-quart) infinite; }
-  @keyframes hint { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-  .featured.is-pinned .featured-cards {
-    margin: 0; padding: 0 var(--gutter) 0 0; overflow: visible;
-    align-items: center; gap: clamp(2rem, 4vw, 4.5rem);
-    height: min(78vh, 720px);
-  }
-  .featured.is-pinned .featured-progress {
-    display: block; position: absolute; left: var(--gutter); right: var(--gutter); bottom: 2.2rem; height: 1px;
-    background: var(--line-dark);
-  }
-  .featured-progress span {
-    position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0));
-    background: linear-gradient(90deg, var(--color-cyan), var(--color-magenta), var(--color-yellow));
-  }
-  .featured.is-pinned .featured-pin { padding-bottom: 2rem; }
+  .wall-end-text { display: grid; gap: .3rem; }
+  .wall-end-text .display { font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.05; }
+  .wall-end-text .mono { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 231 / 60%); }
 </style>

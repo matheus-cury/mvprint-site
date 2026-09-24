@@ -429,10 +429,10 @@ export const categories: Category[] = RAW.map(category => ({ ...category, blurb:
 
 export const totalPhotos = categories.reduce((sum, category) => sum + category.images.length, 0);
 
-/** Fotos que o hero "imprime" em retícula. focus/zoom recortam marcas d'água da câmera. */
+/** Fotos do hero. focus/zoom enquadram o trabalho e cortam marcas d'água da câmera. */
 export const heroPrints = [
-  { image: 'veiculos-81cee948-1b99-4414-beba-0f71f45d20e9', client: 'CSN Mineração', service: 'Plotagem veicular', slug: 'veiculos', focus: [0.5, 0.3], zoom: 1.05 },
   { image: 'tapumes-0bdea117-6d17-4f14-a941-d86f00e78106', client: 'Eudora', service: 'Tapume de loja', slug: 'tapumes', focus: [1, 0.3], zoom: 1.3 },
+  { image: 'veiculos-81cee948-1b99-4414-beba-0f71f45d20e9', client: 'CSN Mineração', service: 'Plotagem veicular', slug: 'veiculos', focus: [0.5, 0.3], zoom: 1.05 },
   { image: 'tapumes-d082978c-2da2-4615-a6cd-04b3aac01491', client: 'Linha 2 · Metrô BH', service: 'Tapume de obra', slug: 'tapumes', focus: [0.66, 0.45], zoom: 1.15 },
   { image: 'cbf-dd3fd591-da0a-46e0-ac79-6b2dd408062b', client: 'CBF', service: 'Letreiro e brasão gigantes', slug: 'cbf', focus: [0.5, 0.42], zoom: 1.3 },
 ] as const;

@@ -1,9 +1,6 @@
-// Hero: entrada coreografada, título em registro CMYK e a prensa em retícula.
-import { initImageFades } from './core';
-import { Press, type PressTexture } from './halftone';
-import { $, $$, clamp, finePointer, lerp, reducedMotion, scrollVelocity, watchVisibility } from './lib';
-
-interface PrintData { src: string; full: string; client: string; service: string; focus: [number, number]; zoom: number; slug: string }
+// Hero: entrada coreografada, título em registro CMYK e a "prensa" que troca
+// as fotos de trabalhos: o cabeçote desce e revela a próxima foto, nítida.
+import { $, $$, reducedMotion, watchVisibility } from './lib';
 
 export function initHero() {
   const hero = $('[data-hero]');
@@ -42,129 +39,66 @@ function startRegistration(hero: HTMLElement) {
     reg.style.setProperty('--ry', '0px');
   }, 550);
 
-  let ready = false;
-  let visible = true;
-  let tx = 0, ty = 0, x = 0, y = 0;
-  let frame = 0;
-  setTimeout(() => { reg.classList.remove('is-ink'); ready = true; }, 2300);
-
-  const loop = () => {
-    frame = 0;
-    if (!ready || !visible) return;
-    const velocity = scrollVelocity();
-    const targetX = tx + clamp(velocity * 6, -14, 14);
-    const targetY = ty + clamp(velocity * 10, -18, 18);
-    x = lerp(x, targetX, 0.12);
-    y = lerp(y, targetY, 0.12);
-    reg.style.setProperty('--rx', `${x.toFixed(2)}px`);
-    reg.style.setProperty('--ry', `${y.toFixed(2)}px`);
-    if (Math.abs(x - targetX) + Math.abs(y - targetY) > 0.05 || Math.abs(velocity) > 0.01) frame = requestAnimationFrame(loop);
-  };
-  const kick = () => { if (!frame) frame = requestAnimationFrame(loop); };
-
-  if (finePointer()) {
-    addEventListener('pointermove', event => {
-      if (event.pointerType !== 'mouse') return;
-      tx = (event.clientX / innerWidth - 0.5) * 9;
-      ty = (event.clientY / innerHeight - 0.5) * 7;
-      kick();
-    }, { passive: true });
-  }
-  addEventListener('scroll', kick, { passive: true });
-  watchVisibility(hero, isVisible => { visible = isVisible; if (isVisible) kick(); });
+  setTimeout(() => reg.classList.remove('is-ink'), 2300);
 }
 
 // ---------- Prensa ----------
 
 function initPress(hero: HTMLElement) {
   const figure = $('[data-press]', hero);
-  const canvas = $<HTMLCanvasElement>('.press-canvas', hero);
   const stage = $('.press-stage', hero);
-  const dataTag = $('[data-press-prints]', hero);
-  if (!figure || !canvas || !stage || !dataTag) return;
-
+  if (!figure || !stage) return;
   watchVisibility(figure, visible => { if (visible) figure.classList.add('is-in'); }, '0px 0px -10% 0px');
 
-  const prints: PrintData[] = JSON.parse(dataTag.textContent || '[]');
+  const photos = $$<HTMLAnchorElement>('.press-photo', stage);
+  const head = $('.press-head', stage);
+  if (photos.length < 2 || !head) return;
+
   const indexLabel = $('[data-press-index]', figure);
   const clientLabel = $('[data-press-client]', figure);
   const serviceLabel = $('[data-press-service]', figure);
   const status = $('[data-press-status]', figure);
-
-  const setCaption = (i: number, announce: boolean) => {
-    const print = prints[i];
-    if (!print) return;
-    if (indexLabel) indexLabel.textContent = String(i + 1).padStart(2, '0');
-    if (clientLabel) clientLabel.textContent = print.client;
-    if (serviceLabel) serviceLabel.textContent = print.service;
-    canvas.setAttribute('aria-label', `${print.service} para ${print.client}, impresso em retícula`);
-    if (announce && status) status.textContent = `${print.client}: ${print.service}`;
-  };
-
-  // Sem WebGL (ou se a primeira foto falhar), mostra a foto comum e para a troca.
-  let stopped = false;
-  const fallback = () => {
-    stopped = true;
-    figure.classList.remove('gl');
-    figure.classList.add('no-gl');
-    setCaption(0, false);
-    const template = $<HTMLTemplateElement>('template[data-press-fallback]', figure);
-    if (template && !stage.querySelector('picture')) {
-      stage.prepend(template.content.cloneNode(true));
-      initImageFades(stage);
-    }
-  };
-  const press = Press.create(canvas, { cell: 7.5, paper: [0.984, 0.976, 0.957] });
-  if (!press || !prints.length) {
-    fallback();
-    return;
-  }
-  figure.classList.add('gl');
-
-  const head = $('.press-head', figure)!;
-  const loupe = $<SVGSVGElement>('.press-loupe', figure);
-  const toggle = $<HTMLButtonElement>('[data-press-toggle]', figure);
-  const hint = $('[data-press-hint]', figure);
   const pauseButton = $<HTMLButtonElement>('[data-press-pause]', figure);
   const timer = $('.press-timer', figure);
   const reduced = reducedMotion();
-  const HOLD = 5200;
-
-  const textures: Promise<PressTexture>[] = [];
-  // Em telas grandes de alta densidade usa a foto inteira, para a lupa ficar nítida
-  // (a mesma regra do <link rel="preload"> da página).
-  const sharp = matchMedia('(min-width: 1024px) and (min-resolution: 1.5dppx)').matches;
-  const load = (index: number) => {
-    const i = (index + prints.length) % prints.length;
-    textures[i] ??= press.load(sharp ? prints[i].full : prints[i].src, prints[i].focus, prints[i].zoom);
-    return textures[i];
-  };
+  const HOLD = 5600;
+  const PRINT = 1500;
+  const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
 
   let index = 0;
-  let started = false;
   let busy = false;
   let paused = reduced;
   let hovering = false;
-  let revealed = false;
   let inView = false;
+  let started = false;
   let holdTimer = 0;
-  let pointer = { x: 0, y: 0 };
 
-  const size = () => stage.getBoundingClientRect();
+  const imageOf = (i: number) => photos[i].querySelector('img');
 
-  press.onFrame = ({ lensX, lensY, lensR, front, printing }) => {
-    if (loupe) {
-      const visible = lensR > 6 && !revealed;
-      loupe.style.opacity = visible ? '1' : '0';
-      loupe.style.transform = `translate3d(${lensX}px, ${lensY}px, 0) scale(${(lensR / 100).toFixed(3)})`;
-    }
-    if (printing) head.style.transform = `translate3d(0, ${(front * size().height).toFixed(1)}px, 0)`;
+  /** Garante que a foto está baixada e decodificada antes de imprimir. */
+  const ready = (i: number) => {
+    const image = imageOf(i);
+    if (!image) return Promise.reject(new Error('sem imagem'));
+    image.loading = 'eager';
+    if (image.complete && image.naturalWidth) return Promise.resolve();
+    return new Promise<void>((resolve, reject) => {
+      image.addEventListener('load', () => resolve(), { once: true });
+      image.addEventListener('error', () => reject(new Error('falhou')), { once: true });
+    });
+  };
+
+  const setCaption = (i: number, announce: boolean) => {
+    const { client = '', service = '' } = photos[i].dataset;
+    if (indexLabel) indexLabel.textContent = String(i + 1).padStart(2, '0');
+    if (clientLabel) clientLabel.textContent = client;
+    if (serviceLabel) serviceLabel.textContent = service;
+    if (announce && status) status.textContent = `${client}: ${service}`;
   };
 
   const schedule = () => {
     clearTimeout(holdTimer);
     timer?.classList.remove('is-running');
-    if (stopped || paused || hovering || revealed || !inView || document.hidden || busy) return;
+    if (paused || hovering || !inView || document.hidden || busy) return;
     if (timer) {
       timer.style.setProperty('--t', `${HOLD}ms`);
       void timer.getBoundingClientRect();
@@ -174,74 +108,55 @@ function initPress(hero: HTMLElement) {
   };
 
   const show = async (target: number, announce: boolean) => {
-    if (busy || stopped) return;
+    if (busy) return;
     busy = true;
     clearTimeout(holdTimer);
     timer?.classList.remove('is-running');
-    const next = (target + prints.length) % prints.length;
+    const next = (target + photos.length) % photos.length;
     try {
-      const texture = await load(next);
-      if (stopped) return;
-      // A legenda só muda quando a foto nova já está pronta para imprimir.
+      await ready(next);
+      const incoming = photos[next];
+      const outgoing = photos[index];
+      setCaption(next, announce);
+      incoming.classList.add('is-next');
+      if (!reduced) {
+        const height = stage.clientHeight;
+        head.classList.add('is-on');
+        await Promise.all([
+          incoming.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)' }], { duration: PRINT, easing: EASE }).finished,
+          head.animate([{ transform: 'translate3d(0, 0, 0)' }, { transform: `translate3d(0, ${height}px, 0)` }], { duration: PRINT, easing: EASE, fill: 'forwards' }).finished,
+        ]);
+        head.classList.remove('is-on');
+        head.getAnimations().forEach(animation => animation.cancel());
+      }
+      outgoing.classList.remove('is-current');
+      outgoing.inert = true;
+      outgoing.setAttribute('aria-hidden', 'true');
+      incoming.classList.remove('is-next');
+      incoming.classList.add('is-current');
+      incoming.inert = false;
+      incoming.removeAttribute('aria-hidden');
       index = next;
-      setCaption(index, announce);
-      if (revealed) setReveal(false);
-      head.classList.add('is-on');
-      await press.print(texture, reduced ? 0 : 1800);
     } catch {
-      // Foto com erro: pula para a seguinte e tenta de novo numa próxima volta.
-      delete textures[next];
+      // Foto com erro: pula para a seguinte na próxima volta.
       index = next;
     } finally {
-      head.classList.remove('is-on');
       busy = false;
-      load(index + 1).catch(() => undefined);
+      ready((index + 1) % photos.length).catch(() => undefined);
       schedule();
     }
   };
 
-  const setReveal = (on: boolean, x?: number, y?: number) => {
-    revealed = on;
-    const rect = size();
-    const cx = x ?? rect.width / 2;
-    const cy = y ?? rect.height / 2;
-    const diagonal = Math.hypot(Math.max(cx, rect.width - cx), Math.max(cy, rect.height - cy));
-    press.pointer(cx, cy, on ? diagonal + 20 : (hovering && finePointer() ? 92 : 0), on ? 1 : 1.35);
-    if (hint) hint.textContent = on ? 'Voltar à retícula' : 'Ver foto original';
-    figure.classList.toggle('is-revealed', on);
-    // Com a foto aberta a lupa some, então o cursor normal volta a aparecer.
-    stage.dataset.cursor = on ? '' : 'hide';
-    document.dispatchEvent(new Event('mv:cursor'));
-    if (!on) schedule();
-    else { clearTimeout(holdTimer); timer?.classList.remove('is-running'); }
-  };
-
-  // Lupa segue o mouse; clique alterna a foto inteira.
-  stage.addEventListener('pointermove', event => {
+  stage.addEventListener('pointerenter', event => {
     if (event.pointerType !== 'mouse') return;
-    const rect = size();
-    pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    if (!hovering) {
-      hovering = true;
-      clearTimeout(holdTimer);
-      timer?.classList.remove('is-running');
-      press.pointer(pointer.x, pointer.y, revealed ? Math.hypot(rect.width, rect.height) : 92, revealed ? 1 : 1.35, true);
-    } else if (!revealed) {
-      press.pointer(pointer.x, pointer.y, 92, 1.35);
-    }
+    hovering = true;
+    schedule();
   });
   stage.addEventListener('pointerleave', event => {
     if (event.pointerType !== 'mouse') return;
     hovering = false;
-    if (!revealed) press.pointer(pointer.x, pointer.y, 0, 1.35);
     schedule();
   });
-  stage.addEventListener('click', event => {
-    if ((event.target as Element).closest('[data-press-toggle]')) return;
-    const rect = size();
-    setReveal(!revealed, event.clientX - rect.left, event.clientY - rect.top);
-  });
-  toggle?.addEventListener('click', () => setReveal(!revealed));
 
   $('[data-press-prev]', figure)?.addEventListener('click', () => show(index - 1, true));
   $('[data-press-next]', figure)?.addEventListener('click', () => show(index + 1, true));
@@ -256,16 +171,9 @@ function initPress(hero: HTMLElement) {
     inView = visible;
     if (visible && !started) {
       started = true;
-      // A primeira folha é "impressa" quando a prensa aparece na tela.
-      setTimeout(() => show(0, false), reduced ? 0 : 450);
-    } else {
-      schedule();
+      ready(1).catch(() => undefined);
     }
+    schedule();
   });
   document.addEventListener('visibilitychange', schedule);
-
-  new ResizeObserver(() => press.resize()).observe(stage);
-  // Pré-carrega a primeira textura já.
-  load(0).catch(fallback);
-  canvas.addEventListener('webglcontextlost', fallback);
 }

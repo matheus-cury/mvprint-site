@@ -80,7 +80,7 @@ const services = [
         <li class="svc" data-index={index} data-reveal style={`--d:${(index % 3) * 0.06}s`}>
           <span class="svc-num mono">{String(index + 1).padStart(2, '0')}</span>
           <div class="svc-main">
-            <h3 class="svc-title display"><span class="reg" data-text={service.title}>{service.title}</span></h3>
+            <h3 class="svc-title display">{service.title}</h3>
             <p class="svc-desc">{service.description}</p>
             <ul class="svc-tags" aria-label={`Exemplos de ${service.title.toLowerCase()}`}>
               {service.tags.map(tag => <li class="tag">{tag}</li>)}
@@ -100,11 +100,6 @@ const services = [
     </ol>
   </div>
 
-  <div class="svc-float" aria-hidden="true">
-    {services.map(service => (
-      <img src={optimized(service.image, 480)} alt="" width="480" height="360" loading="lazy" decoding="async" />
-    ))}
-  </div>
 </section>
 
 <style>
@@ -156,7 +151,7 @@ const services = [
 
   @media (min-width: 1024px) {
     .svc {
-      grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+      grid-template-columns: 4.5rem minmax(0, 1fr) 220px auto;
       align-items: center;
       padding-block: clamp(2rem, 3vw, 2.75rem);
     }
@@ -164,8 +159,8 @@ const services = [
     .svc-desc { margin-top: 0; }
     .svc-tags { grid-column: 2; margin-top: 0; }
     .svc-title { grid-row: span 2; }
-    .svc-thumb { display: none; }
-    .svc-actions { grid-column: 3; flex-direction: column; align-items: flex-end; gap: .8rem; margin-top: 0; }
+    .svc-thumb { grid-column: 3; margin: 0; max-width: none; width: 220px; }
+    .svc-actions { grid-column: 4; flex-direction: column; align-items: flex-end; gap: .8rem; margin-top: 0; }
     .svc-num { padding-top: 0; }
   }
 
@@ -174,7 +169,6 @@ const services = [
   @media (hover: hover) and (min-width: 1024px) {
     .svc:hover::before { clip-path: inset(0 0 0 0); }
     .svc:hover .svc-title { transform: translate3d(1.25rem, 0, 0); }
-    .svc:hover .svc-title .reg { --rx: 5px; --ry: 3px; }
     .svc:hover .svc-num { color: var(--color-magenta-deep); }
   }
 

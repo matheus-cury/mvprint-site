@@ -180,11 +180,7 @@ const schemaData = {
           sessionStorage.setItem('mv-intro', '1');
         }
       } catch (error) { /* navegação privada sem storage: segue sem a entrada */ }
-      setTimeout(function () {
-        if (window.__mv) return;
-        document.documentElement.classList.remove('js');
-        document.querySelectorAll('template[data-press-fallback]').forEach(function (t) { t.parentNode.prepend(t.content.cloneNode(true)); });
-      }, 4000);
+      setTimeout(function () { if (!window.__mv) document.documentElement.classList.remove('js'); }, 4000);
     </script>
   </head>
   <body>
@@ -192,11 +188,6 @@ const schemaData = {
     <div class="read-progress" aria-hidden="true"></div>
     <slot />
     <div class="grain" aria-hidden="true"></div>
-    <div class="cursor-ring" aria-hidden="true">
-      <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="22" cy="22" r="11" /><path d="M22 2v40M2 22h40" /></svg>
-    </div>
-    <div class="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-tag" aria-hidden="true"></div>
     <script>
       import '../scripts/site';
     </script>

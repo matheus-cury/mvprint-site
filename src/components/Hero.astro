@@ -1,19 +1,28 @@
 ---
 import Button from './Button.astro';
 import Icon from './Icon.astro';
-import ResponsiveImage from './ResponsiveImage.astro';
 import { getWhatsAppLink } from '../config/site';
 import { heroPrints, totalPhotos } from '../data/portfolio';
-import { fullWebp, optimized, photoSrc } from '../lib/images';
+import { fullWebp, imageSize, optimized, photoSrc } from '../lib/images';
 
-const prints = heroPrints.map(print => ({ ...print, src: optimized(print.image, 960), full: fullWebp(print.image) }));
-const first = heroPrints[0];
+// Fotos em alta: 480/960 px do prebuild + o WebP inteiro para telas grandes e retina.
+const prints = await Promise.all(heroPrints.map(async (print, index) => {
+  const { width, height } = await imageSize(print.image);
+  return {
+    ...print,
+    index,
+    width,
+    height,
+    srcset: `${optimized(print.image, 480)} 480w, ${optimized(print.image, 960)} 960w, ${fullWebp(print.image)} ${width}w`,
+    fallback: photoSrc(print.image),
+  };
+}));
+const first = prints[0];
 const pad = (value: number) => String(value).padStart(2, '0');
+const sizes = '(min-width: 1024px) min(40vw, 560px), min(calc(100vw - 40px), 560px)';
 ---
 
 <section class="hero" aria-labelledby="hero-title" data-hero>
-  <div class="hero-dots" aria-hidden="true"></div>
-
   <div class="wrap hero-grid">
     <div class="hero-copy" data-reveal-manual>
       <p class="hero-kicker eyebrow" data-hero-in style="--d:0s">
@@ -43,36 +52,36 @@ const pad = (value: number) => String(value).padStart(2, '0');
     </div>
 
     <figure class="press" data-press data-reveal-manual>
-      <div class="press-sheet cropmarks">
-        <div class="press-stage" data-cursor="hide">
-          <!-- Foto comum só aparece sem JavaScript ou sem WebGL (evita baixar duas vezes). -->
-          <noscript>
-            <ResponsiveImage src={photoSrc(first.image)} alt={`${first.service} para ${first.client}, feito pela MV Print`} width={960} height={1200} loading="eager" sizes="(min-width: 1024px) 40vw, calc(100vw - 40px)" class="press-fallback" />
-          </noscript>
-          <template data-press-fallback>
-            <ResponsiveImage src={photoSrc(first.image)} alt={`${first.service} para ${first.client}, feito pela MV Print`} width={960} height={1200} loading="eager" sizes="(min-width: 1024px) 40vw, calc(100vw - 40px)" class="press-fallback" />
-          </template>
-          <canvas class="press-canvas" role="img" aria-label={`${first.service} para ${first.client}, impresso em retícula`}></canvas>
+      <div class="press-sheet">
+        <div class="press-stage">
+          {prints.map(print => (
+            <a
+              href={`/portfolio#${print.slug}`}
+              class:list={['press-photo', { 'is-current': print.index === 0 }]}
+              style={`--fx:${print.focus[0] * 100}%;--fy:${print.focus[1] * 100}%;--z:${print.zoom}`}
+              data-cursor="view"
+              data-cursor-label="Ver trabalhos"
+              data-client={print.client}
+              data-service={print.service}
+              aria-label={`${print.service} para ${print.client}: ver trabalhos no portfólio`}
+              {...(print.index === 0 ? {} : { inert: true, 'aria-hidden': 'true' })}
+            >
+              <picture>
+                <source type="image/webp" srcset={print.srcset} sizes={sizes} />
+                <img
+                  src={print.fallback}
+                  alt={`${print.service} para ${print.client}, feito pela MV Print`}
+                  width={print.width}
+                  height={print.height}
+                  loading={print.index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={print.index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                />
+              </picture>
+            </a>
+          ))}
           <div class="press-head" aria-hidden="true"><span class="press-carriage"><i></i><i></i><i></i><i></i></span></div>
-          <svg class="press-loupe" viewBox="0 0 200 200" aria-hidden="true">
-            <circle cx="100" cy="100" r="99" fill="none" stroke="currentColor" stroke-width="1.2" />
-            {Array.from({ length: 48 }, (_, i) => {
-              const angle = (i / 48) * Math.PI * 2;
-              const inner = i % 4 === 0 ? 88 : 93;
-              return <line x1={100 + Math.cos(angle) * inner} y1={100 + Math.sin(angle) * inner} x2={100 + Math.cos(angle) * 99} y2={100 + Math.sin(angle) * 99} stroke="currentColor" stroke-width="1" />;
-            })}
-            <path d="M100 92v16M92 100h16" stroke="currentColor" stroke-width="1" />
-          </svg>
-          <button type="button" class="press-toggle" data-press-toggle data-cursor="">
-            <Icon name="loupe" class="press-toggle-icon" />
-            <span data-press-hint>Ver foto original</span>
-          </button>
         </div>
-        <span class="press-mark press-mark-t" aria-hidden="true"><Icon name="reg" /></span>
-        <span class="press-mark press-mark-b" aria-hidden="true"><Icon name="reg" /></span>
-        <span class="press-mark press-mark-l" aria-hidden="true"><Icon name="reg" /></span>
-        <span class="press-mark press-mark-r" aria-hidden="true"><Icon name="reg" /></span>
-        <span class="press-slug mono" aria-hidden="true">MV PRINT — 4/0 CMYK</span>
       </div>
 
       <figcaption class="press-caption">
@@ -91,7 +100,6 @@ const pad = (value: number) => String(value).padStart(2, '0');
         </span>
       </figcaption>
       <p class="sr-only" aria-live="polite" data-press-status></p>
-      <script type="application/json" data-press-prints set:html={JSON.stringify(prints)} />
     </figure>
   </div>
 
@@ -120,14 +128,6 @@ const pad = (value: number) => String(value).padStart(2, '0');
 
   /* Retícula de fundo: um véu cor de papel esmaece os pontos (sem mask-image,
      que em conjunto com as animações gerava camadas fantasmas no Chrome). */
-  .hero-dots {
-    position: absolute; inset: 0 0 auto auto; z-index: -1; width: min(70vw, 900px); height: 100%;
-    background:
-      radial-gradient(ellipse 70% 60% at 85% 20%, rgb(244 239 231 / 0%) 0%, var(--color-paper) 70%),
-      radial-gradient(circle, rgb(230 0 126 / 16%) 1.1px, transparent 1.6px) 0 0 / 13px 13px;
-    pointer-events: none;
-  }
-
   .hero-grid {
     position: relative;
     display: grid;
@@ -182,18 +182,30 @@ const pad = (value: number) => String(value).padStart(2, '0');
     position: relative;
     padding: 0;
     background: #FBF9F4;
+    border-radius: 18px; overflow: hidden;
     box-shadow: 0 1px 0 rgb(22 18 14 / 6%), 0 40px 70px -40px rgb(22 18 14 / 45%), 0 18px 30px -24px rgb(22 18 14 / 30%);
   }
   :global(.js) .press .press-sheet { opacity: 0; transform: translate3d(0, 2rem, 0) rotate(1.5deg); transition: opacity 1.1s var(--ease-expo) .3s, transform 1.6s var(--ease-expo) .3s; }
   :global(.js) .press.is-in .press-sheet { opacity: 1; transform: none; }
 
-  .press-stage { position: relative; aspect-ratio: 4 / 5; overflow: hidden; touch-action: pan-y; }
-  .press-stage :global(picture), .press-stage :global(.press-fallback) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .press-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .6s; }
-  .press.gl .press-canvas { opacity: 1; }
+  .press-stage { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--color-paper-3); }
+  .press-photo { position: absolute; inset: 0; display: block; overflow: hidden; visibility: hidden; }
+  .press-photo.is-current, .press-photo.is-next { visibility: visible; }
+  .press-photo.is-next { z-index: 2; }
+  .press-photo :global(picture), .press-photo :global(img) { display: block; width: 100%; height: 100%; }
+  .press-photo :global(img) {
+    object-fit: cover;
+    object-position: var(--fx) var(--fy);
+    transform-origin: var(--fx) var(--fy);
+    transform: scale(var(--z));
+  }
+  /* Foto em cartaz se aproxima devagar enquanto espera a próxima. */
+  .press-photo.is-current :global(img) { animation: press-drift 12s cubic-bezier(.25, .1, .25, 1) both; }
+  @keyframes press-drift { to { transform: scale(calc(var(--z) * 1.06)); } }
+  @media (prefers-reduced-motion: reduce) { .press-photo.is-current :global(img) { animation: none; } }
 
   .press-head {
-    position: absolute; left: -3%; right: -3%; top: 0; height: 0;
+    position: absolute; left: -3%; right: -3%; top: 0; height: 0; z-index: 3;
     pointer-events: none; opacity: 0;
     transition: opacity .3s;
   }
@@ -217,28 +229,9 @@ const pad = (value: number) => String(value).padStart(2, '0');
   .press-carriage i:nth-child(4) { background: #4a423a; }
   @keyframes carriage { from { left: 3%; } to { left: calc(97% - 52px); } }
 
-  .press-loupe {
-    position: absolute; left: 0; top: 0; width: 200px; height: 200px;
-    margin: -100px 0 0 -100px;
-    color: rgb(22 18 14 / 75%);
-    pointer-events: none; opacity: 0;
-    transition: opacity .25s;
-  }
 
-  .press-toggle {
-    position: absolute; left: 12px; bottom: 12px;
-    display: inline-flex; align-items: center; gap: .45rem;
-    padding: .5rem .8rem; border-radius: 999px;
-    background: rgb(251 249 244 / 88%); color: var(--color-ink);
-    backdrop-filter: blur(6px);
-    font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
-    box-shadow: inset 0 0 0 1px var(--line);
-    transition: background .3s, color .3s, opacity .4s;
-  }
-  .press-toggle :global(.press-toggle-icon) { width: 1rem; height: 1rem; }
-  .press-toggle:hover, .press-toggle[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
-  .press.no-gl .press-toggle, .press:not(.gl) .press-toggle { display: none; }
-  .press.no-gl .press-controls { display: none; }
+
+
 
   .press-mark { position: absolute; width: 18px; height: 18px; color: var(--color-ink); opacity: .55; }
   .press-mark :global(svg) { width: 100%; height: 100%; }

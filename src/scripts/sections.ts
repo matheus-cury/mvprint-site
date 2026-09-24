@@ -47,69 +47,6 @@ export function initServices() {
   });
 }
 
-// ---------- Trabalhos: faixa horizontal presa durante a rolagem ----------
-
-export function initHScroll() {
-  const section = $('[data-hscroll]');
-  const track = $('[data-hscroll-track]', section ?? document);
-  const progress = $('[data-hscroll-progress]', section ?? document);
-  if (!section || !track) return;
-  const images = $$('.work-img', section);
-  const desktop = matchMedia('(min-width: 900px)');
-  let enabled = false;
-  let distance = 0;
-
-  const measure = () => {
-    enabled = desktop.matches && !reducedMotion();
-    section.classList.toggle('is-pinned', enabled);
-    if (!enabled) {
-      section.style.height = '';
-      track.style.transform = '';
-      images.forEach(image => image.style.removeProperty('--px'));
-      return;
-    }
-    distance = Math.max(0, track.scrollWidth - innerWidth);
-    section.style.height = `${distance + innerHeight}px`;
-    update();
-  };
-
-  // Posição lida a cada quadro: continua certa mesmo se algo acima mudar de altura.
-  const sectionTop = () => section.getBoundingClientRect().top + scrollY;
-
-  const update = () => {
-    if (!enabled) return;
-    const p = clamp(-section.getBoundingClientRect().top / Math.max(1, distance));
-    track.style.transform = `translate3d(${(-p * distance).toFixed(1)}px, 0, 0)`;
-    progress?.style.setProperty('--p', p.toFixed(4));
-    const center = innerWidth / 2;
-    for (const image of images) {
-      const rect = image.parentElement!.getBoundingClientRect();
-      if (rect.right < -200 || rect.left > innerWidth + 200) continue;
-      const offset = (rect.left + rect.width / 2 - center) * -0.09;
-      image.style.setProperty('--px', `${offset.toFixed(1)}px`);
-    }
-  };
-
-  onScroll(() => update());
-
-  // Teclado: ao focar um card fora da faixa visível, rola até ele aparecer.
-  track.addEventListener('focusin', event => {
-    if (!enabled) return;
-    const card = (event.target as Element).closest<HTMLElement>('.work, .work-end, .featured-intro');
-    if (!card) return;
-    const trackRect = track.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const x = cardRect.left - trackRect.left;
-    const target = clamp(x - innerWidth * 0.25, 0, distance);
-    scrollTo({ top: sectionTop() + target, behavior: 'auto' });
-  });
-  desktop.addEventListener('change', measure);
-  addEventListener('resize', measure);
-  // Fontes e imagens mudam a largura da faixa: remede quando mudar.
-  new ResizeObserver(measure).observe(track);
-  measure();
-}
-
 // ---------- Antes e depois ----------
 
 export function initBeforeAfter() {

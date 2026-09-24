@@ -221,13 +221,9 @@ const gallery = await Promise.all(categories.map(async category => ({
     padding: clamp(2rem, 6vw, 5rem);
   }
   .pf-cta-card::before {
-    content: ""; position: absolute; right: -10%; top: -30%; width: 60%; aspect-ratio: 1;
-    background:
-      radial-gradient(circle, rgb(22 18 14 / 0%) 0%, var(--color-ink) 70%),
-      radial-gradient(circle, rgb(230 0 126 / 45%) 1.4px, transparent 2px) 0 0 / 14px 14px;
-    pointer-events: none;
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+    background: linear-gradient(90deg, var(--color-cyan) 0 25%, var(--color-magenta) 25% 50%, var(--color-yellow) 50% 75%, var(--color-paper) 75%);
   }
-  .pf-cta-card > * { position: relative; }
   .pf-cta-kicker { color: var(--color-yellow); }
   .pf-cta-title { font-size: clamp(2.8rem, 6.5vw, 6.5rem); line-height: .92; letter-spacing: -0.03em; max-width: 14ch; }
   .pf-cta-text { color: rgb(244 239 231 / 75%); max-width: 32rem; }
