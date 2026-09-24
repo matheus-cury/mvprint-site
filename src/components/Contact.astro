@@ -34,10 +34,6 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
             <input type="text" id="name" name="name" autocomplete="name" maxlength="100" required placeholder=" " />
             <label for="name">Seu nome</label>
           </div>
-          <div class="field">
-            <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="tel" maxlength="25" required placeholder=" " />
-            <label for="whatsapp">WhatsApp com DDD</label>
-          </div>
           <fieldset class="chips">
             <legend>O que você precisa?</legend>
             <div class="chips-list">
@@ -240,8 +236,7 @@ const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     .contact-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); margin-top: clamp(1.5rem, 4vh, 3rem); }
     .form-card { padding: clamp(1.25rem, 3vh, 2.25rem) clamp(1.5rem, 2.5vw, 2.5rem); }
     .form-head { margin-bottom: clamp(.6rem, 2vh, 1.4rem); }
-    .form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.6rem, 1.6vh, 1.1rem) 1.5rem; }
-    .chips, .field-area, .form-actions { grid-column: 1 / -1; }
+    .form { gap: clamp(.6rem, 1.6vh, 1.1rem); }
     .form-actions { display: flex; align-items: center; gap: 1.25rem; }
     .form-note { flex: 1; min-width: 0; }
     .field input, .field textarea { padding-top: 1.25rem; font-size: 1.05rem; }
