@@ -96,4 +96,17 @@ const avatarColors = ['var(--color-cyan)', 'var(--color-magenta)', 'var(--color-
   }
   .review-by b { display: block; font-weight: 600; font-size: .95rem; }
   .review-by small { display: block; font-size: .8rem; color: var(--color-muted); }
+
+  /* Computador: nota do Google ao lado do título e cartões mais enxutos. */
+  @media (min-width: 1024px) {
+    .reviews-head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: 3rem; max-width: none; margin-bottom: clamp(1.5rem, 4.5vh, 3rem); }
+    .rating { justify-self: end; }
+    .review-grid { gap: clamp(.75rem, 2vh, 1.25rem); }
+    .review { gap: .8rem; padding: clamp(1.1rem, 2.6vh, 1.75rem) clamp(1.25rem, 2vw, 1.75rem); }
+  }
+
+  @media (min-width: 1024px) and (max-height: 700px) {
+    .review { gap: .55rem; padding-block: .9rem; }
+    .review-text { font-size: 1rem; line-height: 1.5; }
+  }
 </style>

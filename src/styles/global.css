@@ -153,6 +153,14 @@ html.menu-open { overflow: hidden; }
   padding-block: clamp(4.5rem, 8vw, 7.5rem);
 }
 
+/* Enquadramento no computador: cada seção cabe numa tela. --frame é a altura
+   útil (tela menos o cabeçalho e um respiro); as seções dimensionam fotos,
+   logos e cartões por ela. */
+@media (min-width: 1024px) {
+  :root { --frame: calc(100vh - 140px); }
+  .sec { padding-block: clamp(3.5rem, 10vh, 6.5rem); }
+}
+
 .sec-ink { --title-accent: #B79CF2; background: var(--color-ink); color: var(--color-paper); }
 .sec-paper-2 { background: var(--color-paper-2); }
 

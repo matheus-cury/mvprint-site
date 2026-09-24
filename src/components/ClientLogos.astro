@@ -96,4 +96,11 @@ const clients = [
     .logo-cell:hover .logo { filter: none; opacity: 1; transform: scale(1.06); }
     .logo-cell:hover .logo-lift { filter: brightness(1.13) contrast(1.1); }
   }
+
+  /* Computador: título e texto lado a lado; três linhas de logos na altura que sobra da tela. */
+  @media (min-width: 1024px) {
+    .clients-head { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: end; column-gap: clamp(2.5rem, 6vw, 6rem); max-width: none; margin-bottom: clamp(1.5rem, 4.5vh, 3rem); }
+    .logo-cell { aspect-ratio: auto; height: clamp(5.5rem, calc((var(--frame) - 12rem) / 3), 10.5rem); padding: clamp(.75rem, 2vh, 1.25rem); }
+    .logo { max-height: 100%; }
+  }
 </style>

@@ -32,7 +32,7 @@ const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
       <p class="lede" data-reveal style="--d:.15s">{preset.text}</p>
     </div>
 
-    <div class="ba" style={`--ratio:${size.width} / ${size.height}`} data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip" style="--pos:50%">
+    <div class="ba" style={`--ratio:${size.width} / ${size.height};--ar:${(size.width / size.height).toFixed(4)};--pos:50%`} data-ba data-cursor="drag" data-cursor-label="Arraste" data-reveal="clip">
       <div class="ba-canvas">
         <picture class="ba-img">
           <source type="image/webp" srcset={`/images/optimized/${preset.image}-960.webp 960w, /images/portfolio/${preset.image}.webp ${size.width}w`} sizes={sizes} />
@@ -125,4 +125,10 @@ const sizes = '(min-width: 1100px) 1040px, calc(100vw - 2.5rem)';
   .ba-hint :global(svg) { width: 1rem; height: 1rem; }
   /* No celular a bolinha do meio já diz "arraste"; a legenda cabe numa linha. */
   @media (max-width: 520px) { .ba-hint { display: none; } }
+
+  /* Computador: título e texto lado a lado; a foto usa a altura que sobra da tela. */
+  @media (min-width: 1024px) {
+    .ba-head { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: end; column-gap: clamp(2.5rem, 6vw, 6rem); max-width: none; margin-bottom: clamp(1.5rem, 4.5vh, 3rem); }
+    .ba { width: min(100%, calc((var(--frame) - 11.25rem) * var(--ar, 1.3333))); }
+  }
 </style>
