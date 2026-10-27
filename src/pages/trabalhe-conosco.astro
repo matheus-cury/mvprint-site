@@ -75,10 +75,6 @@ const jobPosting = {
         <p class="lede job-lede"><b>Venha fazer parte da nossa equipe!</b> {JOB.description}</p>
         <div class="job-actions">
           <Button href={whatsappLink} label="Enviar currículo pelo WhatsApp" icon="whatsapp" size="lg" external />
-          <p class="job-number">
-            <span class="mono">Currículo para</span>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="u-link is-static">{JOB.whatsappDisplay}</a>
-          </p>
         </div>
         <p class="job-place mono"><Icon name="pin" /> {ADDRESS.neighborhood}, {ADDRESS.city}/{ADDRESS.state}</p>
       </div>
@@ -112,11 +108,6 @@ const jobPosting = {
             {JOB.offers.map(item => <li><span class="job-check" aria-hidden="true">✓</span>{item}</li>)}
           </ul>
         </div>
-        <div class="job-card job-card-ink sec-ink">
-          <h2 class="display job-h2">Como se candidatar</h2>
-          <p>Mande o seu currículo pelo WhatsApp <b>{JOB.whatsappDisplay}</b>. Se tiver fotos de trabalhos que você aplicou, mande junto.</p>
-          <Button href={whatsappLink} label="Enviar currículo" icon="whatsapp" variant="paper" external />
-        </div>
       </div>
     </section>
   </main>
@@ -133,9 +124,6 @@ const jobPosting = {
   .job-lede { max-width: 36rem; margin-top: clamp(1.25rem, 2.5vw, 2rem); }
   .job-lede b { font-weight: 600; color: var(--color-ink); }
   .job-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 2rem; }
-  .job-number { display: grid; gap: .2rem; }
-  .job-number .mono { font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
-  .job-number a { font-family: var(--font-display); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
   .job-place { display: flex; align-items: center; gap: .5rem; margin-top: 2rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
   .job-place :global(svg) { width: 1rem; height: 1rem; color: var(--title-accent); }
   @media (max-width: 520px) { .job-actions :global(.btn-lg) { width: 100%; justify-content: space-between; } }
@@ -148,15 +136,12 @@ const jobPosting = {
   }
 
   .job-grid { display: grid; gap: 1.25rem; }
-  @media (min-width: 900px) { .job-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .job-card {
     display: grid; gap: 1.1rem; align-content: start; justify-items: start;
     padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: 20px;
     background: #FBF9F4; box-shadow: inset 0 0 0 1px var(--line);
   }
-  .job-card-ink { background: var(--color-ink); box-shadow: none; }
-  .job-card-ink p { color: rgb(244 239 231 / 82%); }
-  .job-card-ink b { color: var(--color-paper); font-weight: 600; }
   .job-h2 { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.05; }
   .job-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
   .job-list li { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); align-items: start; color: var(--color-ink-2); }
