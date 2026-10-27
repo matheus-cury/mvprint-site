@@ -40,7 +40,6 @@ const jobPosting = {
   description: [JOB.description, 'Requisitos:', list(JOB.requirements), 'Oferecemos:', list(JOB.offers), `Interessados: enviar o currículo pelo WhatsApp ${JOB.whatsappDisplay}.`].join(' '),
   datePosted: JOB.datePosted,
   validThrough: `${JOB.validThrough}T23:59:59-03:00`,
-  employmentType: 'FULL_TIME',
   hiringOrganization: {
     '@type': 'Organization',
     name: SITE.name,
