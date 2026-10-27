@@ -1,0 +1,30 @@
+---
+// Faixa "Estamos contratando" no topo da home. Temporária: para tirar, apague
+// este arquivo e a linha <HiringBar /> em src/pages/index.astro.
+---
+<a href="/trabalhe-conosco/" class="hiring-bar">
+  <span class="hiring-dot" aria-hidden="true"></span>
+  <span><b>Estamos contratando<span class="hiring-long">:</span></b><span class="hiring-long"> adesivador</span></span>
+  <span class="hiring-cta">ver a vaga <span aria-hidden="true">→</span></span>
+</a>
+
+<style>
+  .hiring-bar {
+    position: relative; z-index: 81;
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    height: 40px; padding: 0 var(--gutter);
+    white-space: nowrap; overflow: hidden;
+    background: var(--color-yellow); color: var(--color-ink);
+    font-size: .88rem; line-height: 1.25; text-align: center;
+  }
+  .hiring-bar b { font-weight: 600; }
+  .hiring-dot { flex: none; width: .5rem; height: .5rem; border-radius: 50%; background: var(--color-magenta); }
+  .hiring-cta { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .hiring-bar:hover .hiring-cta { color: var(--color-magenta-deep); }
+
+  /* O cabeçalho flutuante desce a altura da faixa enquanto a página está no topo. */
+  @media (max-width: 380px) { .hiring-long { display: none; } }
+
+  :global(a.hiring-bar + header.site-header) { top: 40px; transition: top .5s var(--ease-expo), transform .7s var(--ease-expo); }
+  :global(a.hiring-bar + header.site-header.is-scrolled) { top: 0; }
+</style>

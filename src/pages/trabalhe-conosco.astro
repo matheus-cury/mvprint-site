@@ -1,0 +1,165 @@
+---
+// Vaga aberta (27/10/2026): adesivador. Texto igual ao do cartaz que o Math mandou.
+// Para encerrar a vaga: apagar esta página, a faixa da home (HiringBar) e o link do rodapé.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import { ADDRESS, SITE } from '../config/site';
+
+// Currículo vai para o WhatsApp Business da MV Print. O link sem o 9 é o que abre
+// a conta Business (decisão do Math, 23/10); o número aparece escrito como no cartaz.
+const JOB = {
+  title: 'Adesivador',
+  datePosted: '2026-10-27',
+  validThrough: '2026-12-26',
+  whatsappNumber: '553173024426',
+  whatsappDisplay: '(31) 97302-4426',
+  message: 'Olá! Quero me candidatar à vaga de adesivador.',
+  description: 'A MV Print está em busca de um profissional com experiência para atuar como adesivador, com foco na aplicação de adesivos, envelopamento e comunicação visual.',
+  requirements: [
+    'Experiência comprovada como adesivador.',
+    'Conhecimento em aplicação de adesivos, envelopamento e comunicação visual.',
+    'Comprometimento e responsabilidade.',
+  ],
+  offers: [
+    'Ambiente de trabalho organizado e dinâmico.',
+    'Boa remuneração.',
+    'Oportunidade de crescimento profissional.',
+  ],
+};
+const whatsappLink = `https://wa.me/${JOB.whatsappNumber}?text=${encodeURIComponent(JOB.message)}`;
+
+// Descrição do JobPosting em texto simples (o Google aceita texto ou HTML).
+const list = (items: string[]) => items.map(item => `• ${item}`).join(' ');
+const jobPosting = {
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  title: JOB.title,
+  description: [JOB.description, 'Requisitos:', list(JOB.requirements), 'Oferecemos:', list(JOB.offers), `Interessados: enviar o currículo pelo WhatsApp ${JOB.whatsappDisplay}.`].join(' '),
+  datePosted: JOB.datePosted,
+  validThrough: `${JOB.validThrough}T23:59:59-03:00`,
+  employmentType: 'FULL_TIME',
+  hiringOrganization: {
+    '@type': 'Organization',
+    name: SITE.name,
+    sameAs: SITE.url,
+    logo: `${SITE.url}/images/logo-mvprint.png`,
+  },
+  jobLocation: {
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: ADDRESS.street,
+      addressLocality: ADDRESS.city,
+      addressRegion: ADDRESS.state,
+      postalCode: ADDRESS.zip,
+      addressCountry: ADDRESS.country,
+    },
+  },
+  directApply: false,
+};
+---
+
+<Layout
+  title="Vaga de Adesivador em BH | Trabalhe na MV Print"
+  description="Vaga aberta para adesivador na MV Print, no Santa Terezinha, em BH: aplicação de adesivos, envelopamento e comunicação visual. Envie o currículo pelo WhatsApp."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jobPosting)} />
+  <Header />
+  <main id="main-content" class="job">
+    <section class="job-hero wrap" aria-labelledby="job-title">
+      <div class="job-copy">
+        <p class="rule"><span><b>Trabalhe conosco</b></span><Icon name="reg" class="reg-mark" /></p>
+        <h1 id="job-title" class="display job-title">Vaga aberta: <em>adesivador.</em></h1>
+        <p class="lede job-lede"><b>Venha fazer parte da nossa equipe!</b> {JOB.description}</p>
+        <div class="job-actions">
+          <Button href={whatsappLink} label="Enviar currículo pelo WhatsApp" icon="whatsapp" size="lg" external />
+          <p class="job-number">
+            <span class="mono">Currículo para</span>
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="u-link is-static">{JOB.whatsappDisplay}</a>
+          </p>
+        </div>
+        <p class="job-place mono"><Icon name="pin" /> {ADDRESS.neighborhood}, {ADDRESS.city}/{ADDRESS.state}</p>
+      </div>
+
+      <figure class="job-poster">
+        <picture>
+          <source type="image/webp" srcset="/images/vaga/cartaz-vaga-adesivador-640.webp 640w, /images/vaga/cartaz-vaga-adesivador.webp 1024w" sizes="(min-width: 1024px) 420px, calc(100vw - 40px)" />
+          <img
+            src="/images/vaga/cartaz-vaga-adesivador.webp"
+            alt="Cartaz da MV Print: vaga aberta para adesivador. Requisitos: experiência comprovada, conhecimento em aplicação de adesivos, envelopamento e comunicação visual, comprometimento e responsabilidade. Oferecemos ambiente organizado e dinâmico, boa remuneração e crescimento profissional. Currículo pelo WhatsApp (31) 97302-4426."
+            width="1024"
+            height="1536"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
+      </figure>
+    </section>
+
+    <section class="sec sec-paper-2 job-details" aria-label="Detalhes da vaga">
+      <div class="wrap job-grid">
+        <div class="job-card">
+          <h2 class="display job-h2">Requisitos</h2>
+          <ul class="job-list" role="list">
+            {JOB.requirements.map(item => <li><span class="job-check" aria-hidden="true">✓</span>{item}</li>)}
+          </ul>
+        </div>
+        <div class="job-card">
+          <h2 class="display job-h2">Oferecemos</h2>
+          <ul class="job-list" role="list">
+            {JOB.offers.map(item => <li><span class="job-check" aria-hidden="true">✓</span>{item}</li>)}
+          </ul>
+        </div>
+        <div class="job-card job-card-ink sec-ink">
+          <h2 class="display job-h2">Como se candidatar</h2>
+          <p>Mande o seu currículo pelo WhatsApp <b>{JOB.whatsappDisplay}</b>. Se tiver fotos de trabalhos que você aplicou, mande junto.</p>
+          <Button href={whatsappLink} label="Enviar currículo" icon="whatsapp" variant="paper" external />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .job-hero {
+    display: grid; gap: 2.5rem; align-items: center;
+    padding-top: clamp(7rem, 12vw, 9.5rem); padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  @media (min-width: 1024px) { .job-hero { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(3rem, 6vw, 6rem); } }
+  .job-title { font-size: clamp(2.6rem, 6.4vw, 6.2rem); line-height: .98; letter-spacing: -0.045em; max-width: 11ch; }
+  .job-lede { max-width: 36rem; margin-top: clamp(1.25rem, 2.5vw, 2rem); }
+  .job-lede b { font-weight: 600; color: var(--color-ink); }
+  .job-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 2rem; }
+  .job-number { display: grid; gap: .2rem; }
+  .job-number .mono { font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
+  .job-number a { font-family: var(--font-display); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
+  .job-place { display: flex; align-items: center; gap: .5rem; margin-top: 2rem; font-size: var(--fs-micro); letter-spacing: var(--ls-micro); text-transform: uppercase; color: var(--color-muted); }
+  .job-place :global(svg) { width: 1rem; height: 1rem; color: var(--title-accent); }
+  @media (max-width: 520px) { .job-actions :global(.btn-lg) { width: 100%; justify-content: space-between; } }
+
+  .job-poster { margin: 0; width: 100%; max-width: 420px; justify-self: center; }
+  @media (min-width: 1024px) { .job-poster { justify-self: end; } }
+  .job-poster img {
+    display: block; width: 100%; height: auto; border-radius: 18px;
+    box-shadow: 0 1px 0 rgb(22 18 14 / 6%), 0 40px 70px -40px rgb(22 18 14 / 45%), 0 18px 30px -24px rgb(22 18 14 / 30%);
+  }
+
+  .job-grid { display: grid; gap: 1.25rem; }
+  @media (min-width: 900px) { .job-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .job-card {
+    display: grid; gap: 1.1rem; align-content: start; justify-items: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: 20px;
+    background: #FBF9F4; box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .job-card-ink { background: var(--color-ink); box-shadow: none; }
+  .job-card-ink p { color: rgb(244 239 231 / 82%); }
+  .job-card-ink b { color: var(--color-paper); font-weight: 600; }
+  .job-h2 { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.05; }
+  .job-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
+  .job-list li { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); align-items: start; color: var(--color-ink-2); }
+  .job-check { display: grid; place-items: center; width: 1.25rem; height: 1.25rem; margin-top: .15rem; border-radius: 50%; background: var(--color-yellow); color: var(--color-ink); font-size: .75rem; font-weight: 700; }
+</style>
